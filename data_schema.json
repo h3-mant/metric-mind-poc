@@ -1,0 +1,67 @@
+{
+  "project_id": "just-episode-473505-h7",
+  "dataset_id": "ecommerce_analytics",
+  "tables": [
+    {
+      "table_name": "customers",
+      "description": "Contains customer details and signup activity.",
+      "schema": [
+        {"name": "customer_id", "type": "STRING", "mode": "REQUIRED", "description": "Unique identifier for the customer."},
+        {"name": "first_name", "type": "STRING", "mode": "REQUIRED", "description": "Customer's first name."},
+        {"name": "last_name", "type": "STRING", "mode": "REQUIRED", "description": "Customer's last name."},
+        {"name": "email", "type": "STRING", "mode": "REQUIRED", "description": "Customer's email address."},
+        {"name": "signup_date", "type": "DATE", "mode": "REQUIRED", "description": "Date the customer signed up."},
+        {"name": "member_since", "type": "TIMESTAMP", "mode": "REQUIRED", "description": "Timestamp when the customer record was created in the system, often different from signup date."},
+        {"name": "last_login_date", "type": "DATE", "mode": "NULLABLE", "description": "Date of the customer's last login."}
+      ]
+    },
+    {
+      "table_name": "products",
+      "description": "Contains details of products available in the catalog.",
+      "schema": [
+        {"name": "product_id", "type": "STRING", "mode": "REQUIRED", "description": "Unique identifier for the product."},
+        {"name": "product_name", "type": "STRING", "mode": "REQUIRED", "description": "Name of the product."},
+        {"name": "prod_cat_id", "type": "STRING", "mode": "REQUIRED", "description": "Foreign key to the product_category table."},
+        {"name": "price_usd", "type": "FLOAT", "mode": "REQUIRED", "description": "Price of the product in USD."},
+        {"name": "created_at_ts", "type": "TIMESTAMP", "mode": "REQUIRED", "description": "Timestamp when the product was added to the catalog."},
+        {"name": "catalog_effective_date", "type": "DATE", "mode": "REQUIRED", "description": "Date the product became visible in the online catalog."},
+        {"name": "last_updated_at_ts", "type": "TIMESTAMP", "mode": "REQUIRED", "description": "Timestamp when the product details were last updated."},
+        {"name": "is_available", "type": "BOOLEAN", "mode": "REQUIRED", "description": "Availability status of the product."}
+      ]
+    },
+    {
+      "table_name": "product_category",
+      "description": "Defines product categories and their names.",
+      "schema": [
+        {"name": "category_id", "type": "STRING", "mode": "REQUIRED", "description": "Unique identifier for the product category."},
+        {"name": "category_name", "type": "STRING", "mode": "REQUIRED", "description": "Name of the product category."}
+      ]
+    },
+    {
+      "table_name": "orders",
+      "description": "Captures customer orders and payment details.",
+      "schema": [
+        {"name": "order_id", "type": "STRING", "mode": "REQUIRED", "description": "Unique identifier for the order."},
+        {"name": "cust_acct_id", "type": "STRING", "mode": "REQUIRED", "description": "Foreign key to the customer table, but with a non-standard name."},
+        {"name": "order_total_usd", "type": "FLOAT", "mode": "REQUIRED", "description": "Total price of the order."},
+        {"name": "order_date", "type": "DATE", "mode": "REQUIRED"},
+        {"name": "order_date_1", "type": "STRING", "mode": "REQUIRED"},
+        {"name": "order_date_2", "type": "TIMESTAMP", "mode": "REQUIRED"},
+        {"name": "shipping_date", "type": "DATE", "mode": "REQUIRED", "description": "The date the order was shipped. Should be after order_date."},
+        {"name": "delivery_date", "type": "DATE", "mode": "NULLABLE", "description": "The date the order was delivered. Should be after shipping_date."},
+        {"name": "payment_method", "type": "STRING", "mode": "REQUIRED", "description": "Payment method used for the order."}
+      ]
+    },
+    {
+      "table_name": "order_item",
+      "description": "Details of individual items within an order.",
+      "schema": [
+        {"name": "order_item_id", "type": "STRING", "mode": "REQUIRED", "description": "Unique identifier for the order item."},
+        {"name": "order_num", "type": "STRING", "mode": "REQUIRED", "description": "Foreign key to the orders table, but with a non-standard name."},
+        {"name": "item_id", "type": "STRING", "mode": "REQUIRED", "description": "Foreign key to the products table, but with a non-standard name."},
+        {"name": "quantity", "type": "INTEGER", "mode": "REQUIRED", "description": "Number of units of the product in this order item."},
+        {"name": "line_item_total", "type": "FLOAT", "mode": "REQUIRED", "description": "Price of the single line item (quantity * price)."}
+      ]
+    }
+  ]
+}

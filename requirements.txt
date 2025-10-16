@@ -1,0 +1,3 @@
+google-adk
+streamlit>=1.28.0
+matplotlib>=3.7.2
