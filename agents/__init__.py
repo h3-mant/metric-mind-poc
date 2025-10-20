@@ -1,3 +1,3 @@
 from dotenv import load_dotenv
 
-load_dotenv()  # take environment variables from .env file
+load_dotenv(override=True)  # take environment variables from .env file

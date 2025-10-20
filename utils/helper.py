@@ -17,15 +17,24 @@ def json_to_dict(path: str) -> dict:
     except FileNotFoundError:
         raise FileNotFoundError(f"File not found: {path}")
 
-def save_img(img_bytes: str) -> None:
+def save_img(img_bytes: str) -> str:
     """save base64 image str to PNG file"""
+    #set default result to FAILURE
+    result = 'FAILURE'
     if img_bytes:
         os.makedirs("images", exist_ok=True)
-        # Decode base64 string to bytes
-        decoded_bytes = base64.b64decode(img_bytes)
-        with open("images/img.png", "wb") as f:
-            f.write(decoded_bytes)
-        logger.info("Saved image to images/img.png")
+        # Add base64 padding if needed
+        missing_padding = len(img_bytes) % 4
+        if missing_padding:
+            img_bytes += '=' * (4 - missing_padding)
+        try:
+            decoded_bytes = base64.b64decode(img_bytes)
+            with open("images/img.png", "wb") as f:
+                f.write(decoded_bytes)
+            logger.info("Saved image to images/img.png")
+            result = 'SUCCESS'
+        except Exception as e:
+            logger.error(f"Failed to decode/save image: {e}")
     else:
         logger.error('No image bytes to save')
-    return
+    return result

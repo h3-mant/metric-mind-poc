@@ -11,12 +11,13 @@ from google.genai import types
 import warnings
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 warnings.filterwarnings("ignore")
 
-# Define a tool configuration to block any write operations
-tool_config = BigQueryToolConfig(write_mode=WriteMode.BLOCKED)
+# Define a tool configuration to BLOCK writing into permanent tables, but allow
+#creating temp tables 
+tool_config = BigQueryToolConfig(write_mode=WriteMode.PROTECTED)
 
 # Define a credentials config - in this example we are using application default
 # credentials
@@ -63,8 +64,8 @@ sql_writer_agent = LlmAgent(
     tools=[bigquery_toolset],        
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
-        max_output_tokens=1500        
-    ),
+        max_output_tokens=1500       
+    ),  
     include_contents='default',
     output_key='latest_sql_output_reasoning'
 )

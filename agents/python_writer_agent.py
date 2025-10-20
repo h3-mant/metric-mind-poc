@@ -14,7 +14,7 @@ import warnings
 from callbacks import sql_refiner_agent_callback, python_refiner_agent_callback
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 warnings.filterwarnings("ignore")
 

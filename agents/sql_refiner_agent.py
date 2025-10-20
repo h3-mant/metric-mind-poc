@@ -17,10 +17,11 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-load_dotenv()
+load_dotenv(override=True)
 
-# Define a tool configuration to block any write operations
-tool_config = BigQueryToolConfig(write_mode=WriteMode.BLOCKED)
+# Define a tool configuration to BLOCK writing into permanent tables, but allow
+#creating temp tables 
+tool_config = BigQueryToolConfig(write_mode=WriteMode.PROTECTED)
 
 # Define a credentials config - in this example we are using application default
 # credentials
@@ -52,6 +53,7 @@ sql_refiner_agent = LlmAgent(
     ```
     {{latest_sql_output}}
     ```
+
     **Critique/Suggestions:**
     {{latest_sql_criticism}}
 
@@ -59,8 +61,7 @@ sql_refiner_agent = LlmAgent(
     Analyze the 'Critique/Suggestions'.
     Carefully apply the suggestions to generate NEW SQL, then EXECUTE SQL given tools available. 
 
-    **Return Structured Output**: Finally, based on the query results, output ONLY a string
-      briefly explaining the changes made considering the critique/suggestions.
+    **Return Structured Output**: Finally, based on the query results, output ONLY a string briefly explaining the changes made considering the critique/suggestions.
 """,
     description="refines SQL query to align with critique/suggestions",
     before_agent_callback = sql_refiner_agent_callback,

@@ -14,7 +14,7 @@ import warnings
 import warnings
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 warnings.filterwarnings("ignore")
 

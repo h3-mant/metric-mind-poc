@@ -5,7 +5,7 @@ import json
 
 PROJECT_ID = "just-episode-473505-h7"  # Replace with your actual GCP project ID
 DATASET_ID = "ecommerce_analytics"
-REGION = "EU"
+REGION = "US"
 
 # --- Main Script ---
 

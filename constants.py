@@ -3,6 +3,7 @@ APP_NAME = 'MetricMind'
 USER_ID = 'default_user'
 
 #MODELS
+STARTER_AGENT_MODEL = 'gemini-2.5-flash'
 SQL_WRITER_AGENT_MODEL = 'gemini-2.5-flash'
 SQL_CRITIC_AGENT_MODEL = 'gemini-2.5-flash'
 SQL_REFINER_AGENT_MODEL = 'gemini-2.5-flash'

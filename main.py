@@ -6,6 +6,7 @@ from utils.logger import get_logger
 from utils.helper import save_img
 from sequences.sql_sequence import sql_agent_sequence
 from sequences.python_sequence import python_agent_sequence
+from sequences.starter_sequence import starter_agent_sequence
 import asyncio
 
 logger = get_logger(__name__)
@@ -44,42 +45,54 @@ async def main_async(user_query=None, session_id=None):
     
     logger.info(f"Created new session: {session.id}")
 
-    #Call SQL Sequence
-    await sql_agent_sequence(app_name,user_id,session_service,session_id,user_query)
+    #Call Starter Agent Sequence 
+    await starter_agent_sequence(app_name,user_id,session_service,session_id,user_query)
 
-    #update session
-    session = await session_service.get_session(
-       app_name=app_name,user_id=user_id,session_id=session_id
-    )
+    #decide if SQL sequence is required
+    if session.state.get('sql_required'):       
+      #Call SQL Sequence
+      await sql_agent_sequence(app_name,user_id,session_service,session_id,user_query)
 
-    #if SQL sequence was successful, run Python sequence  
-    if session.state.get('latest_sql_criticism') == OUTCOME_OK_PHRASE and \
-       session.state.get('latest_bq_execution_status').upper() == 'SUCCESS':     
-        
-        #Call Python Sequence
-        await python_agent_sequence(app_name,user_id,session_service,session_id,user_query)
+      #update session
+      session = await session_service.get_session(
+        app_name=app_name,user_id=user_id,session_id=session_id
+      )
 
-        #update session
-        session = await session_service.get_session(
-          app_name=app_name,user_id=user_id,session_id=session_id
-        )
+    if session.state.get('python_required'):
+      #if SQL sequence was successful, run Python sequence  
+      if session.state.get('latest_sql_criticism') == OUTCOME_OK_PHRASE and \
+        session.state.get('latest_bq_execution_status').upper() == 'SUCCESS':     
 
-        #save image artifact from Python sequence
-        img_bytes = session.state.get('latest_img_bytes')
-        save_img(img_bytes)
+          #declare SQL sequence outcome successful
+          session.state['sql_sequence_outcome'] = 'SUCCESS'
 
-        # print('Python Sequence completed successfully')
-        # print('----- Final Outputs -----')
-        # print(session.state.get('latest_sql_output'),end='\n\n')
-        # print(session.state.get('latest_sql_response'),end='\n\n')
-        # print(session.state.get('latest_python_code_output'),end='\n\n')
-        # print(session.state.get('app:total_token_count'),end='\n\n')
+          #Call Python Sequence
+          await python_agent_sequence(app_name,user_id,session_service,session_id,user_query)
 
-    else:
-       print('SQL Sequence failed')
+          #update session
+          session = await session_service.get_session(
+            app_name=app_name,user_id=user_id,session_id=session_id
+          )
 
-    return session
-  
+          #save image artifact from Python sequence
+          img_bytes = session.state.get('latest_img_bytes')
+          result = save_img(img_bytes)
+
+          print('Python Sequence completed successfully')
+          session.state['python_sequence_outcome'] = result
+
+          # print('----- Final Outputs -----')
+          # print(session.state.get('latest_sql_output'),end='\n\n')
+          # print(session.state.get('latest_sql_response'),end='\n\n')
+          # print(session.state.get('latest_python_code_output'),end='\n\n')
+          # print(session.state.get('app:total_token_count'),end='\n\n')
+
+      else:
+        print('SQL Sequence failed')
+        session.state['sql_sequence_outcome'] = 'FAILURE'
+
+      return session
+    
   except Exception as e:
     logger.error(f"Error in main_async: {e}")
 
