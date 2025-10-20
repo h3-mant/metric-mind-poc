@@ -1,15 +1,10 @@
 from google.adk.agents import LlmAgent
-from google.adk.tools.bigquery import BigQueryCredentialsConfig
-from google.adk.tools.bigquery import BigQueryToolset
-from google.adk.tools.bigquery.config import BigQueryToolConfig
-from google.adk.tools.bigquery.config import WriteMode
-from google.adk.code_executors import BuiltInCodeExecutor
-import google.auth
+from google.adk.planners import BuiltInPlanner
 from google.genai import types
 from dotenv import load_dotenv
+from instructions.sql_critic_agent_instructions import *
 from constants import *
 from google.genai import types
-from utils.agent_utils import call_agent_async
 import warnings
 import warnings
 from dotenv import load_dotenv
@@ -23,6 +18,8 @@ sql_critic_agent = LlmAgent(
     name="sql_critic_agent",
     model=SQL_CRITIC_AGENT_MODEL,
     include_contents='none',
+    global_instruction=GLOBAL_INSTRUCTION,
+    # static_instruction=SQL_CRITIC_AGENT_STATIC_INSTRUCTION,
     instruction=f"""You are a SQL Critic AI reviewing provided BigQuery SQL
     to answer user's query.
 
@@ -52,5 +49,16 @@ sql_critic_agent = LlmAgent(
     GCP Tables available: {{tables}}
 """,
     description="SQL Critic AI reviewing SQL code",
-    output_key='latest_sql_criticism'
+    output_key='latest_sql_criticism',
+    generate_content_config=types.GenerateContentConfig(
+        temperature=0,
+        top_p=0.5,
+        max_output_tokens=5000,
+    ),
+    planner=BuiltInPlanner(
+      thinking_config=types.ThinkingConfig(
+          include_thoughts=False,
+          thinking_budget=-1
+          )
+    ),
 )

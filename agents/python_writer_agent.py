@@ -1,17 +1,12 @@
 from google.adk.agents import LlmAgent
-from google.adk.tools.bigquery import BigQueryCredentialsConfig
-from google.adk.tools.bigquery import BigQueryToolset
-from google.adk.tools.bigquery.config import BigQueryToolConfig
-from google.adk.tools.bigquery.config import WriteMode
 from google.adk.code_executors import BuiltInCodeExecutor
-import google.auth
 from google.genai import types
 from dotenv import load_dotenv
 from constants import *
 from google.genai import types
-from utils.agent_utils import call_agent_async
+from google.adk.planners import BuiltInPlanner
+from instructions.python_writer_agent_instructions import *
 import warnings
-from callbacks import sql_refiner_agent_callback, python_refiner_agent_callback
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -22,6 +17,8 @@ python_writer_agent = LlmAgent(
     name='python_writer_agent',
     model=PYTHON_WRITER_AGENT_MODEL,
     description="Writes Python Code to generate visuals from BigQuery SQL output",
+    global_instruction=GLOBAL_INSTRUCTION,
+   #  static_instruction=PYTHON_WRITER_AGENT_STATIC_INSTRUCTION,
     instruction = ("""You are an expert Python code writer and Data Visualization Agent specialized in generating programmatic visualizations.
                    
     **Task:**
@@ -64,9 +61,8 @@ python_writer_agent = LlmAgent(
        - Return the base64 encoded image bytes
                        
     5. **Return Structured Output**: 
-       Your final response must be a dictionary containing:
-       - 'reasoning': String explaining visualization choices and implementation
-       - 'image_bytes': Base64 encoded string of the image bytes
+       Your final response must be:
+       - String explaining visualization choices and implementation       
 
     IMPORTANT: 
     - You must execute python code before returning final response
@@ -78,7 +74,14 @@ python_writer_agent = LlmAgent(
     code_executor=BuiltInCodeExecutor(),
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
-        max_output_tokens=1500        
+        top_p=0.5,
+        max_output_tokens=5000,
+    ),
+    planner=BuiltInPlanner(
+      thinking_config=types.ThinkingConfig(
+          include_thoughts=False,
+          thinking_budget=-1
+          )
     ),
     include_contents='default',
     output_key='latest_python_code_output_reasoning' 

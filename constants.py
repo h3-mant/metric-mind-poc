@@ -17,8 +17,12 @@ OUTCOME_OK_PHRASE = "OUTCOME OK"
 #DATA SCHEMA
 DATA_SCHEMA_PATH = 'data_schema.json'
 
+#GLOBAL INSTRUCTIONS
+GLOBAL_INSTRUCTION = "You are part of a multi-agent conversational analytics system."
 #MAX_RETRIES
 MAX_RETRIES = 3
+
+
 
 
 

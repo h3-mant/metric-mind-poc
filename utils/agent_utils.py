@@ -3,6 +3,7 @@ from google.adk.events import Event, EventActions
 from google.adk.sessions import InMemorySessionService
 from google.adk.runners import Runner
 import time
+from utils import EVENT_LOG_ACCUMULATOR 
 
 async def process_agent_response(
         event: Event, 
@@ -13,9 +14,8 @@ async def process_agent_response(
         final_response: dict
     ) -> dict:
     """Process each agent event and accumulate details into state and final_response."""
-
+    
     state_changes = {}
-
     try:
         #update session
         current_session = await session_service.get_session(
@@ -30,8 +30,8 @@ async def process_agent_response(
                 for part in event.content.parts:
                     if part.text:
                         # append final text to the accumulated response
-                        final_response["text"] = final_response.get("text", "") + part.text
-                    
+                        final_response["text"] = final_response.get("text", "") + part.text                        
+
                     #for Python agents
                     if part.executable_code:
                         final_response["python_code_output"] = part.executable_code.code
@@ -79,11 +79,45 @@ async def process_agent_response(
 
         # ---- 4. Usage Metadata ----
         if event.usage_metadata:
-            tokens_used = event.usage_metadata.total_token_count or 0
-            final_response["total_token_count"] = final_response.get("total_token_count", 0) + tokens_used
+            ############ update general cache stats ############
+            
+            # #Number of contents stored in this cache (ONE_TIME CALL SINCE IMMUTABLE)
+            # if not state_changes.get("app:cached_contents_count"):
+            #     state_changes["app:cached_contents_count"] = event.cache_metadata.cached_contents_count
+
+            ##Number of tokens in the cached part in the input (the cached content). (ONE_TIME CALL SINCE IMMUTABLE)
+            state_changes['app:cached_content_token_count'] = event.usage_metadata.cached_content_token_count
+
+            # #Number of invocations this cache has been used for
+            # state_changes['app:cache_invocations_used'] = state_changes.get('app:cache_invocations_used',0) + event.cache_metadata.invocations_used
+
+            ############ update token usage stats ############
+            
+            #Number of tokens in the response(s).
+            n_tokens = event.usage_metadata.candidates_token_count
+            state_changes['app:candidates_token_count'] = state_changes.get('app:candidates_token_count',0) + n_tokens if n_tokens else 0
+            
+            #Number of tokens in the request. When `cached_content` is set, this is still the total effective prompt size meaning this includes the number of tokens in the cached content.
+            prompt_token_count = event.usage_metadata.prompt_token_count
+            state_changes['app:prompt_token_count'] = state_changes.get('app:prompt_token_count',0) + prompt_token_count if prompt_token_count else 0
+
+            #Number of tokens present in thoughts output.
+            thoughts_token_count = event.usage_metadata.thoughts_token_count
+            state_changes['app:thoughts_token_count'] = state_changes.get('app:thoughts_token_count',0) + thoughts_token_count if thoughts_token_count else 0
+            
+            #Number of tokens present in tool-use prompt(s).
+            tool_use_prompt_token_count = event.usage_metadata.tool_use_prompt_token_count
+            state_changes['app:tool_use_prompt_token_count'] = state_changes.get('app:tool_use_prompt_token_count',0) + tool_use_prompt_token_count if tool_use_prompt_token_count else 0
+
+            #total tokens used
+            total_tokens_used = event.usage_metadata.total_token_count or 0
+            final_response["total_token_count"] = final_response.get("total_token_count", 0) + total_tokens_used
             state_changes["app:total_token_count"] = (
-                current_session.state.get("app:total_token_count", 0) + tokens_used
+                current_session.state.get("app:total_token_count", 0) + total_tokens_used
             )
+        
+        #Accumulate logs for UI upstream
+        EVENT_LOG_ACCUMULATOR.append(final_response)
 
         # --- 5. Apply State Changes ---
         if state_changes:

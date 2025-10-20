@@ -3,16 +3,16 @@ from google.adk.tools.bigquery import BigQueryCredentialsConfig
 from google.adk.tools.bigquery import BigQueryToolset
 from google.adk.tools.bigquery.config import BigQueryToolConfig
 from google.adk.tools.bigquery.config import WriteMode
-from google.adk.code_executors import BuiltInCodeExecutor
+from google.adk.planners import BuiltInPlanner
 import google.auth
 from google.genai import types
 from dotenv import load_dotenv
+from instructions.sql_refiner_agent_instructions import *
 from constants import *
 from google.genai import types
-from utils.agent_utils import call_agent_async
 import warnings
 from dotenv import load_dotenv
-from callbacks import sql_refiner_agent_callback, python_refiner_agent_callback
+from callbacks import sql_refiner_agent_callback
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -47,6 +47,8 @@ sql_refiner_agent = LlmAgent(
     model=SQL_REFINER_AGENT_MODEL,
     # Relies solely on state via placeholders
     include_contents='none',
+    global_instruction=GLOBAL_INSTRUCTION,
+    # static_instruction=SQL_REFINER_AGENT_STATIC_INSTRUCTION,
     instruction=f"""You are a SQL refining AI Agent tasked with making changes to existing BigQuery SQL to answer user's query.
 
     **Current SQL Query:**
@@ -68,7 +70,14 @@ sql_refiner_agent = LlmAgent(
     tools=[bigquery_toolset],        
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
-        max_output_tokens=1500        
+        top_p=0.5,
+        max_output_tokens=5000,  
+    ),
+    planner=BuiltInPlanner(
+      thinking_config=types.ThinkingConfig(
+          include_thoughts=False,
+          thinking_budget=-1
+          )
     ),
     output_key='latest_sql_output_reasoning' # Overwrites state['latest_sql_output_reasoning'] with the refined version
 )

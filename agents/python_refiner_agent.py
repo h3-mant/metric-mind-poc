@@ -1,17 +1,13 @@
 from google.adk.agents import LlmAgent
-from google.adk.tools.bigquery import BigQueryCredentialsConfig
-from google.adk.tools.bigquery import BigQueryToolset
-from google.adk.tools.bigquery.config import BigQueryToolConfig
-from google.adk.tools.bigquery.config import WriteMode
 from google.adk.code_executors import BuiltInCodeExecutor
-import google.auth
+from google.adk.planners import BuiltInPlanner
+from instructions.python_refiner_agent_instructions import *
 from google.genai import types
 from dotenv import load_dotenv
 from constants import *
 from google.genai import types
-from utils.agent_utils import call_agent_async
 import warnings
-from callbacks import sql_refiner_agent_callback, python_refiner_agent_callback
+from callbacks import python_refiner_agent_callback
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -24,6 +20,8 @@ python_refiner_agent = LlmAgent(
     model=PYTHON_REFINER_AGENT_MODEL,
     # Relies solely on state via placeholders
     include_contents='none',
+    global_instruction=GLOBAL_INSTRUCTION,
+   #  static_instruction=PYTHON_REFINER_AGENT_STATIC_INSTRUCTION,
     instruction=f"""You are a Python code refining AI Agent tasked with making changes to existing Python code to answer user's query.
 
     **Latest Python code:**
@@ -64,9 +62,8 @@ python_refiner_agent = LlmAgent(
 
     3. EXECUTE PYTHON CODE to generate the visualization.
 
-    4. After executing code, your final response must be a dictionary containing:
-       - 'reasoning': String explaining code changes and implementation
-       - 'image_bytes': Base64 encoded string of the image bytes
+    4. After executing code, your final response must be 
+       a string explaining code changes and implementation
 
     IMPORTANT:
     - You must execute python code before returning final response
@@ -79,7 +76,14 @@ python_refiner_agent = LlmAgent(
     code_executor=BuiltInCodeExecutor(),
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
-        max_output_tokens=1500        
+        max_output_tokens=5000,
+        top_p=0.5,
+    ),
+    planner=BuiltInPlanner(
+      thinking_config=types.ThinkingConfig(
+          include_thoughts=False,
+          thinking_budget=-1
+          )
     ),
     before_agent_callback=python_refiner_agent_callback,
     output_key='latest_python_code_output_reasoning'

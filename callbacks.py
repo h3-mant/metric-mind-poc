@@ -41,6 +41,7 @@ def store_results_in_context(callback_context: CallbackContext) -> None:
   
   # Store in state for downstream agents to access
   callback_context.state['greeting'] = parsed_response.greeting
+  callback_context.state['user_intent'] = parsed_response
   callback_context.state['python_required'] = parsed_response.python_required
   
   #force SQL requirement if python is required

@@ -7,6 +7,9 @@ class StarterAgentResponse(BaseModel):
     greeting: str = Field(
         description="A brief, contextual response to the user's query"
     )
+    user_intent: str = Field(
+        description="Summary of the user's intent in conversation so far"
+    )
     sql_required: bool = Field(
         description="True if the query requires writing and executing SQL queries against BigQuery"
     )

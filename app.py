@@ -3,18 +3,21 @@ import asyncio
 import uuid
 from pathlib import Path
 from google.adk.sessions import InMemorySessionService
+from utils import EVENT_LOG_ACCUMULATOR
 from utils.helper import json_to_dict
 from constants import *
 from utils.logger import get_logger
 from sequences.sql_sequence import sql_agent_sequence
 from sequences.python_sequence import python_agent_sequence
 from sequences.starter_sequence import starter_agent_sequence
+import pandas as pd
+from google import genai
 
 logger = get_logger(__name__)
 
 # Page configuration
 st.set_page_config(
-    page_title="Data Analysis Agent",
+    page_title="Metric Mind",
     page_icon="🤖",
     layout="wide"
 )
@@ -36,9 +39,9 @@ async def process_query(user_query: str, session_id: str):
         app_name = APP_NAME
         user_id = USER_ID
 
-        # Use persistent session service
+        #Use session service
         session_service = st.session_state.session_service
-
+        
         # Define data schema to be passed as initial_state
         initial_state = json_to_dict(DATA_SCHEMA_PATH)
         initial_state_formatted = {
@@ -47,13 +50,16 @@ async def process_query(user_query: str, session_id: str):
             'tables': initial_state.get('tables')
         }
 
+        #try to pass data schema to be cached instead of cluttering session state
+        #this is now defined within agent definitions
+
         # Create or get existing session
         if st.session_state.agent_session is None:
             session = await session_service.create_session(
                 app_name=app_name,
                 user_id=user_id,
                 session_id=session_id,
-                state=initial_state_formatted,
+                state=initial_state_formatted
             )
             logger.info(f"Created new session: {session.id}")
         else:
@@ -63,12 +69,12 @@ async def process_query(user_query: str, session_id: str):
                 session_id=session_id
             )
 
-        # Ensure session has state
+        #Ensure session has state
         if session is None:
             logger.error("Session is None after creation/retrieval")
             raise ValueError("Failed to create or retrieve session")
 
-        # Reset outcome variables for new query
+        #reset outcome variables for new query
         session.state['sql_sequence_outcome'] = None
         session.state['python_sequence_outcome'] = None
         
@@ -130,7 +136,7 @@ async def process_query(user_query: str, session_id: str):
             else:
                 session.state['sql_sequence_outcome'] = 'FAILURE'
         
-        # Handle SQL-only case
+        #Handle SQL-only case
         elif session.state.get('sql_required') and not session.state.get('python_required'):
             # Set SQL outcome based on execution status
             sql_success = (
@@ -139,7 +145,7 @@ async def process_query(user_query: str, session_id: str):
             )
             session.state['sql_sequence_outcome'] = 'SUCCESS' if sql_success else 'FAILURE'
 
-        # Store session for future use
+        #Store session for future use
         st.session_state.agent_session = session
         
         return session
@@ -174,8 +180,9 @@ def display_agent_response(session):
             sql_output_reasoning = state.get('latest_sql_output_reasoning', '')
             
             if sql_response:
-                st.markdown("**SQL Response:**")
-                st.info(sql_response)
+                st.markdown('**SQL Response:**')
+                df = pd.DataFrame(sql_response)
+                st.dataframe(df)
             
             if sql_output_reasoning:
                 st.markdown("**Analysis:**")
@@ -219,13 +226,17 @@ def display_debug_info(session):
     
     state = session.state
     
-    st.markdown("### 🔍 Debug Info")
+    st.markdown("### Debugger")
     
+    #COMPLETE FLOW
+    with st.expander("Event Log",expanded=False):
+        st.json(EVENT_LOG_ACCUMULATOR)
+        
     # Starter Agent Response
     with st.expander("Starter Agent Response", expanded=False):
         starter_response = state.get('starter_agent_response', 'N/A')
         st.json(starter_response if isinstance(starter_response, dict) else str(starter_response))
-    
+
     # SQL Analysis
     with st.expander("SQL Analysis Details", expanded=False):
         st.text("Output Reasoning:")
@@ -269,19 +280,49 @@ def display_debug_info(session):
     
     # Metrics
     with st.expander("Metrics", expanded=True):
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         
         with col1:
             st.metric(
                 label="BQ API Failures",
                 value=state.get('app:bq_api_failure_count', 0)
             )
-        
-        with col2:
             st.metric(
                 label="Total Tokens",
                 value=state.get('app:total_token_count', 0)
             )
+            st.metric(
+                label="Prompt Tokens",
+                value=state.get('app:prompt_token_count', 0)
+            )
+        
+        with col2:
+            st.metric(
+                label="Tool Use Prompt Tokens",
+                value=state.get('app:tool_use_prompt_token_count', 0)
+            )
+            st.metric(
+                label="Thoughts Tokens",
+                value=state.get('app:thoughts_token_count', 0)
+            )
+            st.metric(
+                label="Candidates Tokens",
+                value=state.get('app:candidates_token_count', 0)
+            )
+    
+    with col3:
+        st.metric(
+            label="Cached Content Tokens",
+            value=state.get('app:cached_content_token_count', 0)
+        )
+        st.metric(
+            label="Cache Invocations",
+            value=state.get('app:cache_invocations_used', 0)
+        )
+        st.metric(
+            label="Cached Contents Count",
+            value=state.get('app:cached_contents_count', 0)
+        )
 
 def main():
     """Main Streamlit application."""
@@ -293,9 +334,9 @@ def main():
     # Sidebar
     with st.sidebar:
         st.header("Session Info")
-        st.text(f"Session ID: {st.session_state.session_id[:8]}...")
+        st.text(f"Session ID: {st.session_state.session_id}")
         
-        if st.button("🔄 New Session"):
+        if st.button("Create New Session"):
             st.session_state.messages = []
             st.session_state.session_id = str(uuid.uuid4())
             st.session_state.agent_session = None

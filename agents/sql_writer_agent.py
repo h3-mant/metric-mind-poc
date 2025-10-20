@@ -3,7 +3,8 @@ from google.adk.tools.bigquery import BigQueryCredentialsConfig
 from google.adk.tools.bigquery import BigQueryToolset
 from google.adk.tools.bigquery.config import BigQueryToolConfig
 from google.adk.tools.bigquery.config import WriteMode
-from google.adk.code_executors import BuiltInCodeExecutor
+from instructions.sql_writer_agent_instructions import SQL_WRITER_AGENT_DYNAMIC_INSTRUCTION, SQL_WRITER_AGENT_STATIC_INSTRUCTION
+from google.adk.planners import BuiltInPlanner
 import google.auth
 from google.genai import types
 from constants import *
@@ -41,6 +42,8 @@ sql_writer_agent = LlmAgent(
     name='sql_writer_agent',
     model=SQL_WRITER_AGENT_MODEL,
     description="Analyzes data schema and executes SQL queries via BigQuery.",
+    global_instruction=GLOBAL_INSTRUCTION,
+    # static_instruction=SQL_WRITER_AGENT_DYNAMIC_INSTRUCTION,
     instruction = ("""You are an expert Data Analyst with access to BigQuery.
     **Your Task:**
     Analyze the provided schema and user question, then follow these steps:
@@ -63,9 +66,16 @@ sql_writer_agent = LlmAgent(
     """),
     tools=[bigquery_toolset],        
     generate_content_config=types.GenerateContentConfig(
-        temperature=0,
-        max_output_tokens=1500       
+        temperature=0, #for more determinism
+        max_output_tokens=5000,
+        top_p=0.5 #for more determinism
     ),  
+    planner=BuiltInPlanner(
+      thinking_config=types.ThinkingConfig(
+          include_thoughts=False,
+          thinking_budget=-1
+          )
+    ),
     include_contents='default',
     output_key='latest_sql_output_reasoning'
 )

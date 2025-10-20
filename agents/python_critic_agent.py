@@ -1,17 +1,11 @@
 from google.adk.agents import LlmAgent
-from google.adk.tools.bigquery import BigQueryCredentialsConfig
-from google.adk.tools.bigquery import BigQueryToolset
-from google.adk.tools.bigquery.config import BigQueryToolConfig
-from google.adk.tools.bigquery.config import WriteMode
-from google.adk.code_executors import BuiltInCodeExecutor
-import google.auth
+from google.adk.planners import BuiltInPlanner
 from google.genai import types
 from dotenv import load_dotenv
 from constants import *
+from instructions.python_critic_agent_instructions import *
 from google.genai import types
-from utils.agent_utils import call_agent_async
 import warnings
-from callbacks import sql_refiner_agent_callback, python_refiner_agent_callback
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -24,6 +18,8 @@ python_critic_agent = LlmAgent(
     name="python_critic_agent",
     model=PYTHON_CRITIC_AGENT_MODEL,
     include_contents='none',
+    global_instruction=GLOBAL_INSTRUCTION,
+    # static_instruction=PYTHON_CRITIC_AGENT_STATIC_INSTRUCTION,
     instruction=f"""You are a Python Critic AI reviewing provided Python code
     to answer user's query via visualization.
 
@@ -55,5 +51,16 @@ python_critic_agent = LlmAgent(
     Do not add explanations. Output only the critique OR the exact completion phrase.    
 """,
     description="Python Critic AI reviewing Python code",
-    output_key='latest_python_code_criticism'
+    output_key='latest_python_code_criticism',
+    generate_content_config=types.GenerateContentConfig(
+        temperature=0,
+        top_p=0.5,
+        max_output_tokens=5000,
+    ),
+    planner=BuiltInPlanner(
+      thinking_config=types.ThinkingConfig(
+          include_thoughts=False,
+          thinking_budget=-1
+          )
+    ),
 )
