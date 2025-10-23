@@ -23,10 +23,9 @@ async def process_agent_response(
             user_id=user_id,
             session_id=session_id
         )
-            
+        
         # ---- 1. Final Text Response ----
-        if event.is_final_response():
-            if event.content and event.content.parts:
+        if event.content and event.content.parts:
                 for part in event.content.parts:
                     if part.text:
                         # append final text to the accumulated response
@@ -42,7 +41,7 @@ async def process_agent_response(
                         #was code execution successful?
                         final_response["python_code_execution_outcome"] = part.code_execution_result.outcome
 
-                        state_changes["latest_python_code_execution_outcome"] = part.code_execution_result.outcome
+                        state_changes["latest_python_code_execution_outcome"] = str(part.code_execution_result.outcome)
 
                         #save binary img artifact to state
                         state_changes["latest_img_bytes"] = part.code_execution_result.output
@@ -68,7 +67,7 @@ async def process_agent_response(
                 result_dict = response.response or {}
                 final_response[f"[tool_response]_{tool_name}"] = result_dict
                 state_changes['latest_sql_response'] = result_dict.get("rows")
-
+                
                 state_changes['latest_bq_execution_status'] = result_dict.get("status")
                 
                 # track BQ API failures

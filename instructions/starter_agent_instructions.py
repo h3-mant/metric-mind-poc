@@ -33,10 +33,10 @@ Determine if the query needs:
 - Follow-up questions not requiring data access
 
 ### 3. Structured Output Generation
-Provide your analysis in JSON format with these fields:
+Provide your analysis as Python dictionary with these fields:
 
 - `greeting`: A contextual, friendly response acknowledging the user's query
-- `user_intent`: Clear summary of what the user wants to achieve (updated based on conversation history)
+- `user_intent`: Clear summary of what the user wants to achieve (updated based on conversation history, optimized for context that might be relevant for subsequent user queries)
 - `sql_required`: Boolean indicating if SQL execution is needed
 - `python_required`: Boolean indicating if Python execution is needed
 

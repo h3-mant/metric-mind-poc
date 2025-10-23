@@ -11,6 +11,7 @@ from sequences.sql_sequence import sql_agent_sequence
 from sequences.python_sequence import python_agent_sequence
 from sequences.starter_sequence import starter_agent_sequence
 import pandas as pd
+from utils.helper import save_img
 from google import genai
 
 logger = get_logger(__name__)
@@ -18,7 +19,6 @@ logger = get_logger(__name__)
 # Page configuration
 st.set_page_config(
     page_title="Metric Mind",
-    page_icon="🤖",
     layout="wide"
 )
 
@@ -34,6 +34,7 @@ if 'session_service' not in st.session_state:
 
 async def process_query(user_query: str, session_id: str):
     """Process user query through the agent pipeline."""
+    
     try:
         # Define APP NAME AND USER NAME
         app_name = APP_NAME
@@ -50,8 +51,7 @@ async def process_query(user_query: str, session_id: str):
             'tables': initial_state.get('tables')
         }
 
-        #try to pass data schema to be cached instead of cluttering session state
-        #this is now defined within agent definitions
+        #TO DO: try to pass data schema to be cached instead of cluttering session state
 
         # Create or get existing session
         if st.session_state.agent_session is None:
@@ -68,15 +68,6 @@ async def process_query(user_query: str, session_id: str):
                 user_id=user_id,
                 session_id=session_id
             )
-
-        #Ensure session has state
-        if session is None:
-            logger.error("Session is None after creation/retrieval")
-            raise ValueError("Failed to create or retrieve session")
-
-        #reset outcome variables for new query
-        session.state['sql_sequence_outcome'] = None
-        session.state['python_sequence_outcome'] = None
         
         # Call Starter Agent Sequence
         await starter_agent_sequence(app_name, user_id, session_service, session_id, user_query)
@@ -87,9 +78,6 @@ async def process_query(user_query: str, session_id: str):
             user_id=user_id,
             session_id=session_id
         )
-
-        if session is None:
-            raise ValueError("Session became None after starter sequence")
 
         # Decide if SQL sequence is required
         if session.state.get('sql_required'):
@@ -104,16 +92,10 @@ async def process_query(user_query: str, session_id: str):
             )
 
         # Decide if Python sequence is required
-        # Note: If python_required is True, sql_required is ALWAYS True
         if session.state.get('python_required'):
-            # Check if SQL sequence was successful
-            sql_success = (
-                session.state.get('latest_sql_criticism') == OUTCOME_OK_PHRASE and
-                session.state.get('latest_bq_execution_status', '').upper() == 'SUCCESS'
-            )
             
-            if sql_success:
-                session.state['sql_sequence_outcome'] = 'SUCCESS'
+            # Note: If python_required is True, sql_required is ALWAYS True
+            if session.state.get('latest_sql_sequence_outcome') == 'SUCCESS':
                 
                 # Call Python Sequence
                 await python_agent_sequence(app_name, user_id, session_service, session_id, user_query)
@@ -126,24 +108,17 @@ async def process_query(user_query: str, session_id: str):
                 )
                 
                 # Save image artifact from Python sequence
-                img_bytes = session.state.get('latest_img_bytes')
-                if img_bytes:
-                    from utils.helper import save_img
-                    result = save_img(img_bytes)
-                    session.state['python_sequence_outcome'] = result
-                else:
-                    session.state['python_sequence_outcome'] = 'FAILURE'
+                img_bytes = session.state.get('latest_img_bytes')                
+                save_img(img_bytes)                
             else:
-                session.state['sql_sequence_outcome'] = 'FAILURE'
-        
-        #Handle SQL-only case
-        elif session.state.get('sql_required') and not session.state.get('python_required'):
-            # Set SQL outcome based on execution status
-            sql_success = (
-                session.state.get('latest_sql_criticism') == OUTCOME_OK_PHRASE and
-                session.state.get('latest_bq_execution_status', '').upper() == 'SUCCESS'
+                logger.error('SQL sequence failed')
+
+        #update again?
+        session = await session_service.get_session(
+                app_name=app_name,
+                user_id=user_id,
+                session_id=session_id
             )
-            session.state['sql_sequence_outcome'] = 'SUCCESS' if sql_success else 'FAILURE'
 
         #Store session for future use
         st.session_state.agent_session = session
@@ -170,9 +145,9 @@ def display_agent_response(session):
     
     # Handle SQL sequence output
     if state.get('sql_required'):
-        st.subheader("📊 SQL Analysis")
+        st.subheader("SQL Analysis")
         
-        sql_outcome = state.get('sql_sequence_outcome')
+        sql_outcome = state.get('latest_sql_sequence_outcome')
         
         if sql_outcome == 'SUCCESS':
             # Display both SQL response and output
@@ -195,15 +170,15 @@ def display_agent_response(session):
     
     # Handle Python sequence output
     if state.get('python_required'):
-        st.subheader("📈 Visualization")
+        st.subheader("Visualization")
         
-        python_outcome = state.get('python_sequence_outcome')
+        python_outcome = state.get('latest_python_sequence_outcome')
         
         if python_outcome == 'SUCCESS':
             # Display Python response
-            python_response = state.get('latest_python_response', '')
+            python_response = state.get('latest_python_code_output_reasoning', '')
             if python_response:
-                st.markdown("**Visualization Insight:**")
+                st.markdown("**Visualization:**")
                 st.info(python_response)
             
             # Display the saved image
@@ -214,7 +189,7 @@ def display_agent_response(session):
                 st.warning("Visualization was generated but image file not found.")
         else:
             # Display only Python response (error case)
-            python_response = state.get('latest_python_response', 'Visualization generation encountered an error.')
+            python_response = state.get('latest_python_code_output_reasoning', 'Visualization generation encountered an error.')
             st.markdown("**Visualization Status:**")
             st.warning(python_response)
 
@@ -239,34 +214,34 @@ def display_debug_info(session):
 
     # SQL Analysis
     with st.expander("SQL Analysis Details", expanded=False):
-        st.text("Output Reasoning:")
+        st.text("Latest Output Reasoning:")
         st.code(state.get('latest_sql_output_reasoning', 'N/A'), language=None)
         
-        st.text("SQL Criticism:")
+        st.text("Latest SQL Criticism:")
         st.code(state.get('latest_sql_criticism', 'N/A'), language=None)
         
-        st.text("SQL Output:")
+        st.text("Latest SQL Output:")
         sql_output = state.get('latest_sql_output', 'N/A')
         if isinstance(sql_output, (list, dict)):
             st.json(sql_output)
         else:
             st.code(str(sql_output), language=None)
         
-        st.text("BQ Execution Status:")
+        st.text("Latest BQ Execution Status:")
         st.code(state.get('latest_bq_execution_status', 'N/A'), language=None)
     
     # Python Code Details
     with st.expander("Python Code Details", expanded=False):
-        st.text("Code Output Reasoning:")
+        st.text("Latest Code Output Reasoning:")
         st.code(state.get('latest_python_code_output_reasoning', 'N/A'), language=None)
         
-        st.text("Code Criticism:")
+        st.text("Latest Code Criticism:")
         st.code(state.get('latest_python_code_criticism', 'N/A'), language=None)
         
-        st.text("Code Output:")
+        st.text("Latest Code Output:")
         st.code(state.get('latest_python_code_output', 'N/A'), language='python')
         
-        st.text("Code Execution Outcome:")
+        st.text("Latest Code Execution Outcome:")
         st.code(state.get('latest_python_code_execution_outcome', 'N/A'), language=None)
     
     # Image Bytes Info
@@ -328,8 +303,8 @@ def main():
     """Main Streamlit application."""
     
     # Header
-    st.title("🤖 Data Analysis Agent")
-    st.markdown("Ask questions about your BigQuery data and get SQL analysis with visualizations.")
+    st.title("Metric Mind")
+    # st.markdown("Ask questions about your BigQuery data and get SQL analysis with visualizations.")
     
     # Sidebar
     with st.sidebar:

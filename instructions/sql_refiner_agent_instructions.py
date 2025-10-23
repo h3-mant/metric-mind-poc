@@ -145,11 +145,11 @@ SQL_REFINER_AGENT_DYNAMIC_INSTRUCTION = """## Query Refinement Context
 
 ### Current SQL Query
 ```sql
-{latest_sql_output}
+{latest_sql_output?}
 ```
 
 ### Critique and Suggestions
-{latest_sql_criticism}
+{latest_sql_criticism?}
 
 ## Your Task
 

@@ -34,7 +34,7 @@ PYTHON_WRITER_AGENT_DYNAMIC_INSTRUCTION = """
         Given the user’s query and the latest BigQuery SQL output:
 
         ```python
-        {latest_sql_output}
+        {latest_sql_output?}
         ```
 
         1. **Understand the question**  

@@ -17,7 +17,7 @@ def json_to_dict(path: str) -> dict:
     except FileNotFoundError:
         raise FileNotFoundError(f"File not found: {path}")
 
-def save_img(img_bytes: str) -> str:
+def save_img(img_bytes: str) -> None:
     """save base64 image str to PNG file"""
     #set default result to FAILURE
     result = 'FAILURE'
@@ -37,4 +37,3 @@ def save_img(img_bytes: str) -> str:
             logger.error(f"Failed to decode/save image: {e}")
     else:
         logger.error('No image bytes to save')
-    return result

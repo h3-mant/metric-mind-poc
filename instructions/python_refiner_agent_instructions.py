@@ -34,22 +34,22 @@ PYTHON_REFINER_AGENT_DYNAMIC_INSTRUCTION = """
 
         **Latest Python Code**
         ```python
-        {latest_python_code_output}
+        {latest_python_code_output?}
         ```
 
         **Reasoning Behind the Code**
         ```text
-        {latest_python_code_output_reasoning}
+        {latest_python_code_output_reasoning?}
         ```
 
         **Execution Result**
         ```text
-        {latest_python_code_execution_outcome}
+        {latest_python_code_execution_outcome?}
         ```
 
         **Critique/Suggestions**
         ```text
-        {latest_python_code_criticism}
+        {latest_python_code_criticism?}
         ```
 
         ## Task

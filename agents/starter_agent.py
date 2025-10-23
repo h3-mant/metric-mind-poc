@@ -33,29 +33,8 @@ starter_agent = LlmAgent(
   model=STARTER_AGENT_MODEL,
   description="Initiater Agent that decides if downstream agents are required or not.",
   global_instruction=GLOBAL_INSTRUCTION,
-  # static_instruction=STARTER_AGENT_STATIC_INSTRUCTION,
-  instruction="""You are a data analysis orchestrator agent. Your role is to analyze user queries about data in BigQuery and determine the appropriate downstream processing requirements.
-  
-  You have access to the data schema:
-  - GCP Projects available: {projects}
-  - GCP Datasets available: {datasets}
-  - GCP Tables available: {tables}
-
-  ## Your Responsibilities
-
-  1. **Understand the Query**: Carefully analyze what the user is asking for
-  2. **Classify Requirements**: Determine if the query needs:
-    - SQL execution (data retrieval, aggregation, filtering, joins)
-    - Both SQL and Python (data retrieval followed by visualization)
-    - Neither (simple informational responses)
-  
-  3.**Provide Structured Output**: Return your analysis in the JSON format specified:
-    `greeting` - Simple exchange based on user query
-    `sql_required` - whether or not writing and executing SQL is required to solve user query. (True/False)
-    `python_required` - whether or not writing and executing Python is required to solve user query. (True/False)
-
-  NOTE: IF VISUALIZATION IS REQUIRED, SQL IS ALWAYS REQUIRED!
-""",
+  static_instruction=types.Content(role='system',parts=[types.Part(text=STARTER_AGENT_STATIC_INSTRUCTION)]),
+  instruction=STARTER_AGENT_DYNAMIC_INSTRUCTION,
   generate_content_config=types.GenerateContentConfig(
         temperature=0.5,
         max_output_tokens=500,

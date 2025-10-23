@@ -40,17 +40,17 @@ PYTHON_CRITIC_AGENT_DYNAMIC_INSTRUCTION = f"""
 
         **Latest Python Code**
         ```python
-        {{latest_python_code_output}}
+        {{latest_python_code_output?}}
         ```
 
         **Reasoning Behind the Code**
         ```text
-        {{latest_python_code_output_reasoning}}
+        {{latest_python_code_output_reasoning?}}
         ```
 
         **Execution Result**
         ```text
-        {{latest_python_code_execution_outcome}}
+        {{latest_python_code_execution_outcome?}}
         ```
 
         ## Task

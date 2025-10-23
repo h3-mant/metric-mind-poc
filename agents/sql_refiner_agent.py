@@ -12,7 +12,7 @@ from constants import *
 from google.genai import types
 import warnings
 from dotenv import load_dotenv
-from callbacks import sql_refiner_agent_callback
+from callbacks import sql_refiner_agent_callback, get_sequence_outcome
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -48,23 +48,8 @@ sql_refiner_agent = LlmAgent(
     # Relies solely on state via placeholders
     include_contents='none',
     global_instruction=GLOBAL_INSTRUCTION,
-    # static_instruction=SQL_REFINER_AGENT_STATIC_INSTRUCTION,
-    instruction=f"""You are a SQL refining AI Agent tasked with making changes to existing BigQuery SQL to answer user's query.
-
-    **Current SQL Query:**
-    ```
-    {{latest_sql_output}}
-    ```
-
-    **Critique/Suggestions:**
-    {{latest_sql_criticism}}
-
-    **Task:**
-    Analyze the 'Critique/Suggestions'.
-    Carefully apply the suggestions to generate NEW SQL, then EXECUTE SQL given tools available. 
-
-    **Return Structured Output**: Finally, based on the query results, output ONLY a string briefly explaining the changes made considering the critique/suggestions.
-""",
+    instruction=SQL_REFINER_AGENT_DYNAMIC_INSTRUCTION,
+    static_instruction=types.Content(role='system',parts=[types.Part(text=SQL_REFINER_AGENT_STATIC_INSTRUCTION)]),
     description="refines SQL query to align with critique/suggestions",
     before_agent_callback = sql_refiner_agent_callback,
     tools=[bigquery_toolset],        
@@ -79,5 +64,6 @@ sql_refiner_agent = LlmAgent(
           thinking_budget=-1
           )
     ),
+    after_agent_callback=get_sequence_outcome,
     output_key='latest_sql_output_reasoning' # Overwrites state['latest_sql_output_reasoning'] with the refined version
 )

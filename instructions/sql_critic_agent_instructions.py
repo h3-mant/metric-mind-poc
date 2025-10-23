@@ -150,20 +150,20 @@ Return EXACTLY this phrase with no additional text:
 **Verify against schema**: Always cross-reference the provided table/column information
 """
 
-SQL_CRITIC_AGENT_DYNAMIC_INSTRUCTION = """## Query Under Review
+SQL_CRITIC_AGENT_DYNAMIC_INSTRUCTION = f"""## Query Under Review
 
 ### SQL Query to Critique
-{latest_sql_output}
+{{latest_sql_output?}}
 
 ### Query Construction Reasoning
-{latest_sql_output_reasoning}
+{{latest_sql_output_reasoning?}}
 
 ## Available Schema for Validation
 
 ### BigQuery Resources
-- **Projects**: {projects}
-- **Datasets**: {datasets}
-- **Tables**: {tables}
+- **Projects**: {{projects}}
+- **Datasets**: {{datasets}}
+- **Tables**: {{tables}}
 
 Cross-reference the SQL query against this schema to validate table and column references.
 
