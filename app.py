@@ -141,7 +141,7 @@ def display_agent_response(session):
     greeting = state.get('greeting', '')
     if greeting:
         st.markdown(f"**{greeting}**")
-        st.markdown("---")
+        st.divider()
     
     # Handle SQL sequence output
     if state.get('sql_required'):
@@ -157,11 +157,11 @@ def display_agent_response(session):
             if sql_response:
                 st.markdown('**SQL Response:**')
                 df = pd.DataFrame(sql_response)
-                st.dataframe(df)
+                st.dataframe(df, use_container_width=True)
             
             if sql_output_reasoning:
-                st.markdown("**Analysis:**")
-                st.success(sql_output_reasoning)
+                with st.expander("**SQL Analysis**", expanded=False):
+                    st.markdown(sql_output_reasoning, unsafe_allow_html=True)
         else:
             # Display only reasoning
             sql_output_reasoning = state.get('latest_sql_output_reasoning', 'SQL sequence encountered an error.')
@@ -178,8 +178,8 @@ def display_agent_response(session):
             # Display Python response
             python_response = state.get('latest_python_code_output_reasoning', '')
             if python_response:
-                st.markdown("**Visualization:**")
-                st.info(python_response)
+                with st.expander("**Visualization Analysis**", expanded=False):
+                    st.markdown(python_response, unsafe_allow_html=True)
             
             # Display the saved image
             img_path = Path('images/img.png')
@@ -254,7 +254,7 @@ def display_debug_info(session):
             st.text("No image bytes available")
     
     # Metrics
-    with st.expander("Metrics", expanded=True):
+    with st.expander("Metrics", expanded=False):
         col1, col2, col3 = st.columns(3)
         
         with col1:

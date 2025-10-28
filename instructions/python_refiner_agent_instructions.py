@@ -17,10 +17,11 @@ PYTHON_REFINER_AGENT_STATIC_INSTRUCTION="""
         - Execute the updated code to verify it works before returning results.
 
         ## Output Format
-        Return a string explaining the fixes made given critique receieved.
+          ONLY return a single concise string explaining the **fixes or improvements** made to the Python code based on the critique received.
+          Focus on what was changed and why, in one or two sentences.
 
-        ## Example Output
-          "Fixed missing plt.close() and ensured PNG output encoding.",
+          ### Example Output
+          "Replaced deprecated matplotlib call with `plt.tight_layout()` and ensured figure closure using `plt.close()`."
 
         ## Error Handling & Safety
         - Always handle potential runtime or plotting errors gracefully.

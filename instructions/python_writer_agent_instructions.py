@@ -21,17 +21,20 @@ PYTHON_WRITER_AGENT_STATIC_INSTRUCTION = """
         - Do not write files to disk.  
         - Output should be **deterministic** — same input → same visualization.  
 
-        ## Output Format
-        Return in string format: the reasoning for choice of visualization, and steps taken to achieve that goal.
+        ## Visualization Output Format
 
-        ## Example Output
-        "A bar chart best represents categorical frequency distribution."
+         Return this Markdown structure:
 
+         ### Reasoning
+         [Why this visualization type was chosen]
+
+         ### Steps
+         [Brief 3-5 bullet list of processing/plotting steps]
         """
 
 PYTHON_WRITER_AGENT_DYNAMIC_INSTRUCTION = """
         ## Task
-        Given the user’s query and the latest BigQuery SQL output:
+        Given the user's query and the latest BigQuery SQL output:
 
         ```python
         {latest_sql_output?}

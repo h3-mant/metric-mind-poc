@@ -11,6 +11,9 @@ from constants import *
 from google.genai import types
 import warnings
 from dotenv import load_dotenv
+from vertexai import init as vertex_init
+from google.cloud.aiplatform import initializer as aiplatform_init
+import os
 
 load_dotenv(override=True)
 
@@ -18,7 +21,8 @@ warnings.filterwarnings("ignore")
 
 # Define a tool configuration to BLOCK writing into permanent tables, but allow
 #creating temp tables 
-tool_config = BigQueryToolConfig(write_mode=WriteMode.PROTECTED)
+tool_config = BigQueryToolConfig(write_mode=WriteMode.PROTECTED,
+                                 location='EU')
 
 # Define a credentials config - in this example we are using application default
 # credentials

@@ -1,9 +1,9 @@
 {
-  "project_id": "just-episode-473505-h7",
-  "dataset_id": "test",
+  "project_id": "uk-dta-gsmanalytics-poc",
+  "dataset_id": "metricmind",
   "tables": [
     {
-      "table_name": "KPI_DEFS",
+      "table_name": "GSM_KPI_DEFS_TEST_V4",
       "description": "Contains KPI definitions to be used for mapping to actual data",
       "schema": [
         {"name":"KPI_ID","type":"INTEGER","mode":"NULLABLE","description":"The unique identifier for the KPI"},
@@ -50,7 +50,7 @@
       ]
     },
     {
-      "table_name": "KPI_DATA",
+      "table_name": "GSM_KPI_DATA_TEST_V4",
       "description": "Contains actual data corresponding to KPI definitions",
       "schema": [
         {"name":"KPI_DATE","type":"DATE","description":"The calendar date to which this set of KPI data applies."},

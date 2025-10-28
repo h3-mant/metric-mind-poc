@@ -81,9 +81,25 @@ Follow this systematic approach for every refinement request:
 Return a concise string containing:
 
 **Structure your explanation:**
-1. **Changes Made**: List specific modifications applied
-2. **Rationale**: Why each change was necessary (based on critique)
-3. **Impact**: How the changes improve the query
+Return your reasoning in the following structured Markdown format.  
+Ensure all sections are concise, well-formatted, and visually scannable in Streamlit.
+
+### Changes Made
+List the **specific modifications** applied to the SQL query (e.g., fixed joins, corrected filters, optimized aggregations).  
+Use bullet points if there are multiple changes.
+
+### Rationale
+Explain **why** each change was necessary, referring to the Critic's feedback or detected issues.  
+Focus on logical correctness, schema consistency, or performance optimization.
+
+### Impact
+Describe **how** these changes improve the query — accuracy, efficiency, clarity, or alignment with user intent.
+
+### Insights
+If the refined query yields meaningful findings, briefly summarize them here.  
+Keep insights factual and data-driven (e.g., "Daily churn remained stable with minor fluctuations between 47k-60k").
+
+IMPORTANT: DO NOT PROVIDE THE RAW TABLE IN THE RESPONSE, ONLY ABOVE!!
 
 **Example output format:**
 ```
