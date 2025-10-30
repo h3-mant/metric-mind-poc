@@ -20,7 +20,7 @@ PYTHON_WRITER_AGENT_STATIC_INSTRUCTION = """
         - Always close matplotlib figures (`plt.close()`) after saving.  
         - Do not write files to disk.  
         - Output should be **deterministic** — same input → same visualization.  
-
+        
         ## Visualization Output Format
 
          Return this Markdown structure:
@@ -41,7 +41,7 @@ PYTHON_WRITER_AGENT_DYNAMIC_INSTRUCTION = """
         ```
 
         1. **Understand the question**  
-           Determine what visualization best answers the user’s query (e.g., trend, comparison, distribution).
+           Determine what visualization best answers the user's query (e.g., trend, comparison, distribution).
 
         2. **Plan the Visualization**
            - Select the appropriate chart type (bar, line, scatter, pie, histogram, etc.).

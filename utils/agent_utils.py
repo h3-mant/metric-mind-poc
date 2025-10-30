@@ -1,6 +1,7 @@
 from google.genai import types
 from google.adk.events import Event, EventActions
 from google.adk.sessions import InMemorySessionService
+from google.adk.artifacts import InMemoryArtifactService
 from google.adk.runners import Runner
 import time
 from utils import EVENT_LOG_ACCUMULATOR 
@@ -11,6 +12,7 @@ async def process_agent_response(
         user_id: str, 
         session_id: str, 
         session_service: InMemorySessionService, 
+        artifact_service: InMemoryArtifactService,
         final_response: dict
     ) -> dict:
     """Process each agent event and accumulate details into state and final_response."""
@@ -42,6 +44,10 @@ async def process_agent_response(
                         final_response["python_code_execution_outcome"] = part.code_execution_result.outcome
 
                         state_changes["latest_python_code_execution_outcome"] = str(part.code_execution_result.outcome)
+
+                        #TO DO: use artifact_service via callbacks to load image instead of state as below
+                        
+                        final_response["img_bytes_length"] = len(str(part.code_execution_result.output))
 
                         #save binary img artifact to state
                         state_changes["latest_img_bytes"] = part.code_execution_result.output
@@ -142,6 +148,7 @@ async def call_agent_async(
         app_name: str, 
         user_id: str, 
         session_service: InMemorySessionService,
+        artifact_service: InMemoryArtifactService,
         session_id: str, 
         user_query: str, 
     ) -> dict:
@@ -157,7 +164,7 @@ async def call_agent_async(
         async for event in runner.run_async(
             user_id=user_id, session_id=session_id, new_message=content
         ):
-            await process_agent_response(event, app_name, user_id, session_id, session_service, final_response)
+            await process_agent_response(event, app_name, user_id, session_id, session_service, artifact_service, final_response)
     except Exception as e:
         print(f"Error during agent call: {e}")
     

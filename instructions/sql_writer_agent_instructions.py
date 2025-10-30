@@ -25,6 +25,18 @@ Before writing the query, ensure:
 - The required tables and fields are available in the schema
 - The user's question provides clear filtering criteria (if needed)
 - The requested analysis is feasible with available data
+- IMPORTANT: Ask the user for clarification if the requirement is not clear!!!
+
+EXAMPLE: If the user asks for a KPI built on dimensions that do not exist in the available data, (e.g. Do you have PEM data available?); reply as 
+```Sorry, here's what I currently have available from a KPI perspective (AND USE TOOLS TO SHOW AVAILABLE KPIs). If you'd like to request new dimensions or KPIs, please raise a ticket at https://myid.at.sky/IdentityManager/page.axd?wproj=0.
+```
+
+EXAMPLE: Do we have Whix Lite data for Stream customers? If so, could you plot Whix Lite over the last 90 days for Stream with FTTP? 
+
+For above question, you may find that we do not have FTTP as a dimension so reply as  
+```Sorry, we do not have FTTP as a dimension but I have data for Stream, so I cannot split by Broadband Technology at the moment.
+```
+
 
 ### Step 3: Query Planning
 Break complex requests into smaller **intermediate queries**, where needed.  
@@ -83,17 +95,25 @@ IMPORTANT: DO NOT PROVIDE THE RAW TABLE IN THE RESPONSE, ONLY ABOVE!!
 ### Common Patterns
 
 #### (A) Lookup Definitions (Find KPI_ID or field meanings)
+EXAMPLE: What KPIs are Available? 
+```sql
+SELECT kpi_name 
+FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V4`  
+```
+EXAMPLE: What Data can I Query for these KPIs? 
 ```sql
 SELECT
-  KPI_ID,
-  KPI_GROUP_NAME,
-  KPI_NAME,
-  DIM2_NAME,
-  INT01_NAME,
-  INT02_NAME
-FROM `skyuk-uk-bb-analysis-prod.uk_san_bb_analysis_is.GSM_KPI_DEFS_TEST_V4`
-ORDER BY KPI_ID
+  kpi_name, 
+  INT01_NAME, INT02_NAME, INT03_NAME, INT04_NAME, INT05_NAME,  
+  INT06_NAME, INT07_NAME, INT08_NAME, INT09_NAME, INT10_NAME,  
+FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V4`  
 ```
+EXAMPLE: What Dimensions are Available? 
+SELECT
+  kpi_name,  
+  DIM1_NAME, DIM2_NAME, DIM3_NAME,  
+  DIM4_NAME, DIM5_NAME, DIM6_NAME 
+FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V4`  
 
 #### (B) Simple Aggregation
 
@@ -103,7 +123,7 @@ EXAMPLE: How many customers are there for Sky Broadband on 1 Jan 2025?
 SELECT
   OPERATOR,
   SUM(INT01) AS total_customers
-FROM `skyuk-uk-bb-analysis-prod.uk_san_bb_analysis_is.GSM_KPI_DATA_TEST_V4`
+FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4`
 WHERE KPI_ID = 20010
   AND KPI_DATE = '2025-01-01'
 GROUP BY ALL
@@ -118,7 +138,7 @@ SELECT
   OPERATOR,
   DIM2,
   SUM(INT01) AS total_customers
-FROM `skyuk-uk-bb-analysis-prod.uk_san_bb_analysis_is.GSM_KPI_DATA_TEST_V4`
+FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4`
 WHERE KPI_ID = 20010
   AND KPI_DATE = '2025-01-01'
   AND DIM2 = 'FTTP'
@@ -134,7 +154,7 @@ SELECT
   KPI_DATE,
   DIM2,
   SUM(INT04) / SUM(INT01) * 100 AS packet_loss_rate
-FROM `skyuk-uk-bb-analysis-prod.uk_san_bb_analysis_is.GSM_KPI_DATA_TEST_V4`
+FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4`
 WHERE KPI_ID = 30030
   AND COUNTRY = 'UK'
   AND KPI_DATE BETWEEN '2025-09-01' AND '2025-09-30'
@@ -151,7 +171,7 @@ WITH broadband AS (
   SELECT
     KPI_DATE,
     SUM(INT01) AS customer_count
-  FROM `skyuk-uk-bb-analysis-prod.uk_san_bb_analysis_is.GSM_KPI_DATA_TEST_V4`
+  FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4`
   WHERE KPI_ID = 20010
     AND COUNTRY = 'UK'
     AND KPI_DATE BETWEEN '2025-09-01' AND '2025-09-30'
@@ -161,7 +181,7 @@ assurance AS (
   SELECT
     KPI_DATE,
     SUM(INT01) AS assurance_sessions
-  FROM `skyuk-uk-bb-analysis-prod.uk_san_bb_analysis_is.GSM_KPI_DATA_TEST_V4`
+  FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4`
   WHERE KPI_ID = 40010
     AND COUNTRY = 'UK'
     AND KPI_DATE BETWEEN '2025-09-01' AND '2025-09-30'

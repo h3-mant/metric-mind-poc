@@ -3,6 +3,7 @@ import asyncio
 import uuid
 from pathlib import Path
 from google.adk.sessions import InMemorySessionService
+from google.adk.artifacts import InMemoryArtifactService
 from utils import EVENT_LOG_ACCUMULATOR
 from utils.helper import json_to_dict
 from constants import *
@@ -31,6 +32,8 @@ if 'agent_session' not in st.session_state:
     st.session_state.agent_session = None
 if 'session_service' not in st.session_state:
     st.session_state.session_service = InMemorySessionService()
+if 'artifact_service' not in st.session_state:
+    st.session_state.artifact_service = InMemoryArtifactService()
 
 async def process_query(user_query: str, session_id: str):
     """Process user query through the agent pipeline."""
@@ -43,6 +46,9 @@ async def process_query(user_query: str, session_id: str):
         #Use session service
         session_service = st.session_state.session_service
         
+        #Define Artifact service
+        artifact_service = st.session_state.artifact_service
+
         # Define data schema to be passed as initial_state
         initial_state = json_to_dict(DATA_SCHEMA_PATH)
         initial_state_formatted = {
@@ -70,7 +76,7 @@ async def process_query(user_query: str, session_id: str):
             )
         
         # Call Starter Agent Sequence
-        await starter_agent_sequence(app_name, user_id, session_service, session_id, user_query)
+        await starter_agent_sequence(app_name, user_id, session_service, artifact_service, session_id, user_query)
         
         # Refresh session to get updated state
         session = await session_service.get_session(
@@ -82,7 +88,7 @@ async def process_query(user_query: str, session_id: str):
         # Decide if SQL sequence is required
         if session.state.get('sql_required'):
             # Call SQL Sequence
-            await sql_agent_sequence(app_name, user_id, session_service, session_id, user_query)
+            await sql_agent_sequence(app_name, user_id, session_service, artifact_service, session_id, user_query)
             
             # Update session
             session = await session_service.get_session(
@@ -98,7 +104,7 @@ async def process_query(user_query: str, session_id: str):
             if session.state.get('latest_sql_sequence_outcome') == 'SUCCESS':
                 
                 # Call Python Sequence
-                await python_agent_sequence(app_name, user_id, session_service, session_id, user_query)
+                await python_agent_sequence(app_name, user_id, session_service, artifact_service, session_id, user_query)
                 
                 # Update session
                 session = await session_service.get_session(
@@ -154,14 +160,15 @@ def display_agent_response(session):
             sql_response = state.get('latest_sql_response', '')
             sql_output_reasoning = state.get('latest_sql_output_reasoning', '')
             
+            if sql_output_reasoning:
+                with st.expander("**SQL Analysis**", expanded=False):
+                    st.markdown(sql_output_reasoning, unsafe_allow_html=True)
+
             if sql_response:
                 st.markdown('**SQL Response:**')
                 df = pd.DataFrame(sql_response)
                 st.dataframe(df, use_container_width=True)
             
-            if sql_output_reasoning:
-                with st.expander("**SQL Analysis**", expanded=False):
-                    st.markdown(sql_output_reasoning, unsafe_allow_html=True)
         else:
             # Display only reasoning
             sql_output_reasoning = state.get('latest_sql_output_reasoning', 'SQL sequence encountered an error.')
@@ -177,16 +184,22 @@ def display_agent_response(session):
         if python_outcome == 'SUCCESS':
             # Display Python response
             python_response = state.get('latest_python_code_output_reasoning', '')
-            if python_response:
+            if python_response: 
                 with st.expander("**Visualization Analysis**", expanded=False):
                     st.markdown(python_response, unsafe_allow_html=True)
             
-            # Display the saved image
-            img_path = Path('images/img.png')
-            if img_path.exists():
-                st.image(str(img_path), caption="Generated Visualization", use_container_width=True)
+            # Display the most recently saved image
+            img_dir = Path("images")
+            if img_dir.exists():
+                png_files = list(img_dir.glob("img_*.png"))
+                if png_files:
+                    latest_img = max(png_files, key=lambda f: f.stat().st_mtime)
+                    st.image(str(latest_img), caption=f"Generated Visualization ({latest_img.name})", use_container_width=False)
+                else:
+                    st.warning("Visualization was generated but no image files found in the directory.")
             else:
-                st.warning("Visualization was generated but image file not found.")
+                st.warning("Visualization directory not found.")
+
         else:
             # Display only Python response (error case)
             python_response = state.get('latest_python_code_output_reasoning', 'Visualization generation encountered an error.')
@@ -255,49 +268,54 @@ def display_debug_info(session):
     
     # Metrics
     with st.expander("Metrics", expanded=False):
-        col1, col2, col3 = st.columns(3)
-        
+        # col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
+
         with col1:
-            st.metric(
-                label="BQ API Failures",
-                value=state.get('app:bq_api_failure_count', 0)
-            )
+            # st.metric(
+            #     label="BQ API Failures",
+            #     value=state.get('app:bq_api_failure_count', 0)
+            # )
             st.metric(
                 label="Total Tokens",
                 value=state.get('app:total_token_count', 0)
             )
-            st.metric(
-                label="Prompt Tokens",
-                value=state.get('app:prompt_token_count', 0)
-            )
+            # st.metric(
+            #     label="Prompt Tokens",
+            #     value=state.get('app:prompt_token_count', 0)
+            # )
         
         with col2:
             st.metric(
-                label="Tool Use Prompt Tokens",
-                value=state.get('app:tool_use_prompt_token_count', 0)
-            )
-            st.metric(
-                label="Thoughts Tokens",
-                value=state.get('app:thoughts_token_count', 0)
-            )
-            st.metric(
-                label="Candidates Tokens",
-                value=state.get('app:candidates_token_count', 0)
-            )
-    
-    with col3:
-        st.metric(
             label="Cached Content Tokens",
             value=state.get('app:cached_content_token_count', 0)
-        )
-        st.metric(
-            label="Cache Invocations",
-            value=state.get('app:cache_invocations_used', 0)
-        )
-        st.metric(
-            label="Cached Contents Count",
-            value=state.get('app:cached_contents_count', 0)
-        )
+            )
+            # st.metric(
+            #     label="Tool Use Prompt Tokens",
+            #     value=state.get('app:tool_use_prompt_token_count', 0)
+            # )
+            # st.metric(
+            #     label="Thoughts Tokens",
+            #     value=state.get('app:thoughts_token_count', 0)
+            # )
+            # st.metric(
+            #     label="Candidates Tokens",
+            #     value=state.get('app:candidates_token_count', 0)
+            # )
+    
+    # with col3:
+    #     st.metric(
+    #         label="Cached Content Tokens",
+    #         value=state.get('app:cached_content_token_count', 0)
+    #     )
+    #     st.metric(
+    #         label="Cache Invocations",
+    #         value=state.get('app:cache_invocations_used', 0)
+    #     )
+    #     st.metric(
+    #         label="Cached Contents Count",
+    #         value=state.get('app:cached_contents_count', 0)
+    #     )
 
 def main():
     """Main Streamlit application."""

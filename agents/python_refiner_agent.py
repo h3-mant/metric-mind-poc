@@ -6,7 +6,7 @@ from google.genai import types
 from dotenv import load_dotenv
 from constants import *
 from google.genai import types
-from callbacks import get_sequence_outcome
+from callbacks import get_sequence_outcome, store_image_artifact
 import warnings
 from callbacks import python_refiner_agent_callback
 from dotenv import load_dotenv
@@ -38,6 +38,7 @@ python_refiner_agent = LlmAgent(
           )
     ),
     before_agent_callback=python_refiner_agent_callback,
+    after_tool_callback=store_image_artifact,
     after_agent_callback=get_sequence_outcome,
     output_key='latest_python_code_output_reasoning'
 )

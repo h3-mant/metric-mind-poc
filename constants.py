@@ -1,5 +1,5 @@
 #GENERAL
-APP_NAME = 'MetricMind'
+APP_NAME = 'agents'
 USER_ID = 'default_user'
 
 #MODELS

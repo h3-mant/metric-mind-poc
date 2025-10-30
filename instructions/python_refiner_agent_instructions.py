@@ -15,6 +15,7 @@ PYTHON_REFINER_AGENT_STATIC_INSTRUCTION="""
           4. Avoids interactive or blocking elements (`plt.show()` must not appear).
           5. Returns output as **base64-encoded PNG bytes**.
         - Execute the updated code to verify it works before returning results.
+        - NOTE: DO NOT USE ANY ARTIFACT SERVICE TO STORE RESULTS, SIMPLY RETURN OUTPUT
 
         ## Output Format
           ONLY return a single concise string explaining the **fixes or improvements** made to the Python code based on the critique received.

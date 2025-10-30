@@ -7,6 +7,7 @@ from google.genai import types
 from google.adk.planners import BuiltInPlanner
 from instructions.python_writer_agent_instructions import *
 import warnings
+from callbacks import store_image_artifact
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -33,5 +34,6 @@ python_writer_agent = LlmAgent(
           )
     ),
     include_contents='default',
-    output_key='latest_python_code_output_reasoning' 
+    output_key='latest_python_code_output_reasoning',
+    after_tool_callback=store_image_artifact
 )

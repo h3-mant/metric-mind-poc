@@ -1,6 +1,7 @@
 from constants import *
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
+from google.adk.artifacts import InMemoryArtifactService
 from utils.agent_utils import call_agent_async
 from agents.sql_writer_agent import sql_writer_agent
 from agents.sql_critic_agent import sql_critic_agent
@@ -13,6 +14,7 @@ async def sql_agent_sequence(
     app_name: str,
     user_id: str,
     session_service: InMemorySessionService,
+    artifact_service: InMemoryArtifactService,
     session_id: str,
     user_query: str) -> None:
   """Sequence to run SQL Writer, Critic and Refiner Agents"""
@@ -22,7 +24,7 @@ async def sql_agent_sequence(
         agent=sql_writer_agent,
         app_name=app_name,
         session_service=session_service,
-        # artifact_service=artifact_service
+        artifact_service=artifact_service
     )
 
   #Call SQL Writer Agent
@@ -31,6 +33,7 @@ async def sql_agent_sequence(
     app_name=app_name, 
     user_id=user_id, 
     session_service=session_service, 
+    artifact_service=artifact_service,
     session_id=session_id, 
     user_query=user_query
     )
@@ -42,13 +45,13 @@ async def sql_agent_sequence(
           agent=sql_critic_agent,
           app_name=APP_NAME,
           session_service=session_service,
-          # artifact_service=artifact_service
+          artifact_service=artifact_service
       )
   sql_refiner_agent_runner = Runner(
           agent=sql_refiner_agent,
           app_name=APP_NAME,
           session_service=session_service,
-          # artifact_service=artifact_service
+          artifact_service=artifact_service
       )
 
   #Retry loop for SQL Critic and Refiner Agents
@@ -71,6 +74,7 @@ async def sql_agent_sequence(
       runner=sql_critic_agent_runner,
       app_name=app_name, 
       session_service=session_service,
+      artifact_service=artifact_service,
       session_id=session_id, 
       user_id=user_id, 
       user_query=user_query
@@ -84,6 +88,7 @@ async def sql_agent_sequence(
       app_name=app_name, 
       user_id=user_id, 
       session_service=session_service,
+      artifact_service=artifact_service,
       session_id=session_id, 
       user_query=user_query, 
       )

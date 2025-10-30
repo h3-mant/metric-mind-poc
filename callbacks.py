@@ -1,9 +1,18 @@
 from google.genai import types
 from google.adk.agents.callback_context import CallbackContext
 from typing import Optional
+from utils.logger import get_logger
+from google.adk.tools.base_tool import BaseTool
+from typing import Dict, Any
+from google.adk.tools.tool_context import ToolContext
 from constants import *
 from pydantic_models import StarterAgentResponse
+import base64
+import re
+import io
 import json
+
+logger = get_logger(__name__)
 
 def sql_refiner_agent_callback(callback_context: CallbackContext) -> Optional[types.Content]:
 
@@ -69,4 +78,31 @@ def get_sequence_outcome(callback_context: CallbackContext) -> None:
   return None
 
 
+async def store_image_artifact(tool: BaseTool, args: Dict[str, Any], tool_context: ToolContext, tool_response: Dict) -> None:
+    try:
+        # The response contains a Markdown image tag — extract base64 string
+        markdown_str = tool_response.get('inline_data', '')
+        match = re.search(r"data:image/png;base64,([A-Za-z0-9+/=]+)", markdown_str)
+        if not match:
+            raise ValueError("No valid base64 image string found in response")
+
+        image_base64 = match.group(1)
+        image_bytes = base64.b64decode(image_base64)
+
+        filename = "image.png"
+        image_artifact = types.Part.from_bytes(
+            data=image_bytes,
+            mime_type="image/png"
+        )
+
+        version = await tool_context.save_artifact(
+            filename=filename,
+            artifact=image_artifact
+        )
+        logger.info(f"Successfully saved image artifact '{filename}' as version {version}.")
+
+    except Exception as e:
+        logger.error(f"Error saving image artifact: {e}")
+
+  
 
