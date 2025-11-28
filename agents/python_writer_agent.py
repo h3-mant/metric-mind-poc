@@ -9,6 +9,7 @@ from instructions.python_writer_agent_instructions import *
 import warnings
 from callbacks import store_image_artifact
 from dotenv import load_dotenv
+from pygwalker
 
 load_dotenv(override=True)
 

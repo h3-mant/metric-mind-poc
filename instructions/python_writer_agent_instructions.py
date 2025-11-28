@@ -8,7 +8,7 @@ PYTHON_WRITER_AGENT_STATIC_INSTRUCTION = """
         - `os`: for directory operations  
         - `math`: for mathematical utilities  
         - `re`: for regular expressions  
-        - `matplotlib.pyplot`: for static visualizations  
+        - `pygwalker`: for static visualizations  
         - `numpy`: for numerical operations  
         - `pandas`: for data manipulation  
         - `io` and `base64`: for encoding image output  
@@ -49,7 +49,7 @@ PYTHON_WRITER_AGENT_DYNAMIC_INSTRUCTION = """
            - Use color, grouping, or annotations only if they add clarity.
 
         3. **Write Python Code**
-           - Use the allowed modules to create a visualization with `matplotlib`.
+           - Use the allowed modules to create a visualization with `pygwalker`.
            - Capture the figure in memory using `BytesIO`.
            - Encode it as a base64 string.
            - Close the plot with `plt.close()`.
