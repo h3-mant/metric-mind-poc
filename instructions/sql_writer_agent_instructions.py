@@ -71,10 +71,11 @@ Each query should:
 Return your final reasoning in this Markdown-structured format:
 
 ### Insights
-[Interpretation of results, if any]
+[Interpretation of results. Trend call outs are always good.]
 
 ### Recommendations
-[Recommendations of other dimensions available for the KPI in the definitions table]
+[Recommendations of other dimensions available for the KPI in the definitions table. Use the fields that were created in the starter sequence in build_dynamic_instruction. 
+If possible, give types of questions they could ask using these dimensions, integers and floats.]
 
 ### Tables Used
 [List of tables used]
