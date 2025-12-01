@@ -16,32 +16,21 @@ from google.cloud.aiplatform import initializer as aiplatform_init
 import os
 
 load_dotenv(override=True)
-
 warnings.filterwarnings("ignore")
 
-# Define a tool configuration to BLOCK writing into permanent tables, but allow
-#creating temp tables 
 tool_config = BigQueryToolConfig(write_mode=WriteMode.PROTECTED,
                                  location='EU')
 
-# Define a credentials config - in this example we are using application default
-# credentials
-# https://cloud.google.com/docs/authentication/provide-credentials-adc
 application_default_credentials, _ = google.auth.default()
 credentials_config = BigQueryCredentialsConfig(
     credentials=application_default_credentials
 )
 
-# Instantiate a BigQuery toolset
 bigquery_toolset = BigQueryToolset(
     credentials_config=credentials_config, bigquery_tool_config=tool_config,
-    #ONLY ALLOW SQL EXECUTION, SCHEMA TO BE EXTRACTED FROM STATE
     tool_filter=['execute_sql'] 
 )
     
-#root agent definition
-#PRICING URI -- https://ai.google.dev/gemini-api/docs/models 
-
 sql_writer_agent = LlmAgent(
     name='sql_writer_agent',
     model=SQL_WRITER_AGENT_MODEL,
@@ -51,9 +40,9 @@ sql_writer_agent = LlmAgent(
     instruction = SQL_WRITER_AGENT_DYNAMIC_INSTRUCTION,
     tools=[bigquery_toolset],        
     generate_content_config=types.GenerateContentConfig(
-        temperature=0, #for more determinism
-        max_output_tokens=5000,
-        top_p=0.5 #for more determinism
+        temperature=0, # deterministic for SQL generation
+        max_output_tokens=1500, # reduce default output size
+        top_p=0.5
     ),  
     planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(
@@ -61,6 +50,7 @@ sql_writer_agent = LlmAgent(
           thinking_budget=-1
           )
     ),
-    include_contents='default',
+    # Do not automatically include the full conversation/tool outputs in every call
+    include_contents='none',
     output_key='latest_sql_output_reasoning'
 )
