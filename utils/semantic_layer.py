@@ -28,7 +28,7 @@ _lock = threading.Lock()
 _cache: Dict[str, Any] = {
     "schema": None,
     "by_id": {},
-    "by_name": {},
+    "by_name": {},  # note: keys are normalized (lowercase stripped names)
     "loaded_at": 0,
     "ttl": _DEFAULT_TTL
 }
@@ -62,7 +62,7 @@ def initialize(force_refresh: bool = False, ttl_seconds: int = _DEFAULT_TTL) -> 
         try:
             logger.info("Building semantic schema from BigQuery (this may take a while)")
             schema = _build_schema_from_bigquery()
-            # write file best-effort
+            # write file best-effort; do not fail load if write fails
             try:
                 _SCHEMA_FILE.write_text(json.dumps(schema, indent=2), encoding="utf-8")
                 logger.info("Wrote semantic schema to %s", _SCHEMA_FILE)
@@ -79,9 +79,10 @@ def _load_into_cache(schema: Dict[str, Any], ttl_seconds: int) -> None:
     _cache["by_id"] = {str(k): v for k, v in (schema.get("kpis") or {}).items()}
     by_name = {}
     for k, v in _cache["by_id"].items():
+        # normalize KPI name for case-insensitive lookup
         name = (v.get("kpi_name") or "").strip()
         if name:
-            by_name[name] = v
+            by_name[name.lower()] = v
     _cache["by_name"] = by_name
     _cache["loaded_at"] = time.time()
     _cache["ttl"] = ttl_seconds
@@ -179,7 +180,7 @@ def _build_schema_from_bigquery() -> Dict[str, Any]:
                     SELECT DISTINCT {phys_col} AS val
                     FROM `{_DATA_TABLE}`
                     WHERE KPI_ID = @kpid AND {phys_col} IS NOT NULL
-                    LIMIT 20
+                    LIMIT 100
                     """
                     job_config = bigquery.QueryJobConfig(
                         query_parameters=[bigquery.ScalarQueryParameter("kpid", "INT64", int(kpi_id))]
@@ -259,7 +260,7 @@ def get_kpi_def_by_name(name: str) -> Optional[Dict[str, Any]]:
     with _lock:
         if name is None:
             return None
-        return _cache["by_name"].get(name)
+        return _cache["by_name"].get(name.strip().lower())
 
 
 def explain_kpi(kpi_id: Any) -> str:
@@ -362,3 +363,65 @@ def find_kpi_by_name(query: str, top_n: int = 5) -> List[Tuple[float, str, Dict[
     # sort descending by score then by kpi_id
     candidates.sort(key=lambda x: (-x[0], x[1]))
     return candidates[:top_n]
+
+    # Add near the bottom of utils/semantic_layer.py (after find_kpi_by_name)
+
+def get_compact_kpi_candidates(query: str, top_n: int = 5) -> List[Dict[str, Any]]:
+    """
+    Return a compact, JSON-serializable list of KPI candidate dicts for use in prompts/state.
+    Each dict contains only small fields: kpi_id, kpi_name, score, small list of dimensions (name, physical_column, up to 5 sample values),
+    and a short list of indicators (name, physical_column).
+    """
+    # Ensure semantic layer loaded (no-op if already fresh)
+    try:
+        initialize()
+    except Exception:
+        logger.debug("Semantic layer initialize failed in get_compact_kpi_candidates; continuing defensively")
+
+    candidates = find_kpi_by_name(query, top_n=top_n)
+    compact = []
+    for score, kpi_id, kdef in candidates:
+        # compact dimensions: include only column and up to 5 sample values
+        dims = []
+        for dname, meta in (kdef.get("dimensions") or {}).items():
+            dims.append({
+                "name": dname,
+                "physical_column": meta.get("physical_column"),
+                "samples": (meta.get("distinct_values_sample") or [])[:5]
+            })
+        # compact indicators: up to 8 total
+        indicators = []
+        for ind in ((kdef.get("indicators_int") or []) + (kdef.get("indicators_float") or []))[:8]:
+            indicators.append({
+                "name": ind.get("name"),
+                "physical_column": ind.get("physical_column")
+            })
+        compact.append({
+            "kpi_id": kdef.get("kpi_id"),
+            "kpi_name": kdef.get("kpi_name"),
+            "score": float(score),
+            "dimensions": dims,
+            "indicators": indicators
+        })
+    return compact
+
+
+def get_compact_index(max_kpis: int = 500) -> Dict[str, Dict[str, Any]]:
+    """
+    Return a normalized-name -> minimal metadata mapping for the top N KPIs.
+    This is useful if you want to inject a small index into a system prompt (still be mindful of token size).
+    """
+    with _lock:
+        by_id = _cache.get("by_id", {}) or {}
+        items = list(by_id.items())[:max_kpis]
+    out = {}
+    for k, v in items:
+        name = (v.get("kpi_name") or "").strip().lower()
+        if not name:
+            continue
+        out[name] = {
+            "kpi_id": v.get("kpi_id"),
+            "kpi_name": v.get("kpi_name"),
+            "dims": {d: {"physical_column": m.get("physical_column")} for d, m in (v.get("dimensions") or {}).items()}
+        }
+    return out
