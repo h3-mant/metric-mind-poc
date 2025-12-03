@@ -52,7 +52,7 @@ sql_writer_agent = LlmAgent(
     tools=[bigquery_toolset],        
     generate_content_config=types.GenerateContentConfig(
         temperature=0, #for more determinism
-        max_output_tokens=5000,
+        # max_output_tokens=5000,
         top_p=0.5 #for more determinism
     ),  
     planner=BuiltInPlanner(
