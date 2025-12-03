@@ -55,7 +55,7 @@ STARTER_AGENT_DYNAMIC_INSTRUCTION = """## Available Resources
 
 ## Current Context
 
-- **Conversation Intent:** {user_intent}
+- **Conversation Intent:** {user_intent?}
 
 Use this context to refine your understanding and classification of the current query.
 """
