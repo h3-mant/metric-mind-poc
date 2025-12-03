@@ -65,8 +65,9 @@ async def sql_agent_sequence(
 
     #Result of code_execution tool is either SUCCESS/ERROR/PENDING
     #If code_execution result is SUCCESS and latest_sql_criticism is OUTCOME OK, break the loop
+    bq_status = session.state.get('latest_bq_execution_status')
     if session.state.get('latest_sql_criticism') == OUTCOME_OK_PHRASE and \
-      session.state.get('latest_bq_execution_status').upper() == 'SUCCESS':
+      bq_status and bq_status.upper() == 'SUCCESS':
        break
     
     #call SQL Critic Agent

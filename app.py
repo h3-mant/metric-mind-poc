@@ -369,7 +369,7 @@ def main():
         with st.chat_message("assistant"):
             with st.spinner("Analyzing your query..."):
                 try:
-                    # Process the query
+                    # Process the query using asyncio.run()
                     session = asyncio.run(process_query(prompt, st.session_state.session_id))
                     
                     if session is None:

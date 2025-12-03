@@ -21,7 +21,7 @@ DATA_SCHEMA_PATH = 'data_schema.json'
 GLOBAL_INSTRUCTION = "You are part of a Data Analytics Conversational Analytics Architecture."
 
 #MAX_RETRIES
-MAX_RETRIES = 3
+MAX_RETRIES = 1
 
 
 

@@ -61,15 +61,18 @@ def get_sequence_outcome(callback_context: CallbackContext) -> None:
   """get the sequence outcome of SQL/Python Agent"""
   
   if 'sql' in callback_context.agent_name:
+    bq_status = callback_context.state.get('latest_bq_execution_status')
     if callback_context.state.get('latest_sql_criticism') == OUTCOME_OK_PHRASE and \
-    callback_context.state.get('latest_bq_execution_status') == 'SUCCESS':
+    bq_status and bq_status.upper() == 'SUCCESS':
 
       callback_context.state['latest_sql_sequence_outcome'] = 'SUCCESS'
     else:
       callback_context.state['latest_sql_sequence_outcome'] = 'FAILURE'
 
   if 'python' in callback_context.agent_name:
-    if callback_context.state.get('latest_python_code_criticism') == OUTCOME_OK_PHRASE and 'OK' in callback_context.state.get('latest_python_code_execution_outcome'):
+    execution_outcome = callback_context.state.get('latest_python_code_execution_outcome')
+    if callback_context.state.get('latest_python_code_criticism') == OUTCOME_OK_PHRASE and \
+    execution_outcome and 'OK' in str(execution_outcome):
     
       callback_context.state['latest_python_sequence_outcome'] = 'SUCCESS'
     else:

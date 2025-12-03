@@ -25,7 +25,7 @@ async def main_async(user_query=None, session_id=None):
     session_service = InMemorySessionService()
 
     #Define Artifact Service
-    # artifact_service = InMemoryArtifactService()
+    artifact_service = InMemoryArtifactService()
 
     #Define data schema to be passed as initial_state
     initial_state = json_to_dict(DATA_SCHEMA_PATH)

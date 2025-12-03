@@ -20,11 +20,11 @@ def json_to_dict(path: str) -> dict:
     except FileNotFoundError:
         raise FileNotFoundError(f"File not found: {path}")
 
-def save_img(img_bytes: str) -> None:
-    """Save base64 image string (possibly wrapped in Markdown/data URL) to a uniquely named PNG file."""
+def save_img(img_bytes: str) -> bool:
+    """Save base64 image string (possibly wrapped in Markdown/data URL) to a uniquely named PNG file. Returns True on success, False on failure."""
     if not img_bytes:
         logger.error("No image bytes to save")
-        return
+        return False
 
     os.makedirs("images", exist_ok=True)
 
@@ -57,8 +57,10 @@ def save_img(img_bytes: str) -> None:
             f.write(decoded_bytes)
 
         logger.info(f"Saved image to {output_path}")
+        return True
 
     except Exception as e:
         logger.error(f"Failed to decode/save image: {e}")
+        return False
 
 
