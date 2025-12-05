@@ -39,7 +39,33 @@ def _summarize_and_replace_tool_responses(state: Dict[str, Any]) -> None:
     Scan session state and replace large tool response objects (BigQuery) with small summaries.
     Modifies state in-place.
     """
-    keys = list(state.keys())
+    def _state_keys(s):
+        try:
+            if isinstance(s, dict):
+                return list(s.keys())
+            if hasattr(s, "keys"):
+                return list(s.keys())
+            if hasattr(s, "items"):
+                try:
+                    return [k for k, _ in s.items()]
+                except Exception:
+                    pass
+            try:
+                return list(iter(s))
+            except Exception:
+                pass
+            if hasattr(s, "to_dict"):
+                try:
+                    return list(s.to_dict().keys())
+                except Exception:
+                    pass
+            if hasattr(s, "__dict__"):
+                return list(getattr(s, "__dict__", {}).keys())
+        except Exception:
+            return []
+        return []
+
+    keys = _state_keys(state)
     for k in keys:
         # common pattern in your logs: '[tool_response]_execute_sql' or keys containing 'execute_sql'
         if "tool_response" in k or "execute_sql" in k:
@@ -49,15 +75,42 @@ def _summarize_and_replace_tool_responses(state: Dict[str, Any]) -> None:
                     summary = summarize_sql_response(tool_resp)
                     # replace with a concise summary and keep a trace key name
                     new_key = f"{k}_summary"
-                    state[new_key] = summary
+                    try:
+                        state[new_key] = summary
+                    except Exception:
+                        try:
+                            # fallback: if State doesn't support item assignment, try attr set
+                            setattr(state, new_key, summary)
+                        except Exception:
+                            logger.exception("Could not set state key %s", new_key)
                     # remove the verbose original to avoid reinjecting into prompts
-                    del state[k]
+                    try:
+                        del state[k]
+                    except Exception:
+                        try:
+                            if hasattr(state, "pop"):
+                                state.pop(k, None)
+                        except Exception:
+                            logger.debug("Could not delete state key %s; leaving original", k)
                     logger.debug("Replaced verbose tool response key %s with %s", k, new_key)
                 else:
                     # non-dict tool responses: convert to string and keep only short sample
                     s = str(tool_resp)[:1000] if tool_resp is not None else ""
-                    state[f"{k}_summary"] = {"status": "UNKNOWN", "row_count": 0, "sample_rows": [s]}
-                    del state[k]
+                    try:
+                        state[f"{k}_summary"] = {"status": "UNKNOWN", "row_count": 0, "sample_rows": [s]}
+                    except Exception:
+                        try:
+                            setattr(state, f"{k}_summary", {"status": "UNKNOWN", "row_count": 0, "sample_rows": [s]})
+                        except Exception:
+                            logger.debug("Could not set fallback summary for %s", k)
+                    try:
+                        del state[k]
+                    except Exception:
+                        try:
+                            if hasattr(state, "pop"):
+                                state.pop(k, None)
+                        except Exception:
+                            logger.debug("Could not delete original key %s", k)
             except Exception:
                 logger.exception("Failed to summarize tool response for state key: %s", k)
 
@@ -65,9 +118,49 @@ def _trim_large_state_values(state: Dict[str, Any], max_chars: int = 2000) -> No
     """
     Truncate any very long strings in state to avoid feeding them into prompts.
     """
-    for k, v in list(state.items()):
+    # iterate keys in a way compatible with both dict and ADK State objects
+    def _iter_state_items(s):
+        if isinstance(s, dict):
+            return list(s.items())
+        # try items()
+        if hasattr(s, "items"):
+            try:
+                return list(s.items())
+            except Exception:
+                pass
+        # fallback: iterate keys then get
+        keys = []
+        try:
+            if hasattr(s, "keys"):
+                keys = list(s.keys())
+            else:
+                keys = list(iter(s))
+        except Exception:
+            try:
+                keys = list(getattr(s, "__dict__", {}).keys())
+            except Exception:
+                keys = []
+        out = []
+        for k in keys:
+            try:
+                v = s.get(k) if hasattr(s, "get") else getattr(s, k, None)
+            except Exception:
+                try:
+                    v = getattr(s, k)
+                except Exception:
+                    v = None
+            out.append((k, v))
+        return out
+
+    for k, v in _iter_state_items(state):
         if isinstance(v, str) and len(v) > max_chars:
-            state[k] = v[:max_chars - 1] + "\n...[truncated]..."
+            try:
+                state[k] = v[:max_chars - 1] + "\n...[truncated]..."
+            except Exception:
+                try:
+                    setattr(state, k, v[:max_chars - 1] + "\n...[truncated]...")
+                except Exception:
+                    logger.debug("Could not truncate state key %s", k)
             logger.debug("Truncated state key %s (len>%s)", k, max_chars)
 
 def store_results_in_context(callback_context: CallbackContext) -> None:
@@ -142,8 +235,11 @@ def store_results_in_context(callback_context: CallbackContext) -> None:
                 "python_required": bool(found.get("python_required", parsed["python_required"])),
             }
         else:
-            logger.warning("No starter_agent_response found in state; using defaults. State keys: %s",
-                           list(callback_context.state.keys())[:20])
+            try:
+                s_keys = _state_keys(callback_context.state)[:20]
+            except Exception:
+                s_keys = []
+            logger.warning("No starter_agent_response found in state; using defaults. State keys: %s", s_keys)
 
     # Persist only minimal values into the session state to avoid re-injecting large objects
     callback_context.state['greeting'] = parsed["greeting"]

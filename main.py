@@ -32,7 +32,8 @@ async def main_async(user_query=None, session_id=None):
     initial_state_formatted = {
       'projects': initial_state.get('project_id'),
       'datasets': initial_state.get('dataset_id'),
-      'tables': initial_state.get('tables')
+      'tables': initial_state.get('tables'),
+      'semantic_kpis': __import__('utils.semantic_layer', fromlist=['']).get_compact_index()
     }
 
     #Create Session

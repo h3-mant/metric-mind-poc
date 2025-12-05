@@ -51,6 +51,8 @@ Perform a comprehensive analysis across seven critical dimensions:
 - Incorrect table qualification
 - Typos in field names
 
+**Semantic validation:** If a compact semantic mapping (`semantic_kpis`) or a session-scoped `selected_kpi`/`selected_kpi_meta` is available, use it to verify that any `DIMn`, `INTnn`, or `FLOATnn` referenced in the query is actually associated with the KPI under analysis. If the query references a dimension or measure not present for the KPI, flag it as a Schema Consistency issue and recommend the correct physical column or a clarifying question to the user.
+
 ### 4. Aggregation Logic
 **Are GROUP BY, HAVING, and aggregate functions correct?**
 
@@ -166,6 +168,8 @@ SQL_CRITIC_AGENT_DYNAMIC_INSTRUCTION = f"""## Query Under Review
 - **Tables**: {{tables}}
 
 Cross-reference the SQL query against this schema to validate table and column references.
+
+If a `semantic_kpis` mapping or `selected_kpi` metadata is present in session state, prefer those mappings to validate that the SQL references only fields associated with the KPI. If violations are found (e.g., `DIM4` used but KPI only defines `DIM1` and `DIM2`), report the exact mismatch and suggest the supported columns.
 
 ## Success Completion Phrase
 

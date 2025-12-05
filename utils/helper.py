@@ -29,17 +29,41 @@ def save_img(img_bytes: str) -> None:
     os.makedirs("images", exist_ok=True)
 
     try:
-        # Extract base64 content if Markdown or data URL is present
-        match = re.search(r"data:image\/png;base64,([A-Za-z0-9+/=]+)", img_bytes)
-        if match:
-            img_bytes = match.group(1)
+
+        # Attempt to extract base64 content from common wrappers (markdown/data URL)
+        # Accept newlines/whitespace inside the base64 block.
+        m = re.search(r"data:image\/(?:png|jpeg|jpg);base64,([A-Za-z0-9+/=\n\r]+)", img_bytes, flags=re.IGNORECASE)
+        if m:
+            img_b64 = m.group(1)
+        else:
+            # If the input looks like a markdown image link: ![...](data:image/png;base64,XXX)
+            m2 = re.search(r"\(data:image\/(?:png|jpeg|jpg);base64,([A-Za-z0-9+/=\n\r]+)\)", img_bytes, flags=re.IGNORECASE)
+            if m2:
+                img_b64 = m2.group(1)
+            else:
+                # Fallback: maybe the input is already the base64 payload or a raw bytes repr.
+                img_b64 = str(img_bytes)
+
+        # Remove whitespace/newlines that can be introduced when printing large base64 blobs
+        img_b64 = re.sub(r"\s+", "", img_b64)
+
+        # Strip common Python bytes repr markers if present (e.g. "b'...'")
+        if img_b64.startswith("b'") and img_b64.endswith("'"):
+            img_b64 = img_b64[2:-1]
+        if img_b64.startswith('b"') and img_b64.endswith('"'):
+            img_b64 = img_b64[2:-1]
+
+        # If the payload is obviously too small to be a real PNG, skip saving.
+        if len(img_b64) < 100:
+            logger.warning("Image payload too small to decode (len=%s). Skipping save. Preview: %s", len(img_b64), img_b64[:120])
+            return
 
         # Add missing padding if needed
-        missing_padding = len(img_bytes) % 4
+        missing_padding = len(img_b64) % 4
         if missing_padding:
-            img_bytes += "=" * (4 - missing_padding)
+            img_b64 += "=" * (4 - missing_padding)
 
-        decoded_bytes = base64.b64decode(img_bytes)
+        decoded_bytes = base64.b64decode(img_b64)
 
         # Validate before saving
         try:

@@ -17,8 +17,12 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
-
 _SCHEMA_FILE = Path(os.environ.get("SEMANTIC_SCHEMA_PATH", "metricmind_schema.json"))
+# Helpful debug: show resolved schema path at import time (useful in multi-cwd runtimes)
+try:
+    logger.debug("Semantic schema file path: %s", _SCHEMA_FILE.resolve())
+except Exception:
+    logger.debug("Semantic schema file path: %s", _SCHEMA_FILE)
 _DEFS_TABLE = os.environ.get("SEMANTIC_DEFS_TABLE", "uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V4")
 _DATA_TABLE = os.environ.get("SEMANTIC_DATA_TABLE", "uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4")
 _DEFAULT_TTL = int(os.environ.get("SEMANTIC_TTL_SECONDS", 3600))
@@ -64,10 +68,19 @@ def initialize(force_refresh: bool = False, ttl_seconds: int = _DEFAULT_TTL) -> 
             schema = _build_schema_from_bigquery()
             # write file best-effort; do not fail load if write fails
             try:
+                # Ensure parent directory exists (handles absolute paths and nested dirs)
+                try:
+                    _SCHEMA_FILE.parent.mkdir(parents=True, exist_ok=True)
+                except Exception:
+                    # ignore; write_text will fail with clearer exception if needed
+                    pass
                 _SCHEMA_FILE.write_text(json.dumps(schema, indent=2), encoding="utf-8")
-                logger.info("Wrote semantic schema to %s", _SCHEMA_FILE)
+                try:
+                    logger.info("Wrote semantic schema to %s", _SCHEMA_FILE.resolve())
+                except Exception:
+                    logger.info("Wrote semantic schema to %s", _SCHEMA_FILE)
             except Exception:
-                logger.debug("Could not write schema file (non-fatal)")
+                logger.exception("Could not write schema file (non-fatal) Path: %s", _SCHEMA_FILE)
             _load_into_cache(schema, ttl_seconds)
             logger.info("Built semantic schema from BigQuery in %.2fs", time.time() - start)
         except Exception as e:
@@ -422,6 +435,7 @@ def get_compact_index(max_kpis: int = 500) -> Dict[str, Dict[str, Any]]:
         out[name] = {
             "kpi_id": v.get("kpi_id"),
             "kpi_name": v.get("kpi_name"),
-            "dims": {d: {"physical_column": m.get("physical_column")} for d, m in (v.get("dimensions") or {}).items()}
+            "dims": {d: {"physical_column": m.get("physical_column")} for d, m in (v.get("dimensions") or {}).items()},
+            "indicators": {ind.get("name"):{"physical_column": ind.get("physical_column")} for ind in ((v.get("indicators_int") or []) + (v.get("indicators_float") or []))}
         }
     return out

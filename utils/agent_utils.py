@@ -152,7 +152,8 @@ async def call_agent_async(
         session_service: InMemorySessionService,
         artifact_service: InMemoryArtifactService,
         session_id: str, 
-        user_query: str, 
+        user_query: str,
+        **kwargs
     ) -> dict:
     """Custom Agent Caller to aggregate the final_response payload across all events."""
 
@@ -163,6 +164,11 @@ async def call_agent_async(
     final_response['user_query'] = user_query
     
     try:
+        if kwargs:
+            try:
+                print(f"call_agent_async received extra kwargs (ignored): {list(kwargs.keys())}")
+            except Exception:
+                pass
         async for event in runner.run_async(
             user_id=user_id, session_id=session_id, new_message=content
         ):
