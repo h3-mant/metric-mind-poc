@@ -92,8 +92,21 @@ async def process_query(user_query: str, session_id: str):
                 session_id=session_id
             )
         
+        # If the UI has a selected KPI, include a short, explicit KPI context
+        # in the user query so agents don't need to re-query the defs table when
+        # the KPI is already chosen by the user.
+        try:
+            ui_selected = st.session_state.get('selected_kpi_meta') or {}
+            if ui_selected:
+                kpi_ctx = f"[KPI_CONTEXT] KPI_NAME={ui_selected.get('kpi_name')} KPI_ID={ui_selected.get('kpi_id')} AVAILABLE_DIMS={','.join(ui_selected.get('available_dimensions',[]))} -- "
+                augmented_query = kpi_ctx + (user_query or "")
+            else:
+                augmented_query = user_query
+        except Exception:
+            augmented_query = user_query
+
         # Call Starter Agent Sequence
-        await starter_agent_sequence(app_name, user_id, session_service, artifact_service, session_id, user_query)
+        await starter_agent_sequence(app_name, user_id, session_service, artifact_service, session_id, augmented_query)
         
         # Refresh session to get updated state
         session = await session_service.get_session(
@@ -159,68 +172,92 @@ def display_agent_response(session):
         return
 
 
-    # (No semantic post-processing helper here — render agent text directly)
-        
+    # Show only user-facing information by default: greeting, insights,
+    # recommendations, and the main result tables/visuals. Internal agent
+    # diagnostics and event logs are hidden behind the clickable
+    # "What I did" expander for analysts.
     state = session.state
-    
-    # Always display greeting
+
+    # User-facing header/greeting
     greeting = state.get('greeting', '')
     if greeting:
         st.markdown(f"**{greeting}**")
         st.divider()
-    
-    # Handle SQL sequence output
+
+    # Collate a lightweight user-facing summary
+    user_insights = state.get('latest_sql_output_reasoning') or ''
+    user_visual_insights = state.get('latest_python_code_output_reasoning') or ''
+    recommendations = state.get('latest_recommendations') or ''
+
+    # Present SQL-derived insights first (concise)
     if state.get('sql_required'):
-        st.subheader("SQL Analysis")
-        
-        sql_outcome = state.get('latest_sql_sequence_outcome')
-        
-        if sql_outcome == 'SUCCESS':
-            # Display both SQL response and output
-            sql_response = state.get('latest_sql_response', '')
-            sql_output_reasoning = state.get('latest_sql_output_reasoning', '')
-            # Replace physical column names (DIMn/INTnn/FLOATnn) with semantic names
-            sql_output_reasoning = _render_with_semantic_names(sql_output_reasoning, session)
-            
-            if sql_output_reasoning:
-                with st.expander("**SQL Analysis**", expanded=False):
-                    st.markdown(sql_output_reasoning, unsafe_allow_html=True)
+        st.subheader("Results & Insights")
+        # Prefer a human-readable reasoning block if present
+        if user_insights:
+            st.markdown(user_insights, unsafe_allow_html=True)
 
-            if sql_response:
-                st.markdown('**SQL Response:**')
-                df = pd.DataFrame(sql_response)
+        # Show result table (if available) as a clean dataframe
+        sql_rows = state.get('latest_sql_response')
+        if sql_rows:
+            st.markdown('**Result table:**')
+            try:
+                df = pd.DataFrame(sql_rows)
                 st.dataframe(df, use_container_width=True)
-            
-        else:
-            # Display only reasoning
-            sql_output_reasoning = state.get('latest_sql_output_reasoning', 'SQL sequence encountered an error.')
-            sql_output_reasoning = _render_with_semantic_names(sql_output_reasoning, session)
-            st.markdown("**SQL Status:**")
-            st.warning(sql_output_reasoning)
-    
-    # Handle Python sequence output
-    if state.get('python_required'):
-        st.subheader("Visualization")
-        
-        python_outcome = state.get('latest_python_sequence_outcome')
-        
-        if python_outcome == 'SUCCESS':
-            # Display Python response
-            python_response = state.get('latest_python_code_output_reasoning', '')
-            # Map any physical column names in python reasoning as well
-            python_response = _render_with_semantic_names(python_response, session)
-            if python_response: 
-                with st.expander("**Visualization Analysis**", expanded=False):
-                    st.markdown(python_response, unsafe_allow_html=True)
-            
-            # Display a tiled gallery of generated images (newest first)
-            display_image_gallery(path="images", cols=3, caption_prefix="Generated Visualization")
+            except Exception:
+                st.code(str(sql_rows))
 
-        else:
-            # Display only Python response (error case)
-            python_response = state.get('latest_python_code_output_reasoning', 'Visualization generation encountered an error.')
-            st.markdown("**Visualization Status:**")
-            st.warning(python_response)
+    # Present visualization insights
+    if state.get('python_required'):
+        if user_visual_insights:
+            st.subheader("Visualization Insights")
+            st.markdown(user_visual_insights, unsafe_allow_html=True)
+
+        # Show the latest image for the session (if saved)
+        img_path = None
+        try:
+            img_path = state.get('latest_img_path')
+        except Exception:
+            img_path = None
+
+        if img_path:
+            st.image(img_path, use_container_width=True)
+
+    # Recommendations block (if any)
+    if recommendations:
+        st.subheader("Recommendations")
+        st.markdown(recommendations, unsafe_allow_html=True)
+
+    # Clickable diagnostics for analysts: show the internal events, tool calls
+    # and raw agent outputs when explicitly requested.
+    with st.expander("What I did (click to expand)", expanded=False):
+        st.markdown("**Event Log / Agent Internals**")
+        # Event accumulator (shows tool responses, parsed json, token counts)
+        try:
+            st.json(EVENT_LOG_ACCUMULATOR)
+        except Exception:
+            st.text(str(EVENT_LOG_ACCUMULATOR))
+
+        st.markdown("**Session State (sanitised)**")
+        try:
+            # don't attempt to render enormous binary blobs
+            safe_state = {k: (v if not isinstance(v, (bytes, bytearray)) else f"<binary {len(v)} bytes>") for k, v in state.items()}
+            st.json(safe_state)
+        except Exception:
+            st.text(str(state))
+
+        st.markdown("**Latest Tool Calls / Responses**")
+        try:
+            # show recent tool call/response entries from the last final_response
+            recent_tools = {}
+            for k, v in state.items():
+                if isinstance(k, str) and (k.startswith('[tool_call]') or k.startswith('[tool_response]')):
+                    recent_tools[k] = v
+            if recent_tools:
+                st.json(recent_tools)
+            else:
+                st.text('No explicit tool call/response entries found in session state')
+        except Exception:
+            st.text('Could not extract tool call/response info')
 
 def display_debug_info(session):
     """Display debug information in the sidebar."""

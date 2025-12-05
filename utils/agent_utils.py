@@ -164,6 +164,26 @@ async def call_agent_async(
     final_response['user_query'] = user_query
     
     try:
+        # Debug: fetch current session and surface any selected_kpi so we can
+        # understand why agents may re-query KPI defs instead of acting on
+        # UI-provided context.
+        try:
+            current_session = await session_service.get_session(
+                app_name=app_name, user_id=user_id, session_id=session_id
+            )
+            sel = None
+            try:
+                sel = current_session.state.get('selected_kpi') or current_session.state.get('selected_kpi_meta')
+            except Exception:
+                sel = None
+            if sel:
+                print(f"DEBUG: call_agent_async - session.selected_kpi present: {sel}")
+            else:
+                print("DEBUG: call_agent_async - no session.selected_kpi found")
+        except Exception:
+            # Non-fatal: don't let logging failures break agent calls
+            print("DEBUG: call_agent_async - could not read session for debug")
+
         if kwargs:
             try:
                 print(f"call_agent_async received extra kwargs (ignored): {list(kwargs.keys())}")
