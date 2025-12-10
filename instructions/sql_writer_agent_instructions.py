@@ -189,58 +189,59 @@ WITH broadband AS (
     KPI_DATE,
     SUM(INT01) AS customer_count
   FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4`
-  WHERE KPI_ID = 20010
-    AND COUNTRY = 'UK'
-    AND KPI_DATE BETWEEN '2025-09-01' AND '2025-09-30'
+  WHERE KPI_ID = 20010 AND KPI_DATE = '2025-01-01'
   GROUP BY ALL
-),
-assurance AS (
-  SELECT
-    KPI_DATE,
-    SUM(INT01) AS assurance_sessions
+  ```
+
+- **Dimension Filter**
+  ```sql
+  SELECT KPI_DATE, DIM1 AS WHIX_LITE_SCORE_STREAM, SUM(INT01) AS DEVICE_COUNT_WHIX_LITE_SCORE_STREAM
   FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4`
-  WHERE KPI_ID = 40010
-    AND COUNTRY = 'UK'
-    AND KPI_DATE BETWEEN '2025-09-01' AND '2025-09-30'
+  WHERE KPI_ID = 70140002 AND DIM3 = 'Sky Stream'
+   AND KPI_DATE BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY) AND CURRENT_DATE()
   GROUP BY ALL
-)
-SELECT
-  b.KPI_DATE,
-  b.customer_count,
-  a.assurance_sessions,
-  a.assurance_sessions / b.customer_count AS assurance_rate
-FROM broadband b
-LEFT JOIN assurance a ON b.KPI_DATE = a.KPI_DATE
-ORDER BY b.KPI_DATE
-```
+  ORDER BY 1,2
+  ```
+
+- **Derived Metric (CTE Example)**
+  ```sql
+  WITH broadband AS (
+   SELECT KPI_DATE, SUM(INT01) AS customer_count
+   FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4`
+   WHERE KPI_ID = 20010 AND COUNTRY = 'UK'
+    AND KPI_DATE BETWEEN '2025-09-01' AND '2025-09-30'
+   GROUP BY ALL
+  ),
+  assurance AS (
+   SELECT KPI_DATE, SUM(INT01) AS assurance_sessions
+   FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V4`
+   WHERE KPI_ID = 40010 AND COUNTRY = 'UK'
+    AND KPI_DATE BETWEEN '2025-09-01' AND '2025-09-30'
+   GROUP BY ALL
+  )
+  SELECT b.KPI_DATE, b.customer_count, a.assurance_sessions,
+      a.assurance_sessions / b.customer_count AS assurance_rate
+  FROM broadband b
+  LEFT JOIN assurance a ON b.KPI_DATE = a.KPI_DATE
+  ORDER BY b.KPI_DATE
+  ```
 
 ## Error Handling
 
-**If query execution fails:**
-- Review the error message
-- Check table and column names
-- Verify data types match operations
-- Ensure proper quoting and syntax
-- Return an explanation of the issue and potential solutions
+- Review error messages.
+- Check table/column names and data types.
+- Ensure proper quoting and syntax.
+- Explain the issue and suggest solutions.
 """
 
-# Dynamic instruction - uses state variables
 SQL_WRITER_AGENT_DYNAMIC_INSTRUCTION = """## Available BigQuery Resources
 
-Your queries will often involve referencing the **schema table** to identify relevant KPI_IDs or field names, and the **data table** to retrieve actual metric values.
+Reference the **schema table** to identify KPI_IDs and field names, and the **data table** for metric values.
 
 ### Schema Information
 - **Projects**: {projects}
 - **Datasets**: {datasets}
 - **Tables**: {tables}
 
-Use these resources to construct valid, fully-qualified table references in your queries.
-Verify that the tables and fields mentioned in the user's question exist in this schema before executing queries.
-
-### Semantic Layer Mapping
-This runtime environment provides a compact semantic KPI index in the session state under the key `semantic_kpis` (if available). `semantic_kpis` maps normalized KPI names to small metadata including `kpi_id`, `kpi_name`, and a `dims` mapping of semantic dimension name -> `{physical_column: DIMn}`.
-
-When producing user-facing recommendations or listing available dimensions, ALWAYS use the semantic dimension names from `semantic_kpis` (e.g., `TV Service`) and include the physical column in parentheses (e.g., `TV Service (DIM1)`). Use the physical column names only when constructing the SQL query itself.
-
-If `semantic_kpis` is present, prefer to look up the currently-relevant KPI by normalized name and derive friendly dimension names from that mapping.
+Use fully-qualified table references. Verify all tables and fields before executing queries.
 """

@@ -28,7 +28,7 @@ python_refiner_agent = LlmAgent(
     code_executor=BuiltInCodeExecutor(),
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
-        max_output_tokens=5000,
+        # max_output_tokens=5000,
         top_p=0.5,
     ),
     planner=BuiltInPlanner(

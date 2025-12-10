@@ -46,10 +46,9 @@ STARTER_AGENT_DYNAMIC_INSTRUCTION = (
     """
 ## Available Resources
 
-### GCP Environment
-- **Projects**: {projects}
-- **Datasets**: {datasets}
-- **Tables**: {tables}
+- **Projects:** {projects}
+- **Datasets:** {datasets}
+- **Tables:** {tables}
 
 ### Available KPIs (from semantic layer)
 {kpi_list_text?}
@@ -60,8 +59,7 @@ STARTER_AGENT_DYNAMIC_INSTRUCTION = (
     
 ## Current Context
 
-### Conversation Intent So Far
-{user_intent?}
+- **Conversation Intent:** {user_intent?}
 
 Use this context to:
 - Map the user's latest utterance to a KPI (or request a clarification).
