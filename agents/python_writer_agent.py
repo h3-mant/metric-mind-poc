@@ -9,9 +9,9 @@ from instructions.python_writer_agent_instructions import *
 import warnings
 from callbacks import store_image_artifact
 from dotenv import load_dotenv
+# from pygwalker import ... (keep existing imports as needed)
 
 load_dotenv(override=True)
-
 warnings.filterwarnings("ignore")
 
 python_writer_agent = LlmAgent(
@@ -25,7 +25,7 @@ python_writer_agent = LlmAgent(
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
         top_p=0.5,
-        max_output_tokens=5000,
+        max_output_tokens=1500,  # reduce default output size
     ),
     planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(
@@ -33,7 +33,8 @@ python_writer_agent = LlmAgent(
           thinking_budget=-1
           )
     ),
-    include_contents='default',
+    # avoid auto-including large SQL outputs in prompts; we will pass a trimmed version explicitly
+    include_contents='none',
     output_key='latest_python_code_output_reasoning',
     after_tool_callback=store_image_artifact
 )

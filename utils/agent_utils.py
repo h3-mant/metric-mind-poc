@@ -4,7 +4,9 @@ from google.adk.sessions import InMemorySessionService
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.runners import Runner
 import time
-from utils import EVENT_LOG_ACCUMULATOR 
+from utils import EVENT_LOG_ACCUMULATOR
+import json
+import re
 
 async def process_agent_response(
         event: Event, 
@@ -150,7 +152,8 @@ async def call_agent_async(
         session_service: InMemorySessionService,
         artifact_service: InMemoryArtifactService,
         session_id: str, 
-        user_query: str, 
+        user_query: str,
+        **kwargs
     ) -> dict:
     """Custom Agent Caller to aggregate the final_response payload across all events."""
 
@@ -161,11 +164,195 @@ async def call_agent_async(
     final_response['user_query'] = user_query
     
     try:
+        # Debug: fetch current session and surface any selected_kpi so we can
+        # understand why agents may re-query KPI defs instead of acting on
+        # UI-provided context.
+        try:
+            current_session = await session_service.get_session(
+                app_name=app_name, user_id=user_id, session_id=session_id
+            )
+            sel = None
+            try:
+                sel = current_session.state.get('selected_kpi') or current_session.state.get('selected_kpi_meta')
+            except Exception:
+                sel = None
+            if sel:
+                print(f"DEBUG: call_agent_async - session.selected_kpi present: {sel}")
+            else:
+                print("DEBUG: call_agent_async - no session.selected_kpi found")
+        except Exception:
+            # Non-fatal: don't let logging failures break agent calls
+            print("DEBUG: call_agent_async - could not read session for debug")
+
+        if kwargs:
+            try:
+                print(f"call_agent_async received extra kwargs (ignored): {list(kwargs.keys())}")
+            except Exception:
+                pass
         async for event in runner.run_async(
             user_id=user_id, session_id=session_id, new_message=content
         ):
             await process_agent_response(event, app_name, user_id, session_id, session_service, artifact_service, final_response)
     except Exception as e:
-        print(f"Error during agent call: {e}")
-    
+        import traceback
+        tb = traceback.format_exc()
+        print(f"Error during agent call: {e}\n{tb}")
+        final_response["error"] = str(e)
+        final_response["traceback"] = tb
+
+        # Attempt to update session state with a safe fallback so downstream code can continue.
+        try:
+            current_session = await session_service.get_session(
+                app_name=app_name, user_id=user_id, session_id=session_id
+            )
+            # Provide conservative defaults for starter agent outputs to avoid crashes.
+            state_changes = {
+                "greeting": "",
+                "user_intent": "(agent failed to produce structured response)",
+                "sql_required": False,
+                "python_required": False,
+                "latest_agent_error": str(e),
+            }
+            actions_with_update = EventActions(state_delta=state_changes)
+            system_event = Event(
+                author="system",
+                actions=actions_with_update,
+                timestamp=time.time(),
+            )
+            await session_service.append_event(current_session, system_event)
+            final_response["parsed_json"] = {
+                "greeting": state_changes["greeting"],
+                "user_intent": state_changes["user_intent"],
+                "sql_required": state_changes["sql_required"],
+                "python_required": state_changes["python_required"],
+            }
+            final_response["parsed_json_source"] = "exception_fallback"
+        except Exception as exc:
+            # If even this fails, ensure we still return an error payload.
+            final_response["append_event_error"] = str(exc)
+
+    # Post-process: try to parse JSON from accumulated text so downstream Pydantic parsing won't fail unexpectedly.
+    # Prefer structured tool responses first (they are already dicts).
+    for k, v in final_response.items():
+        if isinstance(k, str) and k.startswith("[tool_response]") and isinstance(v, dict):
+            final_response["parsed_json"] = v
+            final_response["parsed_json_source"] = "tool_response"
+            break
+
+    text = final_response.get("text")
+    if "parsed_json" not in final_response and text:
+        def _extract_candidates_from_text(t: str):
+            candidates = []
+            # 1) ```json code fences
+            for m in re.finditer(r'```json\s*(.*?)```', t, flags=re.DOTALL | re.IGNORECASE):
+                candidates.append(m.group(1).strip())
+
+            # 2) generic code fences that contain JSON
+            for m in re.finditer(r'```\s*(.*?)```', t, flags=re.DOTALL):
+                body = m.group(1).strip()
+                if body.startswith('{') or body.startswith('['):
+                    candidates.append(body)
+
+            # 3) bracket-matching for top-level JSON objects (attempt to find balanced {...} blocks)
+            stack = []
+            starts = []
+            for i, ch in enumerate(t):
+                if ch == '{':
+                    stack.append(i)
+                elif ch == '}':
+                    if stack:
+                        start = stack.pop()
+                        # if stack is empty, we closed a top-level object
+                        if not stack:
+                            candidate = t[start:i+1]
+                            candidates.append(candidate)
+
+            # 4) regex fallback: last {...} block
+            m = re.search(r'\{[\s\S]*\}', t)
+            if m:
+                candidates.append(m.group(0))
+
+            # deduplicate preserving order
+            seen = set()
+            uniq = []
+            for c in candidates:
+                s = c.strip()
+                if s and s not in seen:
+                    seen.add(s)
+                    uniq.append(s)
+            return uniq
+
+        candidates = _extract_candidates_from_text(text)
+
+        # Try candidates by descending length (prefer larger JSON objects)
+        for candidate in sorted(candidates, key=lambda x: -len(x)):
+            try:
+                parsed = json.loads(candidate)
+                final_response["parsed_json"] = parsed
+                final_response["parsed_json_source"] = "extracted_block"
+                break
+            except Exception:
+                continue
+
+        # If still not found, try direct full-text parse as last attempt
+        if "parsed_json" not in final_response:
+            try:
+                parsed = json.loads(text)
+                final_response["parsed_json"] = parsed
+                final_response["parsed_json_source"] = "full_text"
+            except Exception:
+                # Fallback: handle common short status outputs like "OUTCOME OK" or "SUCCESS" etc.
+                cleaned = text.strip().upper()
+                m_status = re.search(r'OUTCOME[_\s:-]*(OK|SUCCESS|FAIL|ERROR)\b', cleaned)
+                if m_status:
+                    val = m_status.group(1)
+                    outcome = 'OK' if val in ('OK', 'SUCCESS') else 'ERROR' if val == 'ERROR' else 'FAIL'
+                    final_response["parsed_json"] = {"outcome": outcome}
+                    final_response["parsed_json_source"] = "status_fallback"
+                else:
+                    if cleaned in ("OK", "SUCCESS"):
+                        final_response["parsed_json"] = {"outcome": "OK"}
+                        final_response["parsed_json_source"] = "status_fallback"
+                    elif cleaned in ("ERROR", "FAIL"):
+                        final_response["parsed_json"] = {"outcome": "ERROR"}
+                        final_response["parsed_json_source"] = "status_fallback"
+                    else:
+                        final_response["json_error"] = "No JSON object found in text"
+                        final_response["raw_text"] = text
+
+    # If parsing failed, attempt a single retry asking the agent to return pure JSON.
+    if "parsed_json" not in final_response and not final_response.get("retried"):
+        try:
+            prev_text = final_response.get("raw_text") or final_response.get("text", "")
+            followup = (
+                "The assistant's previous response did not contain valid JSON. "
+                "Please respond with ONLY a JSON object matching this schema: {\"greeting\": \"...\", \"user_intent\": \"...\", \"sql_required\": false, \"python_required\": false}. "
+                "Do not include any additional commentary.\n\nPrevious response for context:\n" + prev_text
+            )
+            retry_response = {}
+            content2 = types.Content(role="user", parts=[types.Part(text=followup)])
+            async for event in runner.run_async(user_id=user_id, session_id=session_id, new_message=content2):
+                await process_agent_response(event, app_name, user_id, session_id, session_service, artifact_service, retry_response)
+
+            rtext = retry_response.get("text", "")
+            parsed_retry = None
+            if rtext:
+                try:
+                    parsed_retry = json.loads(rtext)
+                except Exception:
+                    m = re.search(r'\{[\s\S]*\}', rtext)
+                    if m:
+                        try:
+                            parsed_retry = json.loads(m.group(0))
+                        except Exception:
+                            parsed_retry = None
+
+            if parsed_retry:
+                final_response["parsed_json"] = parsed_retry
+                final_response["parsed_json_source"] = "retry"
+
+            final_response["retried"] = True
+        except Exception as exc:
+            final_response["retry_error"] = str(exc)
+
     return final_response

@@ -6,6 +6,7 @@ from utils.agent_utils import call_agent_async
 from agents.starter_agent import starter_agent
 from utils.logger import get_logger
 
+
 logger = get_logger(__name__)
 
 async def starter_agent_sequence(

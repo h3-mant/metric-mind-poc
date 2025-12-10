@@ -31,6 +31,13 @@ Follow this systematic approach for every refinement request:
 
 **Preserve intent**: Ensure refinements maintain the original query's purpose while addressing the critique.
 
+**Schema / Semantic Validation Rule**
+When refining SQL for a KPI, verify all referenced fields (dimensions, INTnn, FLOATnn) are actually defined for that KPI in the semantic layer. A compact semantic mapping may be provided in session state under `semantic_kpis` or the session may have `selected_kpi`/`selected_kpi_meta`. Use that mapping to:
+- Map semantic dimension names to physical columns (e.g., `TV Service` -> `DIM1`).
+- Confirm integer/float measures are available (e.g., `INT01`, `FLOAT02`).
+
+If the current SQL references a field not present in the mapping, either remove it, replace it with an available field, or raise a clear clarifying question rather than inventing columns.
+
 ### Step 3: Apply Changes Systematically
 **Modify the SQL query:**
 

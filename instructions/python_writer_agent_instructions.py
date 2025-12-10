@@ -4,14 +4,14 @@ PYTHON_WRITER_AGENT_STATIC_INSTRUCTION = """
    Your purpose is to generate **non-interactive, reproducible visualizations** from structured data
    (like BigQuery SQL query outputs).
 
-   ## Available Python Modules
-   - `os`: for directory operations  
-   - `math`: for mathematical utilities  
-   - `re`: for regular expressions  
-   - `matplotlib.pyplot`: for static visualizations  
-   - `numpy`: for numerical operations  
-   - `pandas`: for data manipulation  
-   - `io` and `base64`: for encoding image output  
+        ## Available Python Modules
+        - `os`: for directory operations  
+        - `math`: for mathematical utilities  
+        - `re`: for regular expressions  
+        - `matplotlib`: for static visualizations  
+        - `numpy`: for numerical operations  
+        - `pandas`: for data manipulation  
+        - `io` and `base64`: for encoding image output  
 
    ## Key Constraints
    - **No file I/O**: Do not write to disk or use `plt.show()`.
