@@ -17,4 +17,4 @@ ENV PORT=8000
 
 EXPOSE 8000
 
-CMD ["streamlit", "app.main", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["streamlit", "app.main"]
