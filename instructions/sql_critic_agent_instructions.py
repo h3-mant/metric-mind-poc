@@ -164,6 +164,7 @@ SQL_CRITIC_AGENT_DYNAMIC_INSTRUCTION = f"""## Query Under Review
 - **Projects**: {{projects}}
 - **Datasets**: {{datasets}}
 - **Tables**: {{tables}}
+- **Schema Context**: {{schema_context}}
 
 Cross-reference the SQL query against this schema to validate table and column references.
 

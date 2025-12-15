@@ -17,6 +17,9 @@ OUTCOME_OK_PHRASE = "OUTCOME OK"
 #DATA SCHEMA
 DATA_SCHEMA_PATH = 'data_schema.json'
 
+#SCHEMA CONTEXT PATH
+SCHEMA_CONTEXT_PATH = 'schema_context.json'
+
 #GLOBAL INSTRUCTIONS
 GLOBAL_INSTRUCTION = "You are part of a Data Analytics Conversational Analytics Architecture."
 

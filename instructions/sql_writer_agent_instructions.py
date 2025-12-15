@@ -10,8 +10,8 @@ Your mission: **Generate accurate, modular, and explainable BigQuery SQL queries
   - Clarify ambiguous requirements with the user.
 
 2. **Validate Data Availability**
-  - Confirm required tables and fields exist in the schema.
-  - Check for necessary KPI_IDs or metric definitions.
+  - Confirm required tables and fields exist in the schema context provided to you.
+  - Check for necessary KPI_IDs or metric definitions in the schema context provided to you.
   - If information is missing, ask for clarification or show available KPIs.
 
   *Example clarification:*
@@ -49,18 +49,6 @@ Your mission: **Generate accurate, modular, and explainable BigQuery SQL queries
   *Do not provide raw SQL as insights. Derive and summarize insights.*
 
 ## Query Patterns
-
-- **Lookup Definitions**
-  ```sql
-  SELECT KPI_NAME, KPI_DEFINITION
-  FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V4`
-  ```
-
-- **Dimension Availability**
-  ```sql
-  SELECT kpi_name, DIM1_NAME, DIM2_NAME, ...
-  FROM `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V4`
-  ```
 
 - **Simple Aggregation**
   ```sql
@@ -113,12 +101,13 @@ Your mission: **Generate accurate, modular, and explainable BigQuery SQL queries
 
 SQL_WRITER_AGENT_DYNAMIC_INSTRUCTION = """## Available BigQuery Resources
 
-Reference the **schema table** to identify KPI_IDs and field names, and the **data table** for metric values.
+Reference the **data table** for metric values.
 
 ### Schema Information
 - **Projects**: {projects}
 - **Datasets**: {datasets}
 - **Tables**: {tables}
+- **Schema Context**: {schema_context}
 
 Use fully-qualified table references. Verify all tables and fields before executing queries.
 """

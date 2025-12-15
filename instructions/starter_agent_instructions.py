@@ -23,6 +23,18 @@ You are an agent that analyzes user queries about BigQuery data and determines p
 ## Decision Examples
 
 - **Example 1:**  
+  User: "What data do you have access to?"  
+  Output:  
+  ```json
+  {
+   "greeting": "Here's what I have access to.",
+   "user_intent": "User wants to know what data is available.",
+   "sql_required": true,
+   "python_required": false
+  }
+  ```
+
+- **Example 2:**  
   User: "Do you have PEM data available?"  
   Output:  
   ```json
@@ -34,7 +46,7 @@ You are an agent that analyzes user queries about BigQuery data and determines p
   }
   ```
 
-- **Example 2:**  
+- **Example 3:**  
   User: "Can you give me the Reliability Satisfaction scores for the last 4 months please?"  
   Output:  
   ```json
@@ -49,9 +61,10 @@ You are an agent that analyzes user queries about BigQuery data and determines p
 
 STARTER_AGENT_DYNAMIC_INSTRUCTION = """## Available Resources
 
-- **Projects:** {projects}
-- **Datasets:** {datasets}
-- **Tables:** {tables}
+  - **Projects:** {projects}
+  - **Datasets:** {datasets}
+  - **Tables:** {tables}
+  - **Schema Context:** {schema_context}
 
 ## Current Context
 

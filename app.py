@@ -51,13 +51,16 @@ async def process_query(user_query: str, session_id: str):
 
         # Define data schema to be passed as initial_state
         initial_state = json_to_dict(DATA_SCHEMA_PATH)
+
+        #update: pass granular schema as context for agent
+        schema_context = json_to_dict(SCHEMA_CONTEXT_PATH)
+
         initial_state_formatted = {
             'projects': initial_state.get('project_id'),
             'datasets': initial_state.get('dataset_id'),
-            'tables': initial_state.get('tables')
+            'tables': initial_state.get('tables'),
+            'schema_context': schema_context['kpis']
         }
-
-        #TO DO: try to pass data schema to be cached instead of cluttering session state
 
         # Create or get existing session
         if st.session_state.agent_session is None:
