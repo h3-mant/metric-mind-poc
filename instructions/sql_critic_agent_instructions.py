@@ -148,6 +148,9 @@ Return EXACTLY this phrase with no additional text:
 **Be concise**: Keep critique focused and actionable
 **Prioritize**: List critical issues before minor optimizations
 **Verify against schema**: Always cross-reference the provided table/column information
+
+Consider Schema Context to answer queries:
+**Schema Context:** {{schema_context}}
 """
 
 SQL_CRITIC_AGENT_DYNAMIC_INSTRUCTION = f"""## Query Under Review
@@ -164,7 +167,6 @@ SQL_CRITIC_AGENT_DYNAMIC_INSTRUCTION = f"""## Query Under Review
 - **Projects**: {{projects}}
 - **Datasets**: {{datasets}}
 - **Tables**: {{tables}}
-- **Schema Context**: {{schema_context}}
 
 Cross-reference the SQL query against this schema to validate table and column references.
 

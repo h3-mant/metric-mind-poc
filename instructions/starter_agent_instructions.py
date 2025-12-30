@@ -57,6 +57,9 @@ You are an agent that analyzes user queries about BigQuery data and determines p
    "python_required": false
   }
   ```
+
+  Consider Schema Context to answer queries:
+  **Schema Context:** {schema_context}
 """
 
 STARTER_AGENT_DYNAMIC_INSTRUCTION = """## Available Resources
@@ -64,7 +67,6 @@ STARTER_AGENT_DYNAMIC_INSTRUCTION = """## Available Resources
   - **Projects:** {projects}
   - **Datasets:** {datasets}
   - **Tables:** {tables}
-  - **Schema Context:** {schema_context}
 
 ## Current Context
 

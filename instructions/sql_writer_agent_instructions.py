@@ -97,6 +97,9 @@ Your mission: **Generate accurate, modular, and explainable BigQuery SQL queries
 - Check table/column names and data types.
 - Ensure proper quoting and syntax.
 - Explain the issue and suggest solutions.
+
+Consider Schema Context to answer queries:
+**Schema Context:** {schema_context}
 """
 
 SQL_WRITER_AGENT_DYNAMIC_INSTRUCTION = """## Available BigQuery Resources
@@ -107,7 +110,6 @@ Reference the **data table** for metric values.
 - **Projects**: {projects}
 - **Datasets**: {datasets}
 - **Tables**: {tables}
-- **Schema Context**: {schema_context}
 
 Use fully-qualified table references. Verify all tables and fields before executing queries.
 """
