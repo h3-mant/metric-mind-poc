@@ -3,6 +3,282 @@
   "dataset_id": "metricmind",
   "tables": [
     {
+      "table_name": "GSM_KPI_DEFS_TEST_V4",
+      "description": "This contains definitions about our KPIs.  Each entry defines a KPI set which consists of between 1 and 10 integer measures and 1 and 6 floating point measures.  There are also 6 dimensions. It gives us names for all of these items as well as a unique identifier for the KPI set and details such as name, owner, group and description.",
+      "schema": [
+      {
+        "name": "KPI_ID",
+        "type": "INTEGER",
+        "mode": "NULLABLE",
+        "description": "The unique identifier for the KPI"
+      },
+      {
+        "name": "KPI_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "KPI Name"
+      },
+      {
+        "name": "KPI_GROUP_ID",
+        "type": "INTEGER",
+        "mode": "NULLABLE",
+        "description": "The identifier for KPI group, (first character from KPI_ID)"
+      },
+      {
+        "name": "KPI_GROUP_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "KPI Group Name"
+      },
+      {
+        "name": "KPI_OWNER",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The Business Owner of the KPI"
+      },
+      {
+        "name": "KPI_DESCRIPTION",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "Brief Description of the KPI"
+      },
+      {
+        "name": "KPI_LEVEL",
+        "type": "INTEGER",
+        "mode": "NULLABLE",
+        "description": "KPI level"
+      },
+      {
+        "name": "DIM1_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The string value of the first dimension by which we can analyse the KPI data."
+      },
+      {
+        "name": "DIM2_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The string value of the second dimension by which we can analyse the KPI data."
+      },
+      {
+        "name": "DIM3_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The string value of the third dimension by which we can analyse the KPI data."
+      },
+      {
+        "name": "DIM4_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The string value of the fourth dimension by which we can analyse the KPI data."
+      },
+      {
+        "name": "DIM5_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The string value of the fifth dimension by which we can analyse the KPI data."
+      },
+      {
+        "name": "DIM6_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The string value of the sixth dimension by which we can analyse the KPI data."
+      },
+      {
+        "name": "INT01_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The first string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT01_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The aggregation applied on the the first string name of an integer result of our KPI "
+      },
+      {
+        "name": "INT02_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The second string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT02_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The aggregation applied on the second string name of an integer result of our KPI"
+      },
+      {
+        "name": "INT03_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The third string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT03_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The aggregation applied on the third string name of an integer result of our KPI"
+      },
+      {
+        "name": "INT04_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The fourth string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT04_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The aggregation applied on the fourth string name of an integer result of our KPI"
+      },
+      {
+        "name": "INT05_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The fifth string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT05_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The fifth aggregation applied on the fifth string name of an integer result of our KPI"
+      },
+      {
+        "name": "INT06_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The sixth string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT06_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The sixth aggregation applied on the sixth string name of an integer result of our KPI"
+      },
+      {
+        "name": "INT07_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The seventh string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT07_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The seventh aggregation applied on the seventh  string name of an integer result of our KPI"
+      },
+      {
+        "name": "INT08_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The eighth string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT08_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The eighth aggregation applied on the eighth string name of an integer result of our KPI"
+      },
+      {
+        "name": "INT09_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The ninth string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT09_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The ninth aggregation applied on the ninth string name of an integer result of our KPI"
+      },
+      {
+        "name": "INT10_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The tenth string name of an integer result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "INT10_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The tenth aggregation applied on the tenth string name of an integer result of our KPI"
+      },
+      {
+        "name": "FLOAT1_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The first string name of a float result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "FLOAT1_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The first aggregation applied on the first string name of a float result of our KPI"
+      },
+      {
+        "name": "FLOAT2_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The second string name of a float result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "FLOAT2_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The second aggregation applied on the second string name of a float result of our KPI"
+      },
+      {
+        "name": "FLOAT3_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The third string name of a float result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "FLOAT3_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The third aggregation applied on the third string name of a float result of our KPI"
+      },
+      {
+        "name": "FLOAT4_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The fourth string name of a float result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "FLOAT4_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The fourth aggregation applied on the fourth string name of a float result of our KPI"
+      },
+      {
+        "name": "FLOAT5_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The fifth string name of a float result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "FLOAT5_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The fifth aggregation applied on the fifth string name of a float result of our KPI"
+      },
+      {
+        "name": "FLOAT6_NAME",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The sixth string name of a float result of our KPI which can be aggregated across the various dimensions as needed"
+      },
+      {
+        "name": "FLOAT6_AGG",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "The sixth aggregation applied on the sixth string name of a float result of our KPI"
+      }
+    ]
+  },
+    {
       "table_name": "GSM_KPI_DATA_TEST_V4",
       "description": "This table contains the actual KPI details for all our KPI sets that have been implemented here so far.  Each row in the table is one of a number of entries for that KPI set.",
       "schema": [

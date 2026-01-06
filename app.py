@@ -59,7 +59,7 @@ async def process_query(user_query: str, session_id: str):
             'projects': initial_state.get('project_id'),
             'datasets': initial_state.get('dataset_id'),
             'tables': initial_state.get('tables'),
-            'schema_context': schema_context['kpis']
+            'schema_context': schema_context['kpis']            
         }
 
         # Create or get existing session
