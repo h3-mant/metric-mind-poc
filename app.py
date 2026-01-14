@@ -20,8 +20,84 @@ logger = get_logger(__name__)
 # Page configuration
 st.set_page_config(
     page_title="Metric Mind",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
+
+# Custom CSS for Sky branding and styling
+st.markdown("""
+<style>
+    /* Sky Broadband color scheme */
+    :root {
+        --sky-blue: #003D7A;
+        --sky-cyan: #0099CC;
+        --sky-light: #E8F4FF;
+        --sky-white: #F5F5F5;
+    }
+    
+    /* Main page background */
+    .stApp {
+        background: linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%);
+    }
+    
+    /* Sidebar background */
+    .stSidebar {
+        background-color: #F5F5F5 !important;
+    }
+    
+    /* Header styling */
+    h1 {
+        color: #003D7A !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.5px;
+    }
+    
+    /* Bio text styling */
+    .bio-text {
+        color: #003D7A;
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        padding: 14px 16px;
+        background: linear-gradient(90deg, #E8F4FF 0%, #F0F8FF 100%);
+        border-left: 5px solid #0099CC;
+        border-radius: 6px;
+    }
+    
+    /* Expander styling */
+    .streamlit-expanderHeader {
+        background-color: #E8F4FF !important;
+        color: #003D7A !important;
+        border-radius: 6px !important;
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #0099CC 0%, #0077AA 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 6px !important;
+        font-weight: 700 !important;
+        box-shadow: 0 2px 8px rgba(0, 153, 204, 0.3) !important;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #0077AA 0%, #005580 100%) !important;
+        box-shadow: 0 4px 12px rgba(0, 153, 204, 0.4) !important;
+    }
+    
+    /* Divider styling */
+    hr {
+        border-color: #0099CC !important;
+        margin: 20px 0 !important;
+    }
+    
+    /* Text styling */
+    body {
+        color: #003D7A !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Initialize session state
 if 'messages' not in st.session_state:
@@ -164,13 +240,13 @@ def display_agent_response(session):
             sql_output_reasoning = state.get('latest_sql_output_reasoning', '')
             
             if sql_output_reasoning:
-                with st.expander("**SQL Analysis**", expanded=False):
+                with st.expander("**SQL Analysis**", expanded=True):
                     st.markdown(sql_output_reasoning, unsafe_allow_html=True)
 
             if sql_response:
                 st.markdown('**SQL Response:**')
                 df = pd.DataFrame(sql_response)
-                st.dataframe(df, use_container_width=True)
+                st.dataframe(df, width='stretch')
             
         else:
             # Display only reasoning
@@ -197,7 +273,7 @@ def display_agent_response(session):
                 png_files = list(img_dir.glob("img_*.png"))
                 if png_files:
                     latest_img = max(png_files, key=lambda f: f.stat().st_mtime)
-                    st.image(str(latest_img), caption=f"Generated Visualization ({latest_img.name})", use_container_width=False)
+                    st.image(str(latest_img), caption=f"Generated Visualization ({latest_img.name})", width='content')
                 else:
                     st.warning("Visualization was generated but no image files found in the directory.")
             else:
@@ -320,13 +396,66 @@ def display_debug_info(session):
     #         value=state.get('app:cached_contents_count', 0)
     #     )
 
+def display_kpi_reference():
+    """Display KPI reference dropdown with KPI names and definitions."""
+    schema_context = json_to_dict(SCHEMA_CONTEXT_PATH)
+    kpis = schema_context.get('kpis', {})
+    
+    # Create a dataframe with KPI information
+    kpi_data = []
+    for kpi_id, kpi_info in kpis.items():
+        kpi_data.append({
+            'KPI ID': kpi_info.get('kpi_id', ''),
+            'KPI Name': kpi_info.get('kpi_name', ''),
+            'Description': kpi_info.get('kpi_description', '')
+        })
+    
+    if kpi_data:
+        with st.expander("KPI Reference", expanded=False):
+            df_kpis = pd.DataFrame(kpi_data)
+            st.dataframe(
+                df_kpis,
+                width='stretch',
+                hide_index=True,
+                column_config={
+                    "KPI ID": st.column_config.TextColumn(width="medium"),
+                    "KPI Name": st.column_config.TextColumn(width="medium"),
+                    "Description": st.column_config.TextColumn(width="large")
+                }
+            )
+
 def main():
     """Main Streamlit application."""
     
-    # Header
-    st.title("Metric Mind")
-    # st.markdown("Ask questions about your BigQuery data and get SQL analysis with visualizations.")
+    # Header with logo and title
+    col1, col2, col3 = st.columns([0.15, 0.7, 0.15])
     
+    with col1:
+        # Try to load Sky logo, fallback to emoji if not found
+        logo_path = Path("SKY_NEW_LOGO.png")
+        if logo_path.exists():
+            st.image(str(logo_path), width=120)
+        else:
+            st.markdown("<div style='font-size: 60px; text-align: center;'>☁️</div>", unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("<h1 style='text-align: center; margin-top: 10px;'>Metric Mind</h1>", unsafe_allow_html=True)
+    
+    with col3:
+        st.empty()
+    
+    # Bio line
+    st.markdown(
+        "<div class='bio-text'>Conversational AI agent for Sky TV, Broadband & Mobile Service Analytics | "
+        "Fast self-service intelligence for stakeholders</div>",
+        unsafe_allow_html=True
+    )
+    
+    # Display KPI reference
+    display_kpi_reference()
+    
+    st.markdown("---")
+
     # Sidebar
     with st.sidebar:
         st.header("Session Info")
@@ -337,7 +466,7 @@ def main():
             st.session_state.session_id = str(uuid.uuid4())
             st.session_state.agent_session = None
             st.session_state.session_service = InMemorySessionService()
-            st.rerun()
+            st.rerun()        
         
         st.markdown("---")
         

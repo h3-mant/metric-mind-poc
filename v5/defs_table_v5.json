@@ -1,0 +1,101 @@
+[
+  {
+    "description": "The unique identifier for this KPI set.",
+    "name": "KPI_ID",
+    "type": "INTEGER"
+  },
+  {
+    "description": "The business name / title for this KPI set.",
+    "name": "KPI_NAME",
+    "type": "STRING"
+  },
+  {
+    "description": "The identifier of the KPI group that the KPI is a part of.",
+    "name": "KPI_GROUP_ID",
+    "type": "INTEGER"
+  },
+  {
+    "description": "The KPI group identifier for this KPI set.",
+    "name": "KPI_GROUP_NAME",
+    "type": "STRING"
+  },
+  {
+    "description": "The KPI group name / business area for this KPI set.",
+    "name": "KPI_OWNER",
+    "type": "STRING"
+  },
+  {
+    "description": "The business description for this KPI set.",
+    "name": "KPI_DESCRIPTION",
+    "type": "STRING"
+  },
+  {
+    "description": "The level of this KPI. Lower levels are computed first so higher levels can use their KPI results.",
+    "name": "KPI_LEVEL",
+    "type": "INTEGER"
+  },
+  {
+    "description": "An array (struct) of two string values that allow us to understand this KPI dimension.",
+    "fields": [
+      {
+        "description": "The name of the dimension we are holding kpi information about",
+        "name": "NAME",
+        "type": "STRING"
+      },
+      {
+        "description": "A description of the dimension we are holding kpi information about",
+        "name": "DETAILS",
+        "type": "STRING"
+      }
+    ],
+    "mode": "REPEATED",
+    "name": "DIM",
+    "type": "RECORD"
+  },
+  {
+    "description": "An array (struct) of three string values that allow us to understand this KPI integer measure value.",
+    "fields": [
+      {
+        "description": "The name of the integer.",
+        "name": "NAME",
+        "type": "STRING"
+      },
+      {
+        "description": "The description of the integer.",
+        "name": "DETAILS",
+        "type": "STRING"
+      },
+      {
+        "description": "The default aggregation to be applied to this measure (not used yet).",
+        "name": "AGG",
+        "type": "STRING"
+      }
+    ],
+    "mode": "REPEATED",
+    "name": "INT",
+    "type": "RECORD"
+  },
+  {
+    "description": "An array (struct) of three string values that allow us to understand this KPI floating point measure value.",
+    "fields": [
+      {
+        "description": "The name of the floating point value.",
+        "name": "NAME",
+        "type": "STRING"
+      },
+      {
+        "description": "The description of the measure.",
+        "name": "DETAILS",
+        "type": "STRING"
+      },
+      {
+        "description": "The default aggregation to be applied to this measure (not used yet).",
+        "name": "AGG",
+        "type": "STRING"
+      }
+    ],
+    "mode": "REPEATED",
+    "name": "FLOAT",
+    "type": "RECORD"
+  }
+]
