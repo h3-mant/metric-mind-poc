@@ -6,72 +6,58 @@
   "kpi_owner": "Simon Hunt",
   "kpi_description": "The number of broadband orders, provisioning starts, actitivations and dropouts each day.  The number can be analysed by a number of dimensions.",
   "f0_": [{
-    "name": "Order Type",
-    "details": "The type of the order ?????.",
-    "kpi": [{
-      "dim_values": ""
-    }]
-  }, {
     "name": "Product",
     "details": "The broadband marketing product the customer has bought.",
     "kpi": [{
+      "dim_values": "NOW Full Fibre 300 (FTTP) - NOW Full Fibre 300"
+    }, {
+      "dim_values": "Sky Full Fibre 75 (FTTP) - Sky Full Fibre 150"
+    }, {
       "dim_values": " - NOW Full Fibre 75"
     }, {
       "dim_values": " - Sky Full Fibre 500"
     }, {
-      "dim_values": "Sky Full Fibre 150 (FTTP) - Sky Full Fibre 100"
-    }, {
-      "dim_values": "Sky Full Fibre 500 (FTTP) - Sky Full Fibre 150"
-    }, {
-      "dim_values": "NOW Full Fibre 300 (FTTP) - NOW Full Fibre 300"
-    }, {
-      "dim_values": "Essential"
+      "dim_values": "Sky Full Fibre 150 (FTTP) - NOW Full Fibre 100"
     }, {
       "dim_values": " - "
     }, {
       "dim_values": "Sky Full Fibre 100 (FTTP) - Sky Full Fibre 100"
     }, {
-      "dim_values": " - Sky Full Fibre 150"
+      "dim_values": "Essential"
     }, {
-      "dim_values": "NOW Full Fibre 100 - NOW Full Fibre 100"
+      "dim_values": "Sky Full Fibre 150 (FTTP) - Sky Full Fibre 100"
     }, {
-      "dim_values": "Sky Full Fibre 150 (FTTP) - NOW Full Fibre 100"
-    }, {
-      "dim_values": "Sky Full Fibre 75 (FTTP) - Sky Full Fibre 150"
-    }, {
-      "dim_values": "Full Fibre 100 (Legacy) - Sky Full Fibre 300"
-    }, {
-      "dim_values": "Sky Full Fibre 150 (FTTP) - Sky Full Fibre 300"
+      "dim_values": "Sky Full Fibre 500 (FTTP) - Sky Full Fibre 150"
     }, {
       "dim_values": "Sky Full Fibre 150 (FTTP) - Sky Full Fibre 75"
     }, {
       "dim_values": "Sky Full Fibre 500 (FTTP) - Sky Full Fibre 75"
     }, {
-      "dim_values": "Sky Full Fibre 100 (FTTP) - Sky Full Fibre 150"
+      "dim_values": "Full Fibre 100 (Legacy) - Sky Full Fibre 300"
+    }, {
+      "dim_values": "Sky Full Fibre 150 (FTTP) - Sky Full Fibre 300"
+    }, {
+      "dim_values": " - Sky Full Fibre 75"
+    }, {
+      "dim_values": "Sky Full Fibre 500 (FTTP) - Sky Full Fibre 500"
     }, {
       "dim_values": "Full Fibre 100 (Legacy) - Full Fibre 100 (Legacy)"
     }, {
       "dim_values": "Sky Full Fibre 100 (FTTP) - Sky Full Fibre 300"
     }, {
-      "dim_values": "Full Fibre 100 (Legacy) - Sky Full Fibre 100"
-    }, {
-      "dim_values": "Sky Full Fibre 150 (FTTP) - Sky Full Fibre 150"
-    }, {
       "dim_values": "Sky Full Fibre 300 (FTTP) - Sky Full Fibre 150"
-    }, {
-      "dim_values": "Sky Full Fibre 75 (FTTP) - Sky Full Fibre 75"
     }, {
       "dim_values": "NOW Full Fibre 75 (FTTP) - NOW Full Fibre 75"
     }, {
       "dim_values": "Ultrafast"
     }, {
-      "dim_values": " - NOW Full Fibre 100"
+      "dim_values": "Sky Full Fibre 75 (FTTP) - Sky Full Fibre 75"
     }, {
-      "dim_values": "Superfast"
+      "dim_values": "Sky Full Fibre 500 (FTTP) - Sky Full Fibre 100"
     }, {
-      "dim_values": " - Sky Full Fibre 75"
+      "dim_values": "Sky Full Fibre 150 (FTTP) - Sky Full Fibre 500"
     }, {
-      "dim_values": "Sky Full Fibre 500 (FTTP) - Sky Full Fibre 500"
+      "dim_values": "Sky Full Fibre 300 (FTTP) - Sky Full Fibre 75"
     }, {
       "dim_values": " - Sky Full Fibre 100"
     }, {
@@ -83,49 +69,77 @@
     }, {
       "dim_values": "Sky Full Fibre 75 (FTTP) - Sky Full Fibre 100"
     }, {
-      "dim_values": "Sky Full Fibre 500 (FTTP) - Sky Full Fibre 300"
+      "dim_values": "Full Fibre 100 (Legacy) - Sky Full Fibre 100"
+    }, {
+      "dim_values": "Sky Full Fibre 150 (FTTP) - Sky Full Fibre 150"
     }, {
       "dim_values": "Full Fibre 100 (Legacy) - Sky Full Fibre 150"
     }, {
       "dim_values": "Sky Full Fibre 300 (FTTP) - Sky Full Fibre 500"
     }, {
+      "dim_values": "Sky Full Fibre 500 (FTTP) - Sky Full Fibre 300"
+    }, {
+      "dim_values": "Sky Full Fibre 100 (FTTP) - Sky Full Fibre 150"
+    }, {
       "dim_values": "Sky Full Fibre 100 (FTTP) - Sky Full Fibre 75"
     }, {
-      "dim_values": "Sky Full Fibre 150 (FTTP) - Sky Full Fibre 500"
+      "dim_values": " - NOW Full Fibre 100"
     }, {
-      "dim_values": "Sky Full Fibre 300 (FTTP) - Sky Full Fibre 75"
+      "dim_values": "Superfast"
     }, {
-      "dim_values": "Sky Full Fibre 500 (FTTP) - Sky Full Fibre 100"
-    }]
-  }, {
-    "name": "Technology",
-    "details": "The broadband technology that the service is based on.",
-    "kpi": [{
-      "dim_values": "FTTC"
+      "dim_values": " - Sky Full Fibre 150"
     }, {
-      "dim_values": "?"
-    }, {
-      "dim_values": "SOGEA"
-    }, {
-      "dim_values": "FTTP"
-    }, {
-      "dim_values": "ADSL"
-    }, {
-      "dim_values": "SOGFAST"
+      "dim_values": "NOW Full Fibre 100 - NOW Full Fibre 100"
     }]
   }, {
     "name": "Route to Market",
     "details": "the sales channel, or route to market, through which the order was placed.",
     "kpi": [{
-      "dim_values": "Retail"
-    }, {
       "dim_values": "Direct"
     }, {
-      "dim_values": ""
+      "dim_values": "Digital"
     }, {
       "dim_values": "Homes \u0026 Indies"
     }, {
-      "dim_values": "Digital"
+      "dim_values": "Retail"
+    }, {
+      "dim_values": ""
+    }]
+  }, {
+    "name": "Operator",
+    "details": "The operator of the services the data relates to.",
+    "kpi": [{
+      "dim_values": "NOW"
+    }, {
+      "dim_values": "Sky"
+    }]
+  }, {
+    "name": "Order Type",
+    "details": "The type of the order ?????.",
+    "kpi": [{
+      "dim_values": ""
+    }]
+  }, {
+    "name": "Country",
+    "details": "The country that the data relates to.",
+    "kpi": [{
+      "dim_values": "UK"
+    }]
+  }, {
+    "name": "Technology",
+    "details": "The broadband technology that the service is based on.",
+    "kpi": [{
+      "dim_values": "?"
+    }, {
+      "dim_values": "FTTC"
+    }, {
+      "dim_values": "SOGEA"
+    }, {
+      "dim_values": "ADSL"
+    }, {
+      "dim_values": "FTTP"
+    }, {
+      "dim_values": "SOGFAST"
     }]
   }]
 }, {
@@ -136,122 +150,28 @@
   "kpi_owner": "Simon Hunt",
   "kpi_description": "The number of active broadband customers each day as determined by the subscription status.  The number can be analysed by a number of dimensions.",
   "f0_": [{
-    "name": "Router",
-    "details": "The router we have supplied to the customer.",
+    "name": "Country",
+    "details": "The country that the data relates to.",
     "kpi": [{
-      "dim_values": "Standard hub 4.2"
+      "dim_values": "IE"
     }, {
-      "dim_values": ""
-    }, {
-      "dim_values": "Broadband Box"
-    }, {
-      "dim_values": "Sky Hub"
-    }, {
-      "dim_values": "Sky Hub 3.0"
-    }, {
-      "dim_values": "Other Router"
-    }, {
-      "dim_values": "Sky Wireless"
-    }, {
-      "dim_values": "Sky Hub 4"
-    }, {
-      "dim_values": "Sky Hub 2.0"
-    }, {
-      "dim_values": "NOW Hub Two"
-    }, {
-      "dim_values": "Wifi Max Hub"
-    }, {
-      "dim_values": "Sky Hub 4.2"
-    }, {
-      "dim_values": "Sky Hub Fibre"
-    }, {
-      "dim_values": "Sky Gigafast+ Hub"
-    }, {
-      "dim_values": "Sky Q Hub"
-    }, {
-      "dim_values": "BOXO Sky Hub 3.0"
-    }, {
-      "dim_values": "Sky Hub 4.2 G"
+      "dim_values": "UK"
     }]
   }, {
-    "name": "Product",
-    "details": "The broadband marketing product the customer has bought.",
+    "name": "Operator",
+    "details": "The operator of the services the data relates to.",
     "kpi": [{
-      "dim_values": "Full Fibre 100"
+      "dim_values": null
     }, {
-      "dim_values": "Full Fibre 75"
+      "dim_values": "Skybiz"
     }, {
-      "dim_values": "Full Fibre 300"
+      "dim_values": "Sky"
     }, {
-      "dim_values": "Superfast"
+      "dim_values": "Nowtv"
     }, {
-      "dim_values": "NOW Full Fibre 75"
+      "dim_values": "Sky ROI"
     }, {
-      "dim_values": "Gigafast 2.5"
-    }, {
-      "dim_values": "Ultrafast"
-    }, {
-      "dim_values": ""
-    }, {
-      "dim_values": "Gigafast 5"
-    }, {
-      "dim_values": "Gigafast"
-    }, {
-      "dim_values": "Essential"
-    }, {
-      "dim_values": "NOW Full Fibre 100"
-    }, {
-      "dim_values": "Full Fibre 500"
-    }, {
-      "dim_values": "NOW Superfast"
-    }, {
-      "dim_values": "Full Fibre 150"
-    }, {
-      "dim_values": "NOW Full Fibre 300"
-    }]
-  }, {
-    "name": "Technology",
-    "details": "The broadband technology that the service is based on.",
-    "kpi": [{
-      "dim_values": "?"
-    }, {
-      "dim_values": "SOGEA"
-    }, {
-      "dim_values": "FTTP"
-    }, {
-      "dim_values": "FTTC"
-    }, {
-      "dim_values": "ADSL"
-    }, {
-      "dim_values": "SOGFAST"
-    }]
-  }, {
-    "name": "Speed",
-    "details": "The download \u0027speed\u0027 sold to the customer.",
-    "kpi": [{
-      "dim_values": ""
-    }, {
-      "dim_values": "1000"
-    }, {
-      "dim_values": "2800"
-    }, {
-      "dim_values": "5000"
-    }, {
-      "dim_values": "40"
-    }, {
-      "dim_values": "12"
-    }, {
-      "dim_values": "1200"
-    }, {
-      "dim_values": "5500"
-    }, {
-      "dim_values": "100"
-    }, {
-      "dim_values": "80"
-    }, {
-      "dim_values": "2500"
-    }, {
-      "dim_values": "500"
+      "dim_values": "skybiz"
     }]
   }, {
     "name": "Tenure",
@@ -262,136 +182,108 @@
       "dim_values": "IL"
     }]
   }, {
-    "name": "Exchange",
-    "details": "The exchange that serves the customer.",
+    "name": "Technology",
+    "details": "The broadband technology that the service is based on.",
     "kpi": [{
-      "dim_values": "B16"
+      "dim_values": "SOGEA"
     }, {
-      "dim_values": "AB52"
+      "dim_values": "?"
     }, {
-      "dim_values": "AL4"
+      "dim_values": "FTTC"
     }, {
-      "dim_values": "AL6"
+      "dim_values": "ADSL"
     }, {
-      "dim_values": "AB35"
+      "dim_values": "FTTP"
     }, {
-      "dim_values": "AB12"
+      "dim_values": "SOGFAST"
+    }]
+  }, {
+    "name": "Speed",
+    "details": "The download \u0027speed\u0027 sold to the customer.",
+    "kpi": [{
+      "dim_values": "1000"
     }, {
-      "dim_values": "AB21"
+      "dim_values": "2800"
     }, {
-      "dim_values": "AB15"
-    }, {
-      "dim_values": "AB34"
-    }, {
-      "dim_values": "AB24"
-    }, {
-      "dim_values": "AB38"
+      "dim_values": "500"
     }, {
       "dim_values": ""
     }, {
-      "dim_values": "AB37"
+      "dim_values": "1200"
     }, {
-      "dim_values": "B23"
+      "dim_values": "5000"
     }, {
-      "dim_values": "AB25"
+      "dim_values": "5500"
     }, {
-      "dim_values": "AB39"
+      "dim_values": "40"
     }, {
-      "dim_values": "AB42"
+      "dim_values": "12"
     }, {
-      "dim_values": "AB32"
+      "dim_values": "2500"
     }, {
-      "dim_values": "AB45"
+      "dim_values": "80"
     }, {
-      "dim_values": "AB53"
-    }, {
-      "dim_values": "B20"
-    }, {
-      "dim_values": "B3"
-    }, {
-      "dim_values": "AL1"
-    }, {
-      "dim_values": "AB23"
-    }, {
-      "dim_values": "AL3"
-    }, {
-      "dim_values": "AB30"
-    }, {
-      "dim_values": "AB44"
-    }, {
-      "dim_values": "AB36"
-    }, {
-      "dim_values": "B14"
-    }, {
-      "dim_values": "AB51"
-    }, {
-      "dim_values": "AB56"
-    }, {
-      "dim_values": "B19"
-    }, {
-      "dim_values": "B17"
-    }, {
-      "dim_values": "AB11"
-    }, {
-      "dim_values": "B13"
-    }, {
-      "dim_values": "B28"
-    }, {
-      "dim_values": "B29"
-    }, {
-      "dim_values": "AB16"
-    }, {
-      "dim_values": "AB33"
-    }, {
-      "dim_values": "AL5"
-    }, {
-      "dim_values": "AB13"
-    }, {
-      "dim_values": "AB54"
-    }, {
-      "dim_values": "AL2"
-    }, {
-      "dim_values": "AL8"
-    }, {
-      "dim_values": "AB41"
-    }, {
-      "dim_values": "AB31"
-    }, {
-      "dim_values": "AB55"
-    }, {
-      "dim_values": "AB43"
-    }, {
-      "dim_values": "AL10"
-    }, {
-      "dim_values": "B27"
+      "dim_values": "100"
     }]
-  }]
-}, {
-  "kpi_id": "30010",
-  "kpi_name": "Broadband Experience - Connectivity",
-  "kpi_group_id": "10",
-  "kpi_group_name": "Broadband",
-  "kpi_owner": "Simon Hunt",
-  "kpi_description": "A number of measures of broadband connectivity to the home, ie router focused, to help us understand the customer experience.",
-  "f0_": [{
-    "name": "Router",
-    "details": "The router model used by the customer",
+  }, {
+    "name": "Product",
+    "details": "The broadband marketing product the customer has bought.",
     "kpi": [{
-      "dim_values": "Sky Hub 4"
+      "dim_values": "Ultrafast"
     }, {
-      "dim_values": "Sky Hub 4.2"
+      "dim_values": "Full Fibre 100"
     }, {
-      "dim_values": "Sky Hub 2.0"
+      "dim_values": "Full Fibre 75"
+    }, {
+      "dim_values": ""
+    }, {
+      "dim_values": "Gigafast 2.5"
+    }, {
+      "dim_values": "Full Fibre 300"
+    }, {
+      "dim_values": "Superfast"
+    }, {
+      "dim_values": "Gigafast 5"
+    }, {
+      "dim_values": "NOW Full Fibre 100"
+    }, {
+      "dim_values": "Gigafast"
+    }, {
+      "dim_values": "Essential"
+    }, {
+      "dim_values": "NOW Full Fibre 75"
+    }, {
+      "dim_values": "Full Fibre 500"
+    }, {
+      "dim_values": "NOW Superfast"
+    }, {
+      "dim_values": "Full Fibre 150"
+    }, {
+      "dim_values": "NOW Full Fibre 300"
+    }]
+  }, {
+    "name": "Router",
+    "details": "The router we have supplied to the customer.",
+    "kpi": [{
+      "dim_values": "Other Router"
+    }, {
+      "dim_values": "Sky Wireless"
     }, {
       "dim_values": ""
     }, {
       "dim_values": "Sky Hub 3.0"
     }, {
-      "dim_values": "Standard hub 4.2"
+      "dim_values": "Sky Hub 2.0"
+    }, {
+      "dim_values": "Sky Hub 4"
+    }, {
+      "dim_values": "Broadband Box"
+    }, {
+      "dim_values": "Sky Hub"
     }, {
       "dim_values": "Sky Hub Fibre"
     }, {
-      "dim_values": "BOXO Sky Hub 3.0"
+      "dim_values": "Standard hub 4.2"
     }, {
       "dim_values": "NOW Hub Two"
     }, {
@@ -401,29 +293,141 @@
     }, {
       "dim_values": "Sky Q Hub"
     }, {
-      "dim_values": "Other Router"
+      "dim_values": "BOXO Sky Hub 3.0"
     }, {
-      "dim_values": "Sky Wireless"
+      "dim_values": "Sky Hub 4.2"
     }, {
       "dim_values": "Sky Hub 4.2 G"
+    }]
+  }, {
+    "name": "Exchange",
+    "details": "The exchange that serves the customer.",
+    "kpi": [{
+      "dim_values": "AB12"
     }, {
-      "dim_values": "Broadband Box"
+      "dim_values": "AB21"
     }, {
-      "dim_values": "Sky Hub"
+      "dim_values": "AL1"
+    }, {
+      "dim_values": "AB11"
+    }, {
+      "dim_values": "B13"
+    }, {
+      "dim_values": "B28"
+    }, {
+      "dim_values": "AB42"
+    }, {
+      "dim_values": "B3"
+    }, {
+      "dim_values": ""
+    }, {
+      "dim_values": "AB37"
+    }, {
+      "dim_values": "B23"
+    }, {
+      "dim_values": "AB32"
+    }, {
+      "dim_values": "AB45"
+    }, {
+      "dim_values": "AL8"
+    }, {
+      "dim_values": "AB24"
+    }, {
+      "dim_values": "AB43"
+    }, {
+      "dim_values": "AL10"
+    }, {
+      "dim_values": "AB23"
+    }, {
+      "dim_values": "AL3"
+    }, {
+      "dim_values": "AB13"
+    }, {
+      "dim_values": "AB54"
+    }, {
+      "dim_values": "B17"
+    }, {
+      "dim_values": "AB35"
+    }, {
+      "dim_values": "AB52"
+    }, {
+      "dim_values": "AL4"
+    }, {
+      "dim_values": "AB36"
+    }, {
+      "dim_values": "B14"
+    }, {
+      "dim_values": "AL6"
+    }, {
+      "dim_values": "B29"
+    }, {
+      "dim_values": "AB25"
+    }, {
+      "dim_values": "AB39"
+    }, {
+      "dim_values": "AB38"
+    }, {
+      "dim_values": "AB53"
+    }, {
+      "dim_values": "B20"
+    }, {
+      "dim_values": "B27"
+    }, {
+      "dim_values": "B16"
+    }, {
+      "dim_values": "AB31"
+    }, {
+      "dim_values": "AB55"
+    }, {
+      "dim_values": "AB41"
+    }, {
+      "dim_values": "AB51"
+    }, {
+      "dim_values": "AB56"
+    }, {
+      "dim_values": "B19"
+    }, {
+      "dim_values": "AB16"
+    }, {
+      "dim_values": "AB33"
+    }, {
+      "dim_values": "AL5"
+    }, {
+      "dim_values": "AL2"
+    }, {
+      "dim_values": "AB15"
+    }, {
+      "dim_values": "AB34"
+    }, {
+      "dim_values": "AB30"
+    }, {
+      "dim_values": "AB44"
+    }]
+  }]
+}, {
+  "kpi_id": "30010",
+  "kpi_name": "Broadband Experience - Connectivity",
+  "kpi_group_id": "10",
+  "kpi_group_name": "Broadband",
+  "kpi_owner": "Simon Hunt",
+  "kpi_description": "A number of measures of broadband performance to the home, ie router focused, to help us understand the customer experience.",
+  "f0_": [{
+    "name": "Country",
+    "details": "The country that the data relates to.",
+    "kpi": [{
+      "dim_values": "UK"
+    }, {
+      "dim_values": "IE"
+    }, {
+      "dim_values": "?"
     }]
   }, {
     "name": "Product",
     "details": "The broadband marketing product the customer has bought.",
     "kpi": [{
-      "dim_values": ""
-    }, {
-      "dim_values": "Full Fibre 100"
-    }, {
-      "dim_values": "Full Fibre 75"
-    }, {
-      "dim_values": "Gigafast 2.5"
-    }, {
       "dim_values": "Ultrafast"
+    }, {
+      "dim_values": ""
     }, {
       "dim_values": "NOW Full Fibre 75"
     }, {
@@ -431,21 +435,27 @@
     }, {
       "dim_values": "Superfast"
     }, {
-      "dim_values": "Essential"
+      "dim_values": "Full Fibre 100"
+    }, {
+      "dim_values": "Full Fibre 75"
+    }, {
+      "dim_values": "Gigafast 2.5"
+    }, {
+      "dim_values": "Gigafast 5"
     }, {
       "dim_values": "Gigafast"
     }, {
-      "dim_values": "Full Fibre 150"
-    }, {
       "dim_values": "NOW Full Fibre 100"
     }, {
-      "dim_values": "NOW Full Fibre 300"
+      "dim_values": "Essential"
     }, {
-      "dim_values": "Gigafast 5"
+      "dim_values": "Full Fibre 150"
     }, {
       "dim_values": "Full Fibre 500"
     }, {
       "dim_values": "NOW Superfast"
+    }, {
+      "dim_values": "NOW Full Fibre 300"
     }]
   }, {
     "name": "Technology",
@@ -453,87 +463,15 @@
     "kpi": [{
       "dim_values": "?"
     }, {
+      "dim_values": "SOGEA"
+    }, {
       "dim_values": "FTTC"
     }, {
-      "dim_values": "ADSL"
-    }, {
-      "dim_values": "SOGEA"
+      "dim_values": "FTTP"
     }, {
       "dim_values": "SOGFAST"
     }, {
-      "dim_values": "FTTP"
-    }]
-  }, {
-    "name": "Speed",
-    "details": "The download speed the customer is expecting",
-    "kpi": [{
-      "dim_values": "300"
-    }, {
-      "dim_values": "500"
-    }, {
-      "dim_values": "59"
-    }, {
-      "dim_values": "36"
-    }, {
-      "dim_values": "150"
-    }, {
-      "dim_values": "40"
-    }, {
-      "dim_values": "2500"
-    }, {
-      "dim_values": "550"
-    }, {
-      "dim_values": "145"
-    }, {
-      "dim_values": "1000"
-    }, {
-      "dim_values": "12"
-    }, {
-      "dim_values": "100"
-    }, {
-      "dim_values": "110"
-    }, {
-      "dim_values": "285"
-    }, {
-      "dim_values": "61"
-    }, {
-      "dim_values": "5000"
-    }, {
-      "dim_values": "90"
-    }, {
-      "dim_values": "330"
-    }, {
-      "dim_values": "160"
-    }, {
-      "dim_values": "55"
-    }, {
-      "dim_values": "80"
-    }, {
-      "dim_values": "5500"
-    }, {
-      "dim_values": "75"
-    }, {
-      "dim_values": "11"
-    }, {
-      "dim_values": "63"
-    }, {
-      "dim_values": "115"
-    }, {
-      "dim_values": "2800"
-    }, {
-      "dim_values": ""
-    }, {
-      "dim_values": "35"
-    }, {
-      "dim_values": "1200"
-    }, {
-      "dim_values": "18"
-    }, {
-      "dim_values": "67"
-    }, {
-      "dim_values": "50"
-    }, {
-      "dim_values": "900"
+      "dim_values": "ADSL"
     }]
   }, {
     "name": "Tenure",
@@ -544,28 +482,104 @@
       "dim_values": "IL"
     }]
   }, {
+    "name": "Speed",
+    "details": "The download speed the customer is expecting",
+    "kpi": [{
+      "dim_values": "5000"
+    }, {
+      "dim_values": "90"
+    }, {
+      "dim_values": "59"
+    }, {
+      "dim_values": ""
+    }, {
+      "dim_values": "35"
+    }, {
+      "dim_values": "145"
+    }, {
+      "dim_values": "110"
+    }, {
+      "dim_values": "285"
+    }, {
+      "dim_values": "2500"
+    }, {
+      "dim_values": "550"
+    }, {
+      "dim_values": "300"
+    }, {
+      "dim_values": "150"
+    }, {
+      "dim_values": "40"
+    }, {
+      "dim_values": "500"
+    }, {
+      "dim_values": "1000"
+    }, {
+      "dim_values": "12"
+    }, {
+      "dim_values": "36"
+    }, {
+      "dim_values": "160"
+    }, {
+      "dim_values": "55"
+    }, {
+      "dim_values": "100"
+    }, {
+      "dim_values": "330"
+    }, {
+      "dim_values": "61"
+    }, {
+      "dim_values": "1200"
+    }, {
+      "dim_values": "11"
+    }, {
+      "dim_values": "63"
+    }, {
+      "dim_values": "115"
+    }, {
+      "dim_values": "2800"
+    }, {
+      "dim_values": "50"
+    }, {
+      "dim_values": "5500"
+    }, {
+      "dim_values": "75"
+    }, {
+      "dim_values": "18"
+    }, {
+      "dim_values": "67"
+    }, {
+      "dim_values": "900"
+    }, {
+      "dim_values": "80"
+    }]
+  }, {
+    "name": "Operator",
+    "details": "The operator of the services the data relates to.",
+    "kpi": [{
+      "dim_values": null
+    }, {
+      "dim_values": "Sky"
+    }, {
+      "dim_values": "Skybiz"
+    }, {
+      "dim_values": "Nowtv"
+    }, {
+      "dim_values": "skybiz"
+    }, {
+      "dim_values": "Sky ROI"
+    }]
+  }, {
     "name": "Firmware",
     "details": "The firmware version the router is running.",
     "kpi": [{
-      "dim_values": "2.01.1860.r"
-    }, {
-      "dim_values": "2.05.2175.R"
-    }, {
-      "dim_values": "2.08.2417.R"
-    }, {
-      "dim_values": "1.15n.3591.r"
-    }, {
-      "dim_values": "2.02.44"
-    }, {
-      "dim_values": "2.11.2629.R"
-    }, {
-      "dim_values": "2.01.1860.R"
-    }, {
       "dim_values": "1.15j.2639.R"
     }, {
-      "dim_values": "2.10.2556.R"
+      "dim_values": "1.03.87"
     }, {
-      "dim_values": "2.07.2355.R"
+      "dim_values": "1.5sky"
+    }, {
+      "dim_values": "2.10.2556.R"
     }, {
       "dim_values": ""
     }, {
@@ -573,11 +587,17 @@
     }, {
       "dim_values": "2.09.2510.R"
     }, {
+      "dim_values": "2.01.1860.R"
+    }, {
+      "dim_values": "2.01.1860.r"
+    }, {
+      "dim_values": "2.05.2175.R"
+    }, {
       "dim_values": "1.63.1531.R"
     }, {
-      "dim_values": "1.03.87"
+      "dim_values": "1.15n.3591.r"
     }, {
-      "dim_values": "1.5sky"
+      "dim_values": "2.02.44"
     }, {
       "dim_values": "1.0.7.4"
     }, {
@@ -585,13 +605,23 @@
     }, {
       "dim_values": "1.9f.1751.ENG"
     }, {
+      "dim_values": "2.07.2355.R"
+    }, {
+      "dim_values": "2.03.2068.r"
+    }, {
+      "dim_values": "2.06.2233.R"
+    }, {
       "dim_values": "1.15j.2639.r"
     }, {
       "dim_values": "1.9sky"
     }, {
-      "dim_values": "2.04.1919.R"
+      "dim_values": "2.08.2417.R"
     }, {
-      "dim_values": "2.09.2509.R"
+      "dim_values": "2.07.2356.R"
+    }, {
+      "dim_values": "1.15i.2202.r"
+    }, {
+      "dim_values": "2.06.2189.R"
     }, {
       "dim_values": "1.0.0.76"
     }, {
@@ -599,17 +629,21 @@
     }, {
       "dim_values": "2.10.2557.R"
     }, {
-      "dim_values": "1.15i.2202.r"
+      "dim_values": "2.05.2174.R"
     }, {
-      "dim_values": "2.06.2189.R"
+      "dim_values": "1.9Sky"
+    }, {
+      "dim_values": "2.08.2406.R"
+    }, {
+      "dim_values": "2.11.2629.R"
     }, {
       "dim_values": "1.00.2182.R"
     }, {
       "dim_values": "2.04.1919.r"
     }, {
-      "dim_values": "1.9Sky"
+      "dim_values": "1.15m.3734.R"
     }, {
-      "dim_values": "2.08.2406.R"
+      "dim_values": "2.02.34"
     }, {
       "dim_values": "2.11.2628.R"
     }, {
@@ -625,27 +659,57 @@
     }, {
       "dim_values": "2.09.2449.R"
     }, {
-      "dim_values": "1.15m.3734.R"
+      "dim_values": "2.09.2448.R"
     }, {
-      "dim_values": "2.02.34"
+      "dim_values": "2.04.1919.R"
+    }, {
+      "dim_values": "2.09.2509.R"
     }, {
       "dim_values": "2.01.1850.r"
-    }, {
-      "dim_values": "2.06.2188.R"
     }, {
       "dim_values": "1.15m.3734.r"
     }, {
       "dim_values": "2.04.2076.R"
     }, {
-      "dim_values": "2.05.2174.R"
+      "dim_values": "2.06.2188.R"
+    }]
+  }, {
+    "name": "Router",
+    "details": "The router model used by the customer",
+    "kpi": [{
+      "dim_values": "Broadband Box"
     }, {
-      "dim_values": "2.03.2068.r"
+      "dim_values": "Sky Hub"
     }, {
-      "dim_values": "2.06.2233.R"
+      "dim_values": "Standard hub 4.2"
     }, {
-      "dim_values": "2.09.2448.R"
+      "dim_values": "Sky Hub 3.0"
     }, {
-      "dim_values": "2.07.2356.R"
+      "dim_values": "Other Router"
+    }, {
+      "dim_values": "Sky Wireless"
+    }, {
+      "dim_values": ""
+    }, {
+      "dim_values": "Sky Hub 4"
+    }, {
+      "dim_values": "Sky Hub Fibre"
+    }, {
+      "dim_values": "Sky Hub 2.0"
+    }, {
+      "dim_values": "BOXO Sky Hub 3.0"
+    }, {
+      "dim_values": "NOW Hub Two"
+    }, {
+      "dim_values": "Sky Hub 4.2"
+    }, {
+      "dim_values": "Sky Gigafast+ Hub"
+    }, {
+      "dim_values": "Sky Q Hub"
+    }, {
+      "dim_values": "Sky Hub 4.2 G"
+    }, {
+      "dim_values": "Wifi Max Hub"
     }]
   }]
 }, {
@@ -656,10 +720,34 @@
   "kpi_owner": "Simon Hunt",
   "kpi_description": "A number of measures of broadband router performance in the home to help us understand the customer experience.",
   "f0_": [{
+    "name": "Technology",
+    "details": "The broadband technology that the service is based on.",
+    "kpi": [{
+      "dim_values": "?"
+    }, {
+      "dim_values": "SOGEA"
+    }, {
+      "dim_values": "FTTC"
+    }, {
+      "dim_values": "FTTP"
+    }, {
+      "dim_values": "SOGFAST"
+    }, {
+      "dim_values": "ADSL"
+    }]
+  }, {
     "name": "Product",
     "details": "The broadband marketing product the customer has bought.",
     "kpi": [{
       "dim_values": "Ultrafast"
+    }, {
+      "dim_values": "Full Fibre 300"
+    }, {
+      "dim_values": "Superfast"
+    }, {
+      "dim_values": "NOW Full Fibre 75"
+    }, {
+      "dim_values": "Gigafast 2.5"
     }, {
       "dim_values": "Full Fibre 100"
     }, {
@@ -667,107 +755,149 @@
     }, {
       "dim_values": ""
     }, {
-      "dim_values": "Full Fibre 300"
-    }, {
-      "dim_values": "Superfast"
-    }, {
-      "dim_values": "Gigafast 2.5"
-    }, {
-      "dim_values": "NOW Full Fibre 75"
+      "dim_values": "Gigafast"
     }, {
       "dim_values": "Gigafast 5"
-    }, {
-      "dim_values": "NOW Full Fibre 100"
-    }, {
-      "dim_values": "Essential"
     }, {
       "dim_values": "Full Fibre 500"
     }, {
       "dim_values": "NOW Superfast"
     }, {
-      "dim_values": "Gigafast"
-    }, {
-      "dim_values": "NOW Full Fibre 300"
+      "dim_values": "Essential"
     }, {
       "dim_values": "Full Fibre 150"
+    }, {
+      "dim_values": "NOW Full Fibre 100"
+    }, {
+      "dim_values": "NOW Full Fibre 300"
     }]
   }, {
-    "name": "Technology",
-    "details": "The broadband technology that the service is based on.",
+    "name": "Firmware",
+    "details": "The firmware version the router is running.",
     "kpi": [{
-      "dim_values": "SOGEA"
+      "dim_values": "2.07.2355.R"
     }, {
-      "dim_values": "FTTC"
+      "dim_values": "2.10.2556.R"
     }, {
-      "dim_values": "?"
+      "dim_values": "2.08.2417.R"
     }, {
-      "dim_values": "FTTP"
+      "dim_values": "1.63.1531.R"
     }, {
-      "dim_values": "ADSL"
+      "dim_values": "2.03.2068.r"
     }, {
-      "dim_values": "SOGFAST"
-    }]
-  }, {
-    "name": "Router",
-    "details": "The router model used by the customer",
-    "kpi": [{
+      "dim_values": "2.06.2233.R"
+    }, {
+      "dim_values": "1.0.7.4"
+    }, {
+      "dim_values": "1.15c.1989.r"
+    }, {
+      "dim_values": "2.01.1860.R"
+    }, {
       "dim_values": ""
     }, {
-      "dim_values": "Other Router"
+      "dim_values": "1.9f.1733.r"
     }, {
-      "dim_values": "Sky Wireless"
+      "dim_values": "2.09.2510.R"
     }, {
-      "dim_values": "Sky Hub 3.0"
+      "dim_values": "2.01.1860.r"
     }, {
-      "dim_values": "Sky Hub 4"
+      "dim_values": "2.05.2175.R"
     }, {
-      "dim_values": "Sky Hub 2.0"
+      "dim_values": "1.03.87"
     }, {
-      "dim_values": "Wifi Max Hub"
+      "dim_values": "1.5sky"
     }, {
-      "dim_values": "Sky Hub Fibre"
+      "dim_values": "1.15n.3591.r"
     }, {
-      "dim_values": "Sky Gigafast+ Hub"
+      "dim_values": "2.02.44"
     }, {
-      "dim_values": "Sky Q Hub"
+      "dim_values": "2.04.1919.R"
     }, {
-      "dim_values": "Sky Hub 4.2"
+      "dim_values": "2.09.2509.R"
     }, {
-      "dim_values": "Standard hub 4.2"
+      "dim_values": "1.15j.2639.R"
     }, {
-      "dim_values": "NOW Hub Two"
+      "dim_values": "1.9f.1751.ENG"
     }, {
-      "dim_values": "Broadband Box"
+      "dim_values": "1.15j.2639.r"
     }, {
-      "dim_values": "Sky Hub"
+      "dim_values": "1.9sky"
     }, {
-      "dim_values": "BOXO Sky Hub 3.0"
+      "dim_values": "2.07.2356.R"
     }, {
-      "dim_values": "Sky Hub 4.2 G"
-    }]
-  }, {
-    "name": "Tenure",
-    "details": "The stage of the customer in their product lifecycle (EL/IL/OC).",
-    "kpi": [{
-      "dim_values": "EL"
+      "dim_values": "1.9Sky"
     }, {
-      "dim_values": "IL"
+      "dim_values": "2.08.2406.R"
+    }, {
+      "dim_values": "1.0.0.76"
+    }, {
+      "dim_values": "2.08.2405.R"
+    }, {
+      "dim_values": "2.10.2557.R"
+    }, {
+      "dim_values": "1.15m.3734.R"
+    }, {
+      "dim_values": "2.02.34"
+    }, {
+      "dim_values": "2.05.2174.R"
+    }, {
+      "dim_values": "2.09.2448.R"
+    }, {
+      "dim_values": "2.03.2068.R"
+    }, {
+      "dim_values": "2.04.2076.r"
+    }, {
+      "dim_values": "2.09.2449.R"
+    }, {
+      "dim_values": "1.00.2182.R"
+    }, {
+      "dim_values": "2.04.1919.r"
+    }, {
+      "dim_values": "2.11.2629.R"
+    }, {
+      "dim_values": "2.01.1850.r"
+    }, {
+      "dim_values": "1.04.13"
+    }, {
+      "dim_values": "1.5Sky"
+    }, {
+      "dim_values": "2.06.2234.R"
+    }, {
+      "dim_values": "2.06.2188.R"
+    }, {
+      "dim_values": "1.15m.3734.r"
+    }, {
+      "dim_values": "2.04.2076.R"
+    }, {
+      "dim_values": "1.15i.2202.r"
+    }, {
+      "dim_values": "2.06.2189.R"
+    }, {
+      "dim_values": "2.11.2628.R"
     }]
   }, {
     "name": "Speed",
     "details": "The download speed the customer is expecting",
     "kpi": [{
+      "dim_values": "300"
+    }, {
       "dim_values": "500"
-    }, {
-      "dim_values": ""
-    }, {
-      "dim_values": "35"
-    }, {
-      "dim_values": "145"
     }, {
       "dim_values": "5000"
     }, {
       "dim_values": "90"
+    }, {
+      "dim_values": "59"
+    }, {
+      "dim_values": "1000"
+    }, {
+      "dim_values": "12"
+    }, {
+      "dim_values": "110"
+    }, {
+      "dim_values": "285"
+    }, {
+      "dim_values": "145"
     }, {
       "dim_values": "2500"
     }, {
@@ -779,155 +909,317 @@
     }, {
       "dim_values": "61"
     }, {
-      "dim_values": "1200"
-    }, {
-      "dim_values": "80"
-    }, {
-      "dim_values": "110"
-    }, {
-      "dim_values": "285"
-    }, {
-      "dim_values": "59"
-    }, {
       "dim_values": "36"
     }, {
-      "dim_values": "1000"
-    }, {
-      "dim_values": "12"
+      "dim_values": "1200"
     }, {
       "dim_values": "330"
     }, {
-      "dim_values": "5500"
+      "dim_values": ""
     }, {
-      "dim_values": "75"
+      "dim_values": "35"
     }, {
-      "dim_values": "100"
-    }, {
-      "dim_values": "300"
-    }, {
-      "dim_values": "900"
-    }, {
-      "dim_values": "11"
-    }, {
-      "dim_values": "63"
-    }, {
-      "dim_values": "18"
-    }, {
-      "dim_values": "67"
-    }, {
-      "dim_values": "115"
-    }, {
-      "dim_values": "2800"
+      "dim_values": "80"
     }, {
       "dim_values": "160"
     }, {
       "dim_values": "55"
     }, {
+      "dim_values": "100"
+    }, {
       "dim_values": "50"
+    }, {
+      "dim_values": "115"
+    }, {
+      "dim_values": "2800"
+    }, {
+      "dim_values": "11"
+    }, {
+      "dim_values": "63"
+    }, {
+      "dim_values": "900"
+    }, {
+      "dim_values": "5500"
+    }, {
+      "dim_values": "75"
+    }, {
+      "dim_values": "18"
+    }, {
+      "dim_values": "67"
     }]
   }, {
-    "name": "Firmware",
-    "details": "The firmware version the router is running.",
+    "name": "Country",
+    "details": "The country that the data relates to.",
     "kpi": [{
-      "dim_values": "1.03.87"
+      "dim_values": "UK"
     }, {
-      "dim_values": "1.5sky"
+      "dim_values": "?"
     }, {
-      "dim_values": "2.01.1860.r"
+      "dim_values": "IE"
+    }]
+  }, {
+    "name": "Operator",
+    "details": "The operator of the services the data relates to.",
+    "kpi": [{
+      "dim_values": "Sky"
     }, {
-      "dim_values": "2.05.2175.R"
+      "dim_values": "Skybiz"
     }, {
-      "dim_values": "1.15j.2639.R"
+      "dim_values": null
     }, {
-      "dim_values": "1.15n.3591.r"
+      "dim_values": "Nowtv"
     }, {
-      "dim_values": "2.02.44"
+      "dim_values": "Sky ROI"
     }, {
-      "dim_values": "2.08.2417.R"
+      "dim_values": "skybiz"
+    }]
+  }, {
+    "name": "Tenure",
+    "details": "The stage of the customer in their product lifecycle (EL/IL/OC).",
+    "kpi": [{
+      "dim_values": "EL"
     }, {
-      "dim_values": "2.11.2629.R"
+      "dim_values": "IL"
+    }]
+  }, {
+    "name": "Router",
+    "details": "The router model used by the customer",
+    "kpi": [{
+      "dim_values": "Standard hub 4.2"
     }, {
-      "dim_values": "1.15j.2639.r"
+      "dim_values": "Broadband Box"
     }, {
-      "dim_values": "1.9sky"
+      "dim_values": "Sky Hub"
     }, {
-      "dim_values": "2.01.1860.R"
+      "dim_values": "Sky Hub 3.0"
+    }, {
+      "dim_values": "Sky Hub Fibre"
     }, {
       "dim_values": ""
     }, {
-      "dim_values": "1.9f.1733.r"
+      "dim_values": "Other Router"
     }, {
-      "dim_values": "2.09.2510.R"
+      "dim_values": "Sky Wireless"
     }, {
-      "dim_values": "2.07.2355.R"
+      "dim_values": "Sky Hub 4.2"
     }, {
-      "dim_values": "2.03.2068.r"
+      "dim_values": "Sky Hub 4"
     }, {
-      "dim_values": "2.06.2233.R"
+      "dim_values": "Sky Hub 2.0"
     }, {
-      "dim_values": "1.0.7.4"
+      "dim_values": "BOXO Sky Hub 3.0"
     }, {
-      "dim_values": "1.15c.1989.r"
+      "dim_values": "Wifi Max Hub"
     }, {
-      "dim_values": "2.04.1919.R"
+      "dim_values": "NOW Hub Two"
     }, {
-      "dim_values": "2.09.2509.R"
+      "dim_values": "Sky Hub 4.2 G"
     }, {
-      "dim_values": "2.10.2556.R"
+      "dim_values": "Sky Gigafast+ Hub"
     }, {
-      "dim_values": "1.63.1531.R"
+      "dim_values": "Sky Q Hub"
+    }]
+  }]
+}, {
+  "kpi_id": "30030",
+  "kpi_name": "Broadband Experience - WiFi 2.4 GHz",
+  "kpi_group_id": "10",
+  "kpi_group_name": "Broadband",
+  "kpi_owner": "Simon Hunt",
+  "kpi_description": "A number of measures of broadband router WiFi performance in the home looking at the 2.4 GHz band.",
+  "f0_": [{
+    "name": "Country",
+    "details": "The country that the data relates to.",
+    "kpi": [{
+      "dim_values": "UK"
     }, {
-      "dim_values": "1.15i.2202.r"
+      "dim_values": "?"
     }, {
-      "dim_values": "2.06.2189.R"
+      "dim_values": "IE"
+    }]
+  }, {
+    "name": "Product",
+    "details": "The broadband marketing product the customer has bought.",
+    "kpi": [{
+      "dim_values": "Ultrafast"
     }, {
-      "dim_values": "1.9Sky"
+      "dim_values": "Full Fibre 100"
     }, {
-      "dim_values": "2.08.2406.R"
+      "dim_values": "Full Fibre 75"
     }, {
-      "dim_values": "1.9f.1751.ENG"
+      "dim_values": "Gigafast 2.5"
     }, {
-      "dim_values": "2.11.2628.R"
+      "dim_values": ""
     }, {
-      "dim_values": "1.15m.3734.R"
+      "dim_values": "NOW Full Fibre 75"
     }, {
-      "dim_values": "2.02.34"
+      "dim_values": "Gigafast 5"
     }, {
-      "dim_values": "2.01.1850.r"
+      "dim_values": "Full Fibre 300"
     }, {
-      "dim_values": "2.09.2448.R"
+      "dim_values": "Superfast"
     }, {
-      "dim_values": "1.15m.3734.r"
+      "dim_values": "NOW Full Fibre 100"
     }, {
-      "dim_values": "2.04.2076.R"
+      "dim_values": "Full Fibre 150"
     }, {
-      "dim_values": "1.0.0.76"
+      "dim_values": "Full Fibre 500"
     }, {
-      "dim_values": "2.08.2405.R"
+      "dim_values": "NOW Superfast"
     }, {
-      "dim_values": "2.10.2557.R"
+      "dim_values": "NOW Full Fibre 300"
     }, {
-      "dim_values": "1.04.13"
+      "dim_values": "Essential"
     }, {
-      "dim_values": "1.5Sky"
+      "dim_values": "Gigafast"
+    }]
+  }, {
+    "name": "Router",
+    "details": "The router model used by the customer",
+    "kpi": [{
+      "dim_values": ""
     }, {
-      "dim_values": "2.06.2234.R"
+      "dim_values": "Other Router"
     }, {
-      "dim_values": "2.05.2174.R"
+      "dim_values": "Sky Wireless"
     }, {
-      "dim_values": "2.06.2188.R"
+      "dim_values": "Standard hub 4.2"
     }, {
-      "dim_values": "2.07.2356.R"
+      "dim_values": "Sky Hub 3.0"
     }, {
-      "dim_values": "1.00.2182.R"
+      "dim_values": "Broadband Box"
     }, {
-      "dim_values": "2.04.1919.r"
+      "dim_values": "Sky Hub"
     }, {
-      "dim_values": "2.03.2068.R"
+      "dim_values": "Sky Hub Fibre"
     }, {
-      "dim_values": "2.04.2076.r"
+      "dim_values": "Sky Hub 4"
     }, {
-      "dim_values": "2.09.2449.R"
+      "dim_values": "Wifi Max Hub"
+    }, {
+      "dim_values": "BOXO Sky Hub 3.0"
+    }, {
+      "dim_values": "NOW Hub Two"
+    }, {
+      "dim_values": "Sky Hub 4.2"
+    }, {
+      "dim_values": "Sky Gigafast+ Hub"
+    }, {
+      "dim_values": "Sky Q Hub"
+    }, {
+      "dim_values": "Sky Hub 4.2 G"
+    }, {
+      "dim_values": "Sky Hub 2.0"
+    }]
+  }, {
+    "name": "Tenure",
+    "details": "The stage of the customer in their product lifecycle (EL/IL/OC).",
+    "kpi": [{
+      "dim_values": "EL"
+    }, {
+      "dim_values": "IL"
+    }]
+  }, {
+    "name": "Operator",
+    "details": "The operator of the services the data relates to.",
+    "kpi": [{
+      "dim_values": "Skybiz"
+    }, {
+      "dim_values": "Sky"
+    }, {
+      "dim_values": "Sky ROI"
+    }, {
+      "dim_values": "Nowtv"
+    }, {
+      "dim_values": "skybiz"
+    }, {
+      "dim_values": null
+    }]
+  }, {
+    "name": "Technology",
+    "details": "The broadband technology that the service is based on.",
+    "kpi": [{
+      "dim_values": "FTTC"
+    }, {
+      "dim_values": "?"
+    }, {
+      "dim_values": "SOGEA"
+    }, {
+      "dim_values": "ADSL"
+    }, {
+      "dim_values": "FTTP"
+    }, {
+      "dim_values": "SOGFAST"
+    }]
+  }, {
+    "name": "Speed",
+    "details": "The download speed the customer is expecting",
+    "kpi": [{
+      "dim_values": "330"
+    }, {
+      "dim_values": "5000"
+    }, {
+      "dim_values": ""
+    }, {
+      "dim_values": "36"
+    }, {
+      "dim_values": "61"
+    }, {
+      "dim_values": "55"
+    }, {
+      "dim_values": "900"
+    }, {
+      "dim_values": "1000"
+    }, {
+      "dim_values": "1200"
+    }, {
+      "dim_values": "150"
+    }, {
+      "dim_values": "110"
+    }, {
+      "dim_values": "300"
+    }, {
+      "dim_values": "40"
+    }, {
+      "dim_values": "2800"
+    }, {
+      "dim_values": "5500"
+    }, {
+      "dim_values": "63"
+    }, {
+      "dim_values": "35"
+    }, {
+      "dim_values": "90"
+    }, {
+      "dim_values": "145"
+    }, {
+      "dim_values": "100"
+    }, {
+      "dim_values": "18"
+    }, {
+      "dim_values": "550"
+    }, {
+      "dim_values": "59"
+    }, {
+      "dim_values": "80"
+    }, {
+      "dim_values": "115"
+    }, {
+      "dim_values": "285"
+    }, {
+      "dim_values": "500"
+    }, {
+      "dim_values": "2500"
+    }, {
+      "dim_values": "75"
+    }, {
+      "dim_values": "11"
+    }, {
+      "dim_values": "67"
+    }, {
+      "dim_values": "160"
+    }, {
+      "dim_values": "50"
     }]
   }]
 }, {
@@ -943,13 +1235,13 @@
     "kpi": [{
       "dim_values": "?"
     }, {
-      "dim_values": "FTTC"
-    }, {
       "dim_values": "SOGEA"
     }, {
-      "dim_values": "FTTP"
+      "dim_values": "FTTC"
     }, {
       "dim_values": "ADSL"
+    }, {
+      "dim_values": "FTTP"
     }, {
       "dim_values": "SOGFAST"
     }]
@@ -957,19 +1249,23 @@
     "name": "Speed",
     "details": "The download \u0027speed\u0027 sold to the customer.",
     "kpi": [{
-      "dim_values": "5000"
+      "dim_values": "61"
     }, {
-      "dim_values": ""
-    }, {
-      "dim_values": "36"
-    }, {
-      "dim_values": "150"
+      "dim_values": "330"
     }, {
       "dim_values": "55"
     }, {
       "dim_values": "900"
     }, {
-      "dim_values": "330"
+      "dim_values": ""
+    }, {
+      "dim_values": "36"
+    }, {
+      "dim_values": "110"
+    }, {
+      "dim_values": "300"
+    }, {
+      "dim_values": "150"
     }, {
       "dim_values": "1000"
     }, {
@@ -979,37 +1275,25 @@
     }, {
       "dim_values": "5500"
     }, {
-      "dim_values": "63"
-    }, {
-      "dim_values": "61"
-    }, {
-      "dim_values": "160"
-    }, {
-      "dim_values": "50"
-    }, {
-      "dim_values": "18"
-    }, {
-      "dim_values": "550"
-    }, {
-      "dim_values": "90"
+      "dim_values": "5000"
     }, {
       "dim_values": "40"
+    }, {
+      "dim_values": "63"
     }, {
       "dim_values": "145"
     }, {
       "dim_values": "35"
     }, {
-      "dim_values": "100"
+      "dim_values": "18"
     }, {
-      "dim_values": "11"
+      "dim_values": "550"
     }, {
-      "dim_values": "67"
+      "dim_values": "160"
     }, {
-      "dim_values": "2500"
+      "dim_values": "50"
     }, {
-      "dim_values": "75"
-    }, {
-      "dim_values": "500"
+      "dim_values": "90"
     }, {
       "dim_values": "115"
     }, {
@@ -1019,9 +1303,63 @@
     }, {
       "dim_values": "80"
     }, {
-      "dim_values": "110"
+      "dim_values": "11"
     }, {
-      "dim_values": "300"
+      "dim_values": "67"
+    }, {
+      "dim_values": "500"
+    }, {
+      "dim_values": "100"
+    }, {
+      "dim_values": "2500"
+    }, {
+      "dim_values": "75"
+    }]
+  }, {
+    "name": "Channel",
+    "details": "How and by whom the assurance session was triggered.",
+    "kpi": [{
+      "dim_values": "DIGITAL"
+    }, {
+      "dim_values": "PROACTIVE"
+    }, {
+      "dim_values": ""
+    }, {
+      "dim_values": "BOT"
+    }, {
+      "dim_values": "INTERNAL"
+    }, {
+      "dim_values": "DIRECT"
+    }, {
+      "dim_values": "RETAIL"
+    }, {
+      "dim_values": "IVR"
+    }]
+  }, {
+    "name": "Operator",
+    "details": "The operator of the services the data relates to.",
+    "kpi": [{
+      "dim_values": "Sky"
+    }, {
+      "dim_values": null
+    }, {
+      "dim_values": "Skybiz"
+    }, {
+      "dim_values": "Sky ROI"
+    }, {
+      "dim_values": "Nowtv"
+    }, {
+      "dim_values": "skybiz"
+    }]
+  }, {
+    "name": "Country",
+    "details": "The country that the data relates to.",
+    "kpi": [{
+      "dim_values": "?"
+    }, {
+      "dim_values": "UK"
+    }, {
+      "dim_values": "IE"
     }]
   }, {
     "name": "Tenure",
@@ -1034,32 +1372,12 @@
       "dim_values": "IL"
     }]
   }, {
-    "name": "Product",
-    "details": "The broadband marketing product the customer has bought.",
-    "kpi": [{
-      "dim_values": "Essential"
-    }, {
-      "dim_values": "Superfast 35"
-    }, {
-      "dim_values": "Gigafast"
-    }, {
-      "dim_values": "Ultrafast Plus"
-    }, {
-      "dim_values": "Ultrafast"
-    }, {
-      "dim_values": "Superfast"
-    }, {
-      "dim_values": "Full Fibre 100"
-    }]
-  }, {
     "name": "Router",
     "details": "The router we have supplied to the customer.",
     "kpi": [{
-      "dim_values": "Broadband Box"
+      "dim_values": "Standard hub 4.2"
     }, {
-      "dim_values": "Sky Hub"
-    }, {
-      "dim_values": "Sky Hub Fibre"
+      "dim_values": ""
     }, {
       "dim_values": "Other Router"
     }, {
@@ -1067,21 +1385,23 @@
     }, {
       "dim_values": "Sky Hub 3.0"
     }, {
+      "dim_values": "Broadband Box"
+    }, {
+      "dim_values": "Sky Hub"
+    }, {
+      "dim_values": "Sky Hub Fibre"
+    }, {
       "dim_values": "Sky Hub 4"
-    }, {
-      "dim_values": "Standard hub 4.2"
-    }, {
-      "dim_values": ""
     }, {
       "dim_values": "Sky Hub 2.0"
     }, {
-      "dim_values": "Wifi Max Hub"
-    }, {
-      "dim_values": "BOXO Sky Hub 3.0"
-    }, {
       "dim_values": "Sky Hub 4.2"
     }, {
+      "dim_values": "Wifi Max Hub"
+    }, {
       "dim_values": "NOW Hub Two"
+    }, {
+      "dim_values": "BOXO Sky Hub 3.0"
     }, {
       "dim_values": "Sky Hub 4.2 G"
     }, {
@@ -1090,24 +1410,22 @@
       "dim_values": "Sky Q Hub"
     }]
   }, {
-    "name": "Channel",
-    "details": "How and by whom the assurance session was triggered.",
+    "name": "Product",
+    "details": "The broadband marketing product the customer has bought.",
     "kpi": [{
-      "dim_values": ""
+      "dim_values": "Gigafast"
     }, {
-      "dim_values": "DIGITAL"
+      "dim_values": "Ultrafast Plus"
     }, {
-      "dim_values": "PROACTIVE"
+      "dim_values": "Essential"
     }, {
-      "dim_values": "INTERNAL"
+      "dim_values": "Superfast 35"
     }, {
-      "dim_values": "RETAIL"
+      "dim_values": "Full Fibre 100"
     }, {
-      "dim_values": "BOT"
+      "dim_values": "Ultrafast"
     }, {
-      "dim_values": "DIRECT"
-    }, {
-      "dim_values": "IVR"
+      "dim_values": "Superfast"
     }]
   }]
 }, {
@@ -1120,125 +1438,15 @@
   "f0_": [{
     "name": "Country",
     "details": "The customer\u0027s county.",
-    "kpi": [{
-      "dim_values": "Greater Manchester"
-    }, {
-      "dim_values": "Cheshire"
-    }, {
-      "dim_values": "Herefordshire"
-    }, {
-      "dim_values": ""
-    }, {
-      "dim_values": "Cleveland"
-    }, {
-      "dim_values": "Hampshire"
-    }, {
-      "dim_values": "Inverness-shire"
-    }, {
-      "dim_values": "Angus"
-    }, {
-      "dim_values": "Banffshire"
-    }, {
-      "dim_values": "County Armagh"
-    }, {
-      "dim_values": "County Down"
-    }, {
-      "dim_values": "Dunbartonshire"
-    }, {
-      "dim_values": "Berkshire"
-    }, {
-      "dim_values": "Essex"
-    }, {
-      "dim_values": "Avon"
-    }, {
-      "dim_values": "Cambridgeshire"
-    }, {
-      "dim_values": "Buckinghamshire"
-    }, {
-      "dim_values": "County Fermanagh"
-    }, {
-      "dim_values": "Cumbria"
-    }, {
-      "dim_values": "Gwynedd"
-    }, {
-      "dim_values": "County Tyrone"
-    }, {
-      "dim_values": "East Riding of Yorkshire"
-    }, {
-      "dim_values": "Bedfordshire"
-    }, {
-      "dim_values": "East Lothian"
-    }, {
-      "dim_values": "Guernsey"
-    }, {
-      "dim_values": "Clwyd"
-    }, {
-      "dim_values": "Birmingham"
-    }, {
-      "dim_values": "County Durham"
-    }, {
-      "dim_values": "Fife"
-    }, {
-      "dim_values": "Inverness-Shire"
-    }, {
-      "dim_values": "Ayrshire"
-    }, {
-      "dim_values": "Caithness"
-    }, {
-      "dim_values": "East Sussex"
-    }, {
-      "dim_values": "County Londonderry"
-    }, {
-      "dim_values": "Dorset"
-    }, {
-      "dim_values": "Gwent"
-    }, {
-      "dim_values": "Aberdeenshire"
-    }, {
-      "dim_values": "Glamorgan"
-    }, {
-      "dim_values": "Hertfordshire"
-    }, {
-      "dim_values": "Dyfed"
-    }, {
-      "dim_values": "County Antrim"
-    }, {
-      "dim_values": "Bristol"
-    }, {
-      "dim_values": "Devon"
-    }, {
-      "dim_values": "Clackmannanshire"
-    }, {
-      "dim_values": "Gloucestershire"
-    }, {
-      "dim_values": "Berwickshire"
-    }, {
-      "dim_values": "Cornwall"
-    }, {
-      "dim_values": "Argyll"
-    }, {
-      "dim_values": "Derbyshire"
-    }, {
-      "dim_values": "Dumfriesshire"
-    }]
+    "kpi": []
   }, {
     "name": "TV Product",
     "details": "The type of TV product / service being used",
-    "kpi": [{
-      "dim_values": "DTV"
-    }, {
-      "dim_values": "SOIP"
-    }, {
-      "dim_values": "Q"
-    }]
+    "kpi": []
   }, {
     "name": "Has Broadband",
     "details": "Whether or not the customers haqve Sky broadband",
-    "kpi": [{
-      "dim_values": "False"
-    }, {
-      "dim_values": "True"
-    }]
+    "kpi": []
   }]
 }, {
   "kpi_id": "70140001",
@@ -1248,28 +1456,22 @@
   "kpi_owner": "Unknown",
   "kpi_description": "Customer Survey data (CSAT) by wave date (so monthly) with a number of key analysis diemnsions.",
   "f0_": [{
-    "name": "Connectivity",
-    "details": "The connectivity categorisation for these customers as one of Satisfied, Neutral or Dissatisfied.",
+    "name": "Country",
+    "details": "The country that the data relates to.",
     "kpi": [{
-      "dim_values": "Neutral"
-    }, {
-      "dim_values": ""
-    }, {
-      "dim_values": "Dissatisfied"
-    }, {
-      "dim_values": "Satisfied"
+      "dim_values": "UK"
     }]
   }, {
     "name": "Overall CSAT Satisfaction",
     "details": "The overall CSAT categorisation for these customers as one of Satisfied, Neutral or Dissatisfied..",
     "kpi": [{
-      "dim_values": ""
-    }, {
       "dim_values": "Neutral"
     }, {
-      "dim_values": "Satisfied"
+      "dim_values": ""
     }, {
       "dim_values": "Dissatisfied"
+    }, {
+      "dim_values": "Satisfied"
     }]
   }, {
     "name": "Stream or Glass",
@@ -1283,9 +1485,9 @@
     "name": "Reliability",
     "details": "The reliability categorisation for these customers as one of Satisfied, Neutral or Dissatisfied.",
     "kpi": [{
-      "dim_values": "Neutral"
-    }, {
       "dim_values": ""
+    }, {
+      "dim_values": "Neutral"
     }, {
       "dim_values": "Dissatisfied"
     }, {
@@ -1295,27 +1497,31 @@
     "name": "Set Top Box",
     "details": "The type of set top bix that these customers are using.",
     "kpi": [{
-      "dim_values": "Sky Glass Air Large"
+      "dim_values": "Sky Glass Small Replacement"
     }, {
       "dim_values": "Sky Glass Air Small"
     }, {
       "dim_values": "Sky Glass Gen 2 Small"
     }, {
-      "dim_values": "Sky Glass Large A Grade"
+      "dim_values": "Sky Glass Air Large"
     }, {
       "dim_values": "Sky Glass Gen 2 Large Replacement"
     }, {
       "dim_values": "Sky Glass Small A Grade"
     }, {
-      "dim_values": "Sky Glass Medium Replacement"
+      "dim_values": "Sky Glass Large A Grade"
     }, {
-      "dim_values": "Sky Glass Small Replacement"
+      "dim_values": "Sky Glass Medium Replacement"
     }, {
       "dim_values": "Sky Glass Large Replacement"
     }, {
-      "dim_values": "Sky Glass Large"
+      "dim_values": "Sky Glass Medium"
     }, {
       "dim_values": "Sky Glass Air Medium"
+    }, {
+      "dim_values": "Sky Stream puck"
+    }, {
+      "dim_values": "Sky Glass Large"
     }, {
       "dim_values": "Sky Glass Gen 2 Large"
     }, {
@@ -1323,25 +1529,33 @@
     }, {
       "dim_values": "Sky Glass Small"
     }, {
-      "dim_values": "Sky Stream puck"
-    }, {
-      "dim_values": "Sky Glass Medium"
-    }, {
       "dim_values": "Sky Glass Medium A Grade"
+    }]
+  }, {
+    "name": "Connectivity",
+    "details": "The connectivity categorisation for these customers as one of Satisfied, Neutral or Dissatisfied.",
+    "kpi": [{
+      "dim_values": ""
+    }, {
+      "dim_values": "Neutral"
+    }, {
+      "dim_values": "Dissatisfied"
+    }, {
+      "dim_values": "Satisfied"
     }]
   }, {
     "name": "BB Router",
     "details": "The type of broadband router these customers are using, if they are Sky broadband customers.",
     "kpi": [{
-      "dim_values": ""
-    }, {
       "dim_values": "Sky Hub"
     }, {
       "dim_values": "Sky Hub 4"
     }, {
-      "dim_values": "Sky Hub 3"
+      "dim_values": ""
     }, {
       "dim_values": "Sky Hub 6"
+    }, {
+      "dim_values": "Sky Hub 3"
     }, {
       "dim_values": "Sky Hub 4.2"
     }, {
@@ -1350,6 +1564,12 @@
       "dim_values": "Sky Hub 3.5"
     }, {
       "dim_values": "Other Hubs"
+    }]
+  }, {
+    "name": "Operator",
+    "details": "The operator of the services the data relates to.",
+    "kpi": [{
+      "dim_values": "Sky"
     }]
   }]
 }]

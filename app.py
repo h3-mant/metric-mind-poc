@@ -125,17 +125,17 @@ async def process_query(user_query: str, session_id: str):
         #Define Artifact service
         artifact_service = st.session_state.artifact_service
 
-        # Define data schema to be passed as initial_state
-        initial_state = json_to_dict(DATA_SCHEMA_PATH)
+        # Define defs schema to be passed as initial_state
+        defs_schema = json_to_dict(DEFS_SCHEMA_PATH)
 
-        #update: pass granular schema as context for agent
-        schema_context = json_to_dict(SCHEMA_CONTEXT_PATH)
+        data_schema = json_to_dict(DATA_SCHEMA_PATH)
 
         initial_state_formatted = {
-            'projects': initial_state.get('project_id'),
-            'datasets': initial_state.get('dataset_id'),
-            'tables': initial_state.get('tables'),
-            'schema_context': schema_context['kpis']            
+            'projects': "uk-dta-gsmanalytics-poc",
+            'datasets': "metricmind",
+            'tables': "GSM_KPI_DATA_TEST_V5",
+            'schema_structure': defs_schema,
+            'schema_context': data_schema
         }
 
         # Create or get existing session

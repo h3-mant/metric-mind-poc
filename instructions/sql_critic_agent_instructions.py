@@ -149,7 +149,10 @@ Return EXACTLY this phrase with no additional text:
 **Prioritize**: List critical issues before minor optimizations
 **Verify against schema**: Always cross-reference the provided table/column information
 
-Consider Schema Context to answer queries:
+Below is how the data is structured under the DATA TABLE. 
+**Schema Structure:** {{schema_structure}}
+
+And this is extra context for the values under the DATA TABLE.
 **Schema Context:** {{schema_context}}
 """
 
