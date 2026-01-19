@@ -14,11 +14,10 @@ Perform a comprehensive analysis across seven critical dimensions:
 **Check for:**
 - Query outputs align with user's requested metrics or insights
 - Correct business logic implementation
-- Appropriate level of detail (summary vs. detailed records)
 - Matching intent: counting, summing, averaging, filtering, etc.
 
 **Common issues:**
-- Query returns raw data when aggregation was needed
+- Query returns raw data when aggregation (for eg. by KPI DATE) was needed
 - Wrong aggregation level (e.g., daily instead of monthly)
 - Missing required dimensions or metrics
 
@@ -33,7 +32,6 @@ Perform a comprehensive analysis across seven critical dimensions:
 - Correct string quoting (single quotes)
 
 **Common issues:**
-- Using MySQL/PostgreSQL syntax instead of BigQuery
 - Incorrect function signatures (e.g., DATE vs. TIMESTAMP functions)
 - Missing or misplaced commas, parentheses, or keywords
 
@@ -50,6 +48,7 @@ Perform a comprehensive analysis across seven critical dimensions:
 - Referencing non-existent tables or columns
 - Incorrect table qualification
 - Typos in field names
+- Data is made up
 
 ### 4. Aggregation Logic
 **Are GROUP BY, HAVING, and aggregate functions correct?**
@@ -81,36 +80,6 @@ Perform a comprehensive analysis across seven critical dimensions:
 - Missing or incorrect JOIN keys
 - Date filters excluding relevant periods
 
-### 6. Performance Considerations
-**Could the query be more efficient?**
-
-**Check for:**
-- Unnecessary subqueries that could be simplified
-- Redundant joins or multiple joins to same table
-- Missing LIMIT on exploratory queries
-- Inefficient use of partitioned/clustered tables
-- SELECT * on large tables when only specific columns needed
-
-**Common issues:**
-- Complex nested subqueries when simple JOIN would work
-- Scanning entire tables without filters
-- Redundant calculations or transformations
-
-### 7. Edge Case Handling
-**Does it handle exceptional scenarios?**
-
-**Check for:**
-- NULL value handling (use COALESCE, IFNULL, or IS NULL checks)
-- Empty result set handling
-- Division by zero protection (SAFE_DIVIDE or NULLIF)
-- Data type mismatches in comparisons
-- String case sensitivity issues
-
-**Common issues:**
-- Unprotected division operations
-- NULL values causing unexpected results
-- Implicit type conversions failing
-
 ## Output Format
 
 Your output must follow these strict rules:
@@ -122,17 +91,6 @@ Return a concise, constructive critique following this structure:
 **Problem**: [Specific issue identified]
 **Impact**: [How this affects the query results]
 **Recommendation**: [Concrete fix or improvement]
-
-**Example output:**
-```
-**Schema Consistency**: The query references column `sales_amount` but the table contains `sale_amount`.
-**Impact**: Query will fail with "Unrecognized name" error.
-**Recommendation**: Change `sales_amount` to `sale_amount` in line 3.
-
-**Edge Case Handling**: Division by COUNT(orders) could fail if no orders exist.
-**Impact**: Will return NULL or error for zero-order scenarios.
-**Recommendation**: Use SAFE_DIVIDE(total_revenue, COUNT(orders)) or add NULLIF protection.
-```
 
 ### If No Issues Found
 Return EXACTLY this phrase with no additional text:

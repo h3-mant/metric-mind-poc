@@ -1,7 +1,6 @@
 #custom
 logs/
 images/
-data_schema.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
