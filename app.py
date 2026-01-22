@@ -110,6 +110,8 @@ if 'session_service' not in st.session_state:
     st.session_state.session_service = InMemorySessionService()
 if 'artifact_service' not in st.session_state:
     st.session_state.artifact_service = InMemoryArtifactService()
+if 'initial_query_processed' not in st.session_state:
+    st.session_state.initial_query_processed = False
 
 async def process_query(user_query: str, session_id: str):
     """Process user query through the agent pipeline."""
@@ -424,6 +426,10 @@ def display_kpi_reference():
                 }
             )
 
+def get_initial_kpi_query() -> str:
+    """Generate the initial query to fetch KPI metadata."""
+    return "Can you tell me what KPIs are available, what dimensions I can use, what fields exist within the dimensions ,all by KPI ID, limit to 10 dimensions."
+
 def main():
     """Main Streamlit application."""
     
@@ -466,6 +472,7 @@ def main():
             st.session_state.session_id = str(uuid.uuid4())
             st.session_state.agent_session = None
             st.session_state.session_service = InMemorySessionService()
+            st.session_state.initial_query_processed = False
             st.rerun()        
         
         st.markdown("---")
@@ -476,7 +483,53 @@ def main():
         else:
             st.info("Start a conversation to see debug information")
     
-    # Display chat messages
+    # Auto-run initial KPI query on first session load
+    if not st.session_state.initial_query_processed and len(st.session_state.messages) == 0:
+        initial_query = get_initial_kpi_query()
+        
+        # Add initial query to messages
+        st.session_state.messages.append({"role": "user", "content": initial_query})
+        
+        # Display user message
+        with st.chat_message("user"):
+            st.markdown(initial_query)
+        
+        # Display assistant response with spinner
+        with st.chat_message("assistant"):
+            with st.spinner("Analyzing your query..."):
+                try:
+                    # Process the query
+                    session = asyncio.run(process_query(initial_query, st.session_state.session_id))
+                    
+                    if session is None:
+                        raise ValueError("Session is None after processing")
+                    
+                    # Display response
+                    display_agent_response(session)
+                    
+                    # Save to message history
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": "Response generated",
+                        "session": session
+                    })
+                    
+                    # Mark initial query as processed
+                    st.session_state.initial_query_processed = True
+                    
+                except Exception as e:
+                    error_msg = f"An error occurred: {str(e)}"
+                    st.error(error_msg)
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": error_msg
+                    })
+                    logger.error(f"Error processing initial query: {e}", exc_info=True)
+        
+        # Force page to update after initial query
+        st.rerun()
+    
+    # Display chat messages (excluding the initial auto-run on first load)
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             if message["role"] == "user":
