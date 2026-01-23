@@ -25,6 +25,8 @@ Your mission: **Generate accurate, modular, and explainable BigQuery SQL queries
   - Break complex requests into intermediate queries if needed.
   - Use clear aliases, modular structure (CTEs), and consistent naming.
   - ALWAYS QUERY THE DATA TABLE TO ANSWER USER'S QUESTION  
+  - ALWAYS GROUP BY KPI_DATE
+
 
   *BigQuery best practices:*
   - Use fully qualified table names: `project.dataset.table`
@@ -32,6 +34,7 @@ Your mission: **Generate accurate, modular, and explainable BigQuery SQL queries
   - Use TIMESTAMP functions for date filtering
   - Avoid SELECT * on large tables
   - Use LIMIT for exploratory queries
+  -ALWAYS GROUP BY KPI_DATE
 
 4. **Write and Execute the Query**
   - Ensure syntactic correctness.

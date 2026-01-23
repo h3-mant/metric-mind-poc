@@ -428,7 +428,51 @@ def display_kpi_reference():
 
 def get_initial_kpi_query() -> str:
     """Generate the initial query to fetch KPI metadata."""
-    return "Can you tell me what KPIs are available, what dimensions I can use, what fields exist within the dimensions ,all by KPI ID, limit to 10 dimensions."
+    return """Please execute the following SQL query:
+
+WITH DistinctKpiDimInt AS (
+  SELECT DISTINCT
+    t.KPI_ID,
+    d.NAME AS dim_name,
+    d.VALUE AS dim_value,
+    i.NAME AS int_name
+  FROM
+    `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V5` AS t,
+    UNNEST(t.DIM) AS d,
+    UNNEST(t.INT) AS i
+),
+KpiDimensionsWithExamples AS (
+  SELECT
+    KPI_ID,
+    dim_name,
+    ARRAY_AGG(DISTINCT dim_value ORDER BY dim_value LIMIT 10) AS example_values
+  FROM DistinctKpiDimInt
+  WHERE dim_name IS NOT NULL AND dim_value IS NOT NULL
+  GROUP BY KPI_ID, dim_name
+),
+AggregatedDimensions AS (
+  SELECT
+    KPI_ID,
+    ARRAY_AGG(STRUCT(dim_name, example_values) ORDER BY dim_name) AS dimensions_with_examples
+  FROM KpiDimensionsWithExamples
+  GROUP BY KPI_ID
+),
+AggregatedMeasures AS (
+  SELECT
+    KPI_ID,
+    ARRAY_AGG(DISTINCT int_name IGNORE NULLS ORDER BY int_name) AS measures
+  FROM DistinctKpiDimInt
+  WHERE int_name IS NOT NULL
+  GROUP BY KPI_ID
+)
+SELECT
+  T1.KPI_ID,
+  T2.dimensions_with_examples,
+  T3.measures
+FROM (SELECT DISTINCT KPI_ID FROM DistinctKpiDimInt) AS T1
+LEFT JOIN AggregatedDimensions AS T2 ON T1.KPI_ID = T2.KPI_ID
+LEFT JOIN AggregatedMeasures AS T3 ON T1.KPI_ID = T3.KPI_ID
+ORDER BY T1.KPI_ID;"""
 
 def main():
     """Main Streamlit application."""
@@ -486,13 +530,18 @@ def main():
     # Auto-run initial KPI query on first session load
     if not st.session_state.initial_query_processed and len(st.session_state.messages) == 0:
         initial_query = get_initial_kpi_query()
+        initial_display_message = "I'm currently loading data definitions in, I'll give you a view of what's available and the dimensions you can split them by."
         
-        # Add initial query to messages
-        st.session_state.messages.append({"role": "user", "content": initial_query})
+        # Add initial query to messages (store actual query but display custom message)
+        st.session_state.messages.append({
+            "role": "user", 
+            "content": initial_query,
+            "display_content": initial_display_message
+        })
         
         # Display user message
         with st.chat_message("user"):
-            st.markdown(initial_query)
+            st.markdown(initial_display_message)
         
         # Display assistant response with spinner
         with st.chat_message("assistant"):
@@ -533,7 +582,9 @@ def main():
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             if message["role"] == "user":
-                st.markdown(message["content"])
+                # Use display_content if available, otherwise use content
+                display_text = message.get("display_content", message["content"])
+                st.markdown(display_text)
             else:
                 # For assistant, display structured response
                 if "session" in message:
