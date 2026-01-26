@@ -431,8 +431,9 @@ def get_initial_kpi_query() -> str:
     return """Please execute the following SQL query:
 
 WITH DistinctKpiDimInt AS (
-  SELECT DISTINCT
+SELECT DISTINCT
     t.KPI_ID,
+    S.KPI_NAME,
     d.NAME AS dim_name,
     d.VALUE AS dim_value,
     i.NAME AS int_name
@@ -440,39 +441,44 @@ WITH DistinctKpiDimInt AS (
     `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V5` AS t,
     UNNEST(t.DIM) AS d,
     UNNEST(t.INT) AS i
+
+    inner join `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V5` S  ON T.KPI_ID=S.KPI_ID
 ),
 KpiDimensionsWithExamples AS (
   SELECT
     KPI_ID,
+    KPI_NAME,
     dim_name,
     ARRAY_AGG(DISTINCT dim_value ORDER BY dim_value LIMIT 10) AS example_values
   FROM DistinctKpiDimInt
   WHERE dim_name IS NOT NULL AND dim_value IS NOT NULL
-  GROUP BY KPI_ID, dim_name
+  GROUP BY KPI_ID,KPI_NAME, dim_name
 ),
 AggregatedDimensions AS (
   SELECT
-    KPI_ID,
+    KPI_ID, KPI_NAME,
     ARRAY_AGG(STRUCT(dim_name, example_values) ORDER BY dim_name) AS dimensions_with_examples
   FROM KpiDimensionsWithExamples
-  GROUP BY KPI_ID
+  GROUP BY KPI_ID, KPI_NAME
 ),
 AggregatedMeasures AS (
   SELECT
     KPI_ID,
+    KPI_NAME,
     ARRAY_AGG(DISTINCT int_name IGNORE NULLS ORDER BY int_name) AS measures
   FROM DistinctKpiDimInt
   WHERE int_name IS NOT NULL
-  GROUP BY KPI_ID
+  GROUP BY KPI_ID, KPI_NAME
 )
 SELECT
   T1.KPI_ID,
+  T1.KPI_NAME,
   T2.dimensions_with_examples,
   T3.measures
-FROM (SELECT DISTINCT KPI_ID FROM DistinctKpiDimInt) AS T1
+FROM (SELECT DISTINCT KPI_ID, KPI_NAME FROM DistinctKpiDimInt) AS T1
 LEFT JOIN AggregatedDimensions AS T2 ON T1.KPI_ID = T2.KPI_ID
 LEFT JOIN AggregatedMeasures AS T3 ON T1.KPI_ID = T3.KPI_ID
-ORDER BY T1.KPI_ID;"""
+ORDER BY T1.KPI_ID, KPI_NAME"""
 
 def main():
     """Main Streamlit application."""
