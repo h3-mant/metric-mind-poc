@@ -135,7 +135,7 @@ async def process_query(user_query: str, session_id: str):
         initial_state_formatted = {
             'projects': "uk-dta-gsmanalytics-poc",
             'datasets': "metricmind",
-            'tables': "GSM_KPI_DATA_TEST_V5",
+            'tables': "GSM_KPI_DATA_TEST_V5, GSM_KPI_DEFS_TEST_V5",
             'schema_structure': defs_schema,
             'schema_context': data_schema
         }
@@ -216,7 +216,68 @@ async def process_query(user_query: str, session_id: str):
         logger.error(f"Error in process_query: {e}", exc_info=True)
         raise e
 
-def display_agent_response(session):
+def display_initial_kpi_data(sql_response):
+    """Display initial KPI metadata in a clean, organized dropdown format."""
+    if not sql_response or len(sql_response) == 0:
+        st.warning("No KPI data available to display.")
+        return
+    
+    # Load schema context to get KPI names
+    schema_context = json_to_dict(SCHEMA_CONTEXT_PATH)
+    kpis_metadata = schema_context.get('kpis', {})
+    
+    st.markdown("### 📊 Available KPIs and Their Attributes")
+    st.markdown("*Click on each KPI to explore available dimensions and measures*")
+    st.markdown("")
+    
+    for row in sql_response:
+        kpi_id = str(row.get('KPI_ID', 'Unknown'))
+        dimensions_with_examples = row.get('dimensions_with_examples', [])
+        measures = row.get('measures', [])
+        
+        # Get KPI name from schema context
+        kpi_info = kpis_metadata.get(kpi_id, {})
+        kpi_name = kpi_info.get('kpi_name', kpi_id)
+        kpi_description = kpi_info.get('kpi_description', '')
+        
+        with st.expander(f"**{kpi_name}** (ID: {kpi_id})"):
+            # Display description if available
+            if kpi_description:
+                st.markdown(f"*{kpi_description}*")
+                st.markdown("---")
+            
+            # Create two columns for dimensions and measures
+            col1, col2 = st.columns([3, 2])
+            
+            with col1:
+                st.markdown("#### 🔍 Dimensions (Filters)")
+                if dimensions_with_examples:
+                    for dim in dimensions_with_examples:
+                        dim_name = dim.get('dim_name', 'Unknown')
+                        example_values = dim.get('example_values', [])
+                        
+                        # Format dimension name nicely
+                        st.markdown(f"**{dim_name.title()}**")
+                        if example_values:
+                            # Display examples in a compact format
+                            examples_str = ", ".join([f"`{val}`" for val in example_values[:10]])
+                            st.markdown(f"<small>Examples: {examples_str}</small>", unsafe_allow_html=True)
+                        else:
+                            st.markdown("<small>*No example values available*</small>", unsafe_allow_html=True)
+                        st.markdown("")  # Add spacing
+                else:
+                    st.info("No dimensions available")
+            
+            with col2:
+                st.markdown("#### 📈 Measures")
+                if measures:
+                    for measure in measures:
+                        st.markdown(f"• **{measure}**")
+                else:
+                    st.info("No measures available")
+
+
+def display_agent_response(session, is_initial_query=False):
     """Display agent response based on state variables."""
     if session is None:
         st.error("No session available to display")
@@ -232,26 +293,30 @@ def display_agent_response(session):
     
     # Handle SQL sequence output
     if state.get('sql_required'):
-        st.subheader("SQL Analysis")
-        
         sql_outcome = state.get('latest_sql_sequence_outcome')
         
         if sql_outcome == 'SUCCESS':
-            # Display both SQL response and output
             sql_response = state.get('latest_sql_response', '')
-            sql_output_reasoning = state.get('latest_sql_output_reasoning', '')
             
-            if sql_output_reasoning:
-                with st.expander("**SQL Analysis**", expanded=True):
-                    st.markdown(sql_output_reasoning, unsafe_allow_html=True)
+            # If this is the initial query, use special formatting
+            if is_initial_query and sql_response:
+                display_initial_kpi_data(sql_response)
+            else:
+                # Regular SQL display for non-initial queries
+                st.subheader("SQL Analysis")
+                sql_output_reasoning = state.get('latest_sql_output_reasoning', '')
+                
+                if sql_output_reasoning:
+                    with st.expander("**SQL Analysis**", expanded=True):
+                        st.markdown(sql_output_reasoning, unsafe_allow_html=True)
 
-            if sql_response:
-                st.markdown('**SQL Response:**')
-                df = pd.DataFrame(sql_response)
-                st.dataframe(df, width='stretch')
-            
+                if sql_response:
+                    st.markdown('**SQL Response:**')
+                    df = pd.DataFrame(sql_response)
+                    st.dataframe(df, width='stretch')
         else:
-            # Display only reasoning
+            # Display error for failed SQL
+            st.subheader("SQL Analysis")
             sql_output_reasoning = state.get('latest_sql_output_reasoning', 'SQL sequence encountered an error.')
             st.markdown("**SQL Status:**")
             st.warning(sql_output_reasoning)
@@ -433,7 +498,6 @@ def get_initial_kpi_query() -> str:
 WITH DistinctKpiDimInt AS (
 SELECT DISTINCT
     t.KPI_ID,
-    S.KPI_NAME,
     d.NAME AS dim_name,
     d.VALUE AS dim_value,
     i.NAME AS int_name
@@ -441,44 +505,45 @@ SELECT DISTINCT
     `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V5` AS t,
     UNNEST(t.DIM) AS d,
     UNNEST(t.INT) AS i
-
-    inner join `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V5` S  ON T.KPI_ID=S.KPI_ID
 ),
 KpiDimensionsWithExamples AS (
   SELECT
     KPI_ID,
-    KPI_NAME,
     dim_name,
     ARRAY_AGG(DISTINCT dim_value ORDER BY dim_value LIMIT 10) AS example_values
   FROM DistinctKpiDimInt
   WHERE dim_name IS NOT NULL AND dim_value IS NOT NULL
-  GROUP BY KPI_ID,KPI_NAME, dim_name
+  GROUP BY KPI_ID, dim_name
 ),
 AggregatedDimensions AS (
   SELECT
-    KPI_ID, KPI_NAME,
+    KPI_ID,
     ARRAY_AGG(STRUCT(dim_name, example_values) ORDER BY dim_name) AS dimensions_with_examples
   FROM KpiDimensionsWithExamples
-  GROUP BY KPI_ID, KPI_NAME
+  GROUP BY KPI_ID
 ),
 AggregatedMeasures AS (
   SELECT
     KPI_ID,
-    KPI_NAME,
+  
     ARRAY_AGG(DISTINCT int_name IGNORE NULLS ORDER BY int_name) AS measures
   FROM DistinctKpiDimInt
   WHERE int_name IS NOT NULL
-  GROUP BY KPI_ID, KPI_NAME
+  GROUP BY KPI_ID
 )
 SELECT
   T1.KPI_ID,
-  T1.KPI_NAME,
+  s.KPI_NAME,
+  s.KPI_DESCRIPTION,
   T2.dimensions_with_examples,
   T3.measures
-FROM (SELECT DISTINCT KPI_ID, KPI_NAME FROM DistinctKpiDimInt) AS T1
+FROM (SELECT DISTINCT KPI_ID FROM DistinctKpiDimInt) AS T1
+left join `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V5` S  ON s.KPI_ID=t1.KPI_ID
 LEFT JOIN AggregatedDimensions AS T2 ON T1.KPI_ID = T2.KPI_ID
 LEFT JOIN AggregatedMeasures AS T3 ON T1.KPI_ID = T3.KPI_ID
-ORDER BY T1.KPI_ID, KPI_NAME"""
+ORDER BY T1.KPI_ID, KPI_NAME
+
+"""
 
 def main():
     """Main Streamlit application."""
@@ -559,14 +624,15 @@ def main():
                     if session is None:
                         raise ValueError("Session is None after processing")
                     
-                    # Display response
-                    display_agent_response(session)
+                    # Display response for initial query
+                    display_agent_response(session, is_initial_query=True)
                     
                     # Save to message history
                     st.session_state.messages.append({
                         "role": "assistant",
                         "content": "Response generated",
-                        "session": session
+                        "session": session,
+                        "is_initial_query": True
                     })
                     
                     # Mark initial query as processed
@@ -594,7 +660,8 @@ def main():
             else:
                 # For assistant, display structured response
                 if "session" in message:
-                    display_agent_response(message["session"])
+                    is_initial = message.get("is_initial_query", False)
+                    display_agent_response(message["session"], is_initial_query=is_initial)
                 else:
                     st.markdown(message["content"])
     
