@@ -24,7 +24,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Sky branding and styling
+# Custom CSS for Sky branding and modern styling
 st.markdown("""
 <style>
     /* Sky Broadband color scheme */
@@ -33,68 +33,217 @@ st.markdown("""
         --sky-cyan: #0099CC;
         --sky-light: #E8F4FF;
         --sky-white: #F5F5F5;
+        --sky-dark: #001F3F;
     }
     
-    /* Main page background */
+    /* Main page background with modern gradient */
     .stApp {
-        background: linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%);
+        background: linear-gradient(135deg, #FFFFFF 0%, #E8F4FF 50%, #F0F7FF 100%);
     }
     
-    /* Sidebar background */
+    /* Sidebar styling with depth */
     .stSidebar {
-        background-color: #F5F5F5 !important;
+        background: linear-gradient(180deg, #F8FAFC 0%, #F5F5F5 100%) !important;
+        border-right: 1px solid #E0E7FF !important;
     }
     
-    /* Header styling */
+    .stSidebar [data-testid="stSidebarNav"] {
+        padding-top: 2rem;
+    }
+    
+    /* Header styling with enhanced typography */
     h1 {
         color: #003D7A !important;
         font-weight: 800 !important;
-        letter-spacing: -0.5px;
+        letter-spacing: -1px !important;
+        text-shadow: 0 2px 4px rgba(0, 61, 122, 0.1) !important;
     }
     
-    /* Bio text styling */
+    h2 {
+        color: #003D7A !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.5px !important;
+        margin-top: 1.5rem !important;
+    }
+    
+    h3 {
+        color: #0099CC !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.3px !important;
+    }
+    
+    h4 {
+        color: #003D7A !important;
+        font-weight: 600 !important;
+        font-size: 1.1rem !important;
+    }
+    
+    /* Bio text styling with modern card design */
     .bio-text {
         color: #003D7A;
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 600;
-        margin-bottom: 24px;
-        padding: 14px 16px;
-        background: linear-gradient(90deg, #E8F4FF 0%, #F0F8FF 100%);
-        border-left: 5px solid #0099CC;
-        border-radius: 6px;
+        margin-bottom: 28px;
+        padding: 18px 24px;
+        background: linear-gradient(135deg, #FFFFFF 0%, #E8F4FF 100%);
+        border-left: 6px solid #0099CC;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 153, 204, 0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     
-    /* Expander styling */
+    .bio-text:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 153, 204, 0.2);
+    }
+    
+    /* Enhanced expander styling */
     .streamlit-expanderHeader {
-        background-color: #E8F4FF !important;
+        background: linear-gradient(135deg, #E8F4FF 0%, #F0F8FF 100%) !important;
         color: #003D7A !important;
-        border-radius: 6px !important;
+        border-radius: 10px !important;
+        border: 1px solid #C5E3FF !important;
+        font-weight: 600 !important;
+        padding: 12px 16px !important;
+        transition: all 0.3s ease !important;
     }
     
-    /* Button styling */
+    .streamlit-expanderHeader:hover {
+        background: linear-gradient(135deg, #D0EBFF 0%, #E8F4FF 100%) !important;
+        box-shadow: 0 4px 12px rgba(0, 153, 204, 0.15) !important;
+        transform: translateY(-1px) !important;
+    }
+    
+    /* Expander content styling */
+    .streamlit-expanderContent {
+        border-left: 3px solid #0099CC !important;
+        border-right: 1px solid #E8F4FF !important;
+        border-bottom: 1px solid #E8F4FF !important;
+        border-radius: 0 0 10px 10px !important;
+        padding: 20px !important;
+        background-color: #FAFCFF !important;
+    }
+    
+    /* Modern button styling */
     .stButton > button {
         background: linear-gradient(135deg, #0099CC 0%, #0077AA 100%) !important;
         color: white !important;
         border: none !important;
-        border-radius: 6px !important;
+        border-radius: 10px !important;
         font-weight: 700 !important;
-        box-shadow: 0 2px 8px rgba(0, 153, 204, 0.3) !important;
+        font-size: 15px !important;
+        padding: 12px 28px !important;
+        box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3) !important;
+        transition: all 0.3s ease !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
     }
     
     .stButton > button:hover {
         background: linear-gradient(135deg, #0077AA 0%, #005580 100%) !important;
-        box-shadow: 0 4px 12px rgba(0, 153, 204, 0.4) !important;
+        box-shadow: 0 6px 20px rgba(0, 153, 204, 0.4) !important;
+        transform: translateY(-2px) !important;
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0px) !important;
+        box-shadow: 0 2px 8px rgba(0, 153, 204, 0.3) !important;
+    }
+    
+    /* Chat message styling */
+    .stChatMessage {
+        background-color: #FFFFFF !important;
+        border-radius: 12px !important;
+        padding: 16px !important;
+        margin: 12px 0 !important;
+        box-shadow: 0 2px 8px rgba(0, 61, 122, 0.08) !important;
+        border: 1px solid #E8F4FF !important;
+    }
+    
+    /* Chat input styling */
+    .stChatInputContainer {
+        border-top: 2px solid #E8F4FF !important;
+        padding-top: 20px !important;
+    }
+    
+    /* Dataframe styling */
+    .stDataFrame {
+        border-radius: 10px !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 12px rgba(0, 61, 122, 0.1) !important;
+    }
+    
+    /* Metric styling */
+    [data-testid="stMetricValue"] {
+        color: #0099CC !important;
+        font-weight: 700 !important;
+        font-size: 2rem !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #003D7A !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+    }
+    
+    /* Info/Warning/Error boxes */
+    .stAlert {
+        border-radius: 10px !important;
+        border-left-width: 5px !important;
     }
     
     /* Divider styling */
     hr {
-        border-color: #0099CC !important;
-        margin: 20px 0 !important;
+        border: none !important;
+        height: 2px !important;
+        background: linear-gradient(90deg, transparent, #0099CC, transparent) !important;
+        margin: 24px 0 !important;
+    }
+    
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #F0F7FF;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #0099CC, #0077AA);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #0077AA, #005580);
     }
     
     /* Text styling */
     body {
         color: #003D7A !important;
+    }
+    
+    /* Enhanced code blocks */
+    code {
+        background-color: #F0F7FF !important;
+        color: #003D7A !important;
+        padding: 2px 6px !important;
+        border-radius: 4px !important;
+        font-family: 'Consolas', 'Monaco', monospace !important;
+    }
+    
+    /* Image containers */
+    .stImage {
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 16px rgba(0, 61, 122, 0.12) !important;
+    }
+    
+    /* Spinner styling */
+    .stSpinner > div {
+        border-top-color: #0099CC !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -259,11 +408,11 @@ def display_initial_kpi_data(sql_response):
                         # Format dimension name nicely
                         st.markdown(f"**{dim_name.title()}**")
                         if example_values:
-                            # Display examples in a compact format
-                            examples_str = ", ".join([f"`{val}`" for val in example_values[:10]])
-                            st.markdown(f"<small>Examples: {examples_str}</small>", unsafe_allow_html=True)
+                            # Display examples in a clean, aligned format
+                            examples_str = ", ".join([str(val) for val in example_values[:10]])
+                            st.markdown(f"*Examples: {examples_str}*")
                         else:
-                            st.markdown("<small>*No example values available*</small>", unsafe_allow_html=True)
+                            st.markdown("*No example values available*")
                         st.markdown("")  # Add spacing
                 else:
                     st.info("No dimensions available")
