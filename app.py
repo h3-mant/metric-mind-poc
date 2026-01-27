@@ -555,7 +555,7 @@ def main():
         # Try to load Sky logo, fallback to emoji if not found
         logo_path = Path("SKY_NEW_LOGO.png")
         if logo_path.exists():
-            st.image(str(logo_path), width=120)
+            st.image(str(logo_path), width=250)
         else:
             st.markdown("<div style='font-size: 60px; text-align: center;'>☁️</div>", unsafe_allow_html=True)
     
@@ -567,8 +567,7 @@ def main():
     
     # Bio line
     st.markdown(
-        "<div class='bio-text'>Conversational AI agent for Sky TV, Broadband & Mobile Service Analytics | "
-        "Fast self-service intelligence for stakeholders</div>",
+        "<div class='bio-text'>Conversational analytics assistant that allows users to access high‑level KPIs through natural language questions, providing fast, self‑serve insight without exposing raw or personally identifiable data.</div>",
         unsafe_allow_html=True
     )
     
