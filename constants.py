@@ -7,7 +7,7 @@ STARTER_AGENT_MODEL = 'gemini-2.5-flash'
 SQL_WRITER_AGENT_MODEL = 'gemini-2.5-flash'
 SQL_CRITIC_AGENT_MODEL = 'gemini-2.5-flash'
 SQL_REFINER_AGENT_MODEL = 'gemini-2.5-flash'
-PYTHON_WRITER_AGENT_MODEL = 'gemini-2.5-flash'
+PYTHON_WRITER_AGENT_MODEL = 'gemini-2.5-flash' 
 PYTHON_CRITIC_AGENT_MODEL = 'gemini-2.5-flash'
 PYTHON_REFINER_AGENT_MODEL = 'gemini-2.5-flash'
 

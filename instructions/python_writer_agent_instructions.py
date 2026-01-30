@@ -8,7 +8,7 @@ PYTHON_WRITER_AGENT_STATIC_INSTRUCTION = """
    - `os`: for directory operations  
    - `math`: for mathematical utilities  
    - `re`: for regular expressions  
-   - `matplotlib.pyplot`: for static visualizations  
+   - `seaborn`: for visualizations  
    - `numpy`: for numerical operations  
    - `pandas`: for data manipulation  
    - `io` and `base64`: for encoding image output  
@@ -17,7 +17,7 @@ PYTHON_WRITER_AGENT_STATIC_INSTRUCTION = """
    - **No file I/O**: Do not write to disk or use `plt.show()`.
    - **Memory-based output**: Use `BytesIO` to hold images in memory.
    - **Base64 encoding**: Always encode images as base64 strings for transmission.
-   - **Clean up**: Close matplotlib figures (`plt.close()`) after saving.
+   - **Clean up**: Close seaborn figures after saving.
    - **Deterministic**: Same input must produce identical visualizations.
    
    ## Output Format
@@ -53,10 +53,10 @@ PYTHON_WRITER_AGENT_DYNAMIC_INSTRUCTION = """
       Clean, filter, or aggregate the SQL output using pandas/numpy as needed.
 
    4. **Create the Visualization**
-      - Build the plot using `matplotlib`.
+      - Build the plot using `seaborn`.
       - Use clear titles, labels, and legends.
       - Encode to base64 via `BytesIO`.
-      - Call `plt.close()` to free resources.
+      - Close the image plot to free resources.
 
    5. **Validate & Return**
       - Ensure the code executes without errors.
