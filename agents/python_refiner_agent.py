@@ -25,11 +25,15 @@ python_refiner_agent = LlmAgent(
     static_instruction=types.Content(role='system',parts=[types.Part(text=PYTHON_REFINER_AGENT_STATIC_INSTRUCTION)]),
     instruction=PYTHON_REFINER_AGENT_DYNAMIC_INSTRUCTION,
     description="refines Python code to align with critique/suggestions and generates visuals.",
-    code_executor=BuiltInCodeExecutor(),
+    code_executor=BuiltInCodeExecutor(
+        error_retry_attempts=1, #let agents handle code failure, avoid retries
+        stateful=True #retain code execution results
+    ),
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
         # max_output_tokens=5000,
         top_p=0.5,
+        seed=1
     ),
     planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(

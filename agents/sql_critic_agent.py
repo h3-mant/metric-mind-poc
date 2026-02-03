@@ -28,6 +28,7 @@ sql_critic_agent = LlmAgent(
         temperature=0,
         top_p=0.5,
         max_output_tokens=5000,
+        seed=1
     ),
     planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(

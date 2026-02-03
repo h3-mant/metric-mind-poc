@@ -50,10 +50,12 @@ sql_writer_agent = LlmAgent(
     static_instruction=types.Content(role='system',parts=[types.Part(text=SQL_WRITER_AGENT_STATIC_INSTRUCTION)]),
     instruction = SQL_WRITER_AGENT_DYNAMIC_INSTRUCTION,
     tools=[bigquery_toolset],        
+
     generate_content_config=types.GenerateContentConfig(
         temperature=0, #for more determinism
         # max_output_tokens=5000,
-        top_p=0.5 #for more determinism
+        top_p=0.5, #for more determinism
+        seed=1
     ),  
     planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(

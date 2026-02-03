@@ -3,13 +3,13 @@ APP_NAME = 'agents'
 USER_ID = 'default_user'
 
 #MODELS
-STARTER_AGENT_MODEL = 'gemini-2.5-pro'
-SQL_WRITER_AGENT_MODEL = 'gemini-2.5-pro'
-SQL_CRITIC_AGENT_MODEL = 'gemini-2.5-pro'
-SQL_REFINER_AGENT_MODEL = 'gemini-2.5-pro'
-PYTHON_WRITER_AGENT_MODEL = 'gemini-2.5-pro'
-PYTHON_CRITIC_AGENT_MODEL = 'gemini-2.5-pro'
-PYTHON_REFINER_AGENT_MODEL = 'gemini-2.5-pro'
+STARTER_AGENT_MODEL = 'gemini-2.5-flash-lite'
+SQL_WRITER_AGENT_MODEL = 'gemini-2.5-flash-lite'
+SQL_CRITIC_AGENT_MODEL = 'gemini-2.5-flash-lite'
+SQL_REFINER_AGENT_MODEL = 'gemini-2.5-flash-lite'
+PYTHON_WRITER_AGENT_MODEL = 'gemini-2.5-flash-lite'
+PYTHON_CRITIC_AGENT_MODEL = 'gemini-2.5-flash-lite'
+PYTHON_REFINER_AGENT_MODEL = 'gemini-2.5-flash-lite'
 
 #AGENT CALLBACK PHRASE
 OUTCOME_OK_PHRASE = "OUTCOME OK"
