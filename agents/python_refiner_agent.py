@@ -33,7 +33,8 @@ python_refiner_agent = LlmAgent(
         temperature=0,
         # max_output_tokens=5000,
         top_p=0.5,
-        seed=1
+        seed=1,
+        candidate_count=None
     ),
     planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(

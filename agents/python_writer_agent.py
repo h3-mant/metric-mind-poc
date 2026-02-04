@@ -29,7 +29,8 @@ python_writer_agent = LlmAgent(
         temperature=0,
         top_p=0.5,
         max_output_tokens=5000,
-        seed=1
+        seed=1, #reproduce answers for identical question
+        candidate_count=None
     ),
     planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(

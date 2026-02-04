@@ -55,7 +55,8 @@ sql_writer_agent = LlmAgent(
         temperature=0, #for more determinism
         # max_output_tokens=5000,
         top_p=0.5, #for more determinism
-        seed=1
+        seed=1,
+        candidate_count=None
     ),  
     planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(

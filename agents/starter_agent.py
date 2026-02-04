@@ -39,7 +39,8 @@ starter_agent = LlmAgent(
         temperature=0.5,
         max_output_tokens=500,
         top_p=0.95,
-        seed=1
+        seed=1,
+        candidate_count=None
     ),  
   planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(
