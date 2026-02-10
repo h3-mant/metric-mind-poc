@@ -344,8 +344,8 @@ async def process_query(user_query: str, session_id: str):
                 )
                 
                 # Save image artifact from Python sequence
-                img_bytes = session.state.get('latest_img_bytes')                
-                save_img(img_bytes)                
+                img_url = session.state.get('latest_img_url')                
+                save_img(img_url)                
             else:
                 logger.error('SQL sequence failed')
 
@@ -554,12 +554,11 @@ def display_debug_info(session):
     
     # Image Bytes Info
     with st.expander("Image Info", expanded=False):
-        img_bytes = state.get('latest_img_bytes')
-        if img_bytes:
-            st.text(f"Image size: {len(img_bytes)} bytes")
-            st.text(f"Type: {type(img_bytes)}")
+        img_url = state.get('latest_img_url')
+        if img_url:
+            st.text(f"Latest Image URL: {img_url}")            
         else:
-            st.text("No image bytes available")
+            st.text("No image available")
     
     # Metrics
     with st.expander("Metrics", expanded=False):

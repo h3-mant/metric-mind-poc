@@ -45,12 +45,10 @@ async def process_agent_response(
 
                         state_changes["latest_python_code_execution_outcome"] = str(part.code_execution_result.outcome)
 
-                        #TO DO: use artifact_service via callbacks to load image instead of state as below
-                        
-                        final_response["img_bytes_length"] = len(str(part.code_execution_result.output))
+                        #TO DO: use artifact_service via callbacks to load image instead of state as below                                                
 
-                        #save binary img artifact to state
-                        state_changes["latest_img_bytes"] = part.code_execution_result.output
+                        #save img artifact URL to state
+                        state_changes["latest_img_url"] = part.code_execution_result.output
 
         # ---- 2. Function Calls ----
         calls = event.get_function_calls()

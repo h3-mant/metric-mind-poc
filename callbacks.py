@@ -78,31 +78,65 @@ def get_sequence_outcome(callback_context: CallbackContext) -> None:
   return None
 
 
-async def store_image_artifact(tool: BaseTool, args: Dict[str, Any], tool_context: ToolContext, tool_response: Dict) -> None:
+async def store_image_artifact(
+    tool: BaseTool,
+    args: Dict[str, Any],
+    tool_context: ToolContext,
+    tool_response: Dict
+) -> None:
     try:
-        # The response contains a Markdown image tag — extract base64 string
-        markdown_str = tool_response.get('inline_data', '')
-        match = re.search(r"data:image/png;base64,([A-Za-z0-9+/=]+)", markdown_str)
-        if not match:
-            raise ValueError("No valid base64 image string found in response")
+        inline_data = tool_response.get("inline_data")
 
-        image_base64 = match.group(1)
-        image_bytes = base64.b64decode(image_base64)
+        if not inline_data:
+            raise ValueError("inline_data missing from tool response")
 
-        filename = "image.png"
-        image_artifact = types.Part.from_bytes(
-            data=image_bytes,
-            mime_type="image/png"
-        )
+        # inline_data may be JSON string or dict
+        if isinstance(inline_data, str):
+            payload = json.loads(inline_data)
+        else:
+            payload = inline_data
 
-        version = await tool_context.save_artifact(
-            filename=filename,
-            artifact=image_artifact
-        )
-        logger.info(f"Successfully saved image artifact '{filename}' as version {version}.")
+        image_gcs_uri = payload.get("image_gcs_uri")
+        image_signed_url = payload.get("image_signed_url")
+
+        if not image_gcs_uri:
+            raise ValueError("image_gcs_uri missing in tool response")
+
+        # Validate bucket (optional safety check)
+        if not image_gcs_uri.startswith("gs://metric-mind-images/"):
+            raise ValueError("Image not stored in expected bucket")
+
+        logger.info(f"GCS image recorded: {image_gcs_uri}")
 
     except Exception as e:
-        logger.error(f"Error saving image artifact: {e}")
+        logger.error(f"Error extracting GCS image URL: {e}")
+
+
+# async def store_image_artifact(tool: BaseTool, args: Dict[str, Any], tool_context: ToolContext, tool_response: Dict) -> None:
+#     try:
+#         # The response contains a Markdown image tag — extract base64 string
+#         markdown_str = tool_response.get('inline_data', '')
+#         match = re.search(r"data:image/png;base64,([A-Za-z0-9+/=]+)", markdown_str)
+#         if not match:
+#             raise ValueError("No valid base64 image string found in response")
+
+#         image_base64 = match.group(1)
+#         image_bytes = base64.b64decode(image_base64)
+
+#         filename = "image.png"
+#         image_artifact = types.Part.from_bytes(
+#             data=image_bytes,
+#             mime_type="image/png"
+#         )
+
+#         version = await tool_context.save_artifact(
+#             filename=filename,
+#             artifact=image_artifact
+#         )
+#         logger.info(f"Successfully saved image artifact '{filename}' as version {version}.")
+
+#     except Exception as e:
+#         logger.error(f"Error saving image artifact: {e}")
 
   
 

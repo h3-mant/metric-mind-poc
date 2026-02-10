@@ -5,6 +5,8 @@ from utils.logger import get_logger
 import io
 import re
 from PIL import Image
+import requests
+from PIL import Image
 
 logger = get_logger(__name__)
 
@@ -20,45 +22,43 @@ def json_to_dict(path: str) -> dict:
     except FileNotFoundError:
         raise FileNotFoundError(f"File not found: {path}")
 
-def save_img(img_bytes: str) -> None:
-    """Save base64 image string (possibly wrapped in Markdown/data URL) to a uniquely named PNG file."""
-    if not img_bytes:
-        logger.error("No image bytes to save")
+def save_img(image_url: str) -> None:
+    """Download image from signed GCS URL and save to a uniquely named PNG file."""
+    
+    if not image_url:
+        logger.error("No image URL provided")
         return
 
     os.makedirs("images", exist_ok=True)
 
     try:
-        # Extract base64 content if Markdown or data URL is present
-        match = re.search(r"data:image\/png;base64,([A-Za-z0-9+/=]+)", img_bytes)
-        if match:
-            img_bytes = match.group(1)
+        # Download image
+        resp = requests.get(image_url, timeout=30)
+        resp.raise_for_status()
+        image_bytes = resp.content
 
-        # Add missing padding if needed
-        missing_padding = len(img_bytes) % 4
-        if missing_padding:
-            img_bytes += "=" * (4 - missing_padding)
-
-        decoded_bytes = base64.b64decode(img_bytes)
-
-        # Validate before saving
+        # Validate image
         try:
-            Image.open(io.BytesIO(decoded_bytes)).verify()
+            Image.open(io.BytesIO(image_bytes)).verify()
         except Exception as e:
-            raise ValueError(f"Invalid image data: {e}")
+            raise ValueError(f"Downloaded data is not a valid image: {e}")
 
-        # Determine next available filename (e.g., img_1.png, img_2.png, ...)
-        existing = [f for f in os.listdir("images") if f.startswith("img_") and f.endswith(".png")]
+        # Determine next available filename
+        existing = [
+            f for f in os.listdir("images")
+            if f.startswith("img_") and f.endswith(".png")
+        ]
         next_index = len(existing) + 1
         output_path = os.path.join("images", f"img_{next_index}.png")
 
         # Save image
         with open(output_path, "wb") as f:
-            f.write(decoded_bytes)
+            f.write(image_bytes)
 
         logger.info(f"Saved image to {output_path}")
 
     except Exception as e:
-        logger.error(f"Failed to decode/save image: {e}")
+        logger.error(f"Failed to download/save image: {e}")
+
 
 
