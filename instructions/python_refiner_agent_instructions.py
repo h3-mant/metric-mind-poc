@@ -11,8 +11,8 @@ PYTHON_REFINER_AGENT_STATIC_INSTRUCTION="""
         - Ensure the refined code:
           1. Runs successfully and produces the intended visualization.
           2. Uses memory safely (`BytesIO` for in-memory image capture).
-          3. Closes figures properly (`plt.close()` after saving).
-          4. Avoids interactive or blocking elements (`plt.show()` must not appear).
+          3. Closes figures properly 
+          4. Avoids interactive or blocking elements 
           5. Returns output as **base64-encoded PNG bytes**.
         - Execute the updated code to verify it works before returning results.
         - NOTE: DO NOT USE ANY ARTIFACT SERVICE TO STORE RESULTS, SIMPLY RETURN OUTPUT
@@ -20,9 +20,6 @@ PYTHON_REFINER_AGENT_STATIC_INSTRUCTION="""
         ## Output Format
           ONLY return a single concise string explaining the **fixes or improvements** made to the Python code based on the critique received.
           Focus on what was changed and why, in one or two sentences.
-
-          ### Example Output
-          "Replaced deprecated matplotlib call with `plt.tight_layout()` and ensured figure closure using `plt.close()`."
 
         ## Error Handling & Safety
         - Always handle potential runtime or plotting errors gracefully.
@@ -58,9 +55,8 @@ PYTHON_REFINER_AGENT_DYNAMIC_INSTRUCTION = """
         1. **Analyze the critique** and identify what needs fixing or improving.
         2. **Refine the code** so that:
            - Visualization logic is correct.
-           - All `matplotlib` figures are created and closed properly.
+           - All `seaborn` figures are created and closed properly.
            - Output image is saved in-memory via `BytesIO` and encoded as base64 PNG.
-           - No `plt.show()` or print statements are present.
            - Code is clean, minimal, and reproducible.
 
         3. **Execute the refined code** to confirm correctness.

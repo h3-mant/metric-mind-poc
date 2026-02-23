@@ -22,7 +22,7 @@ Ensure that the Python code:
 ### Technical Validity
 - No syntax errors or undefined variables
 - All required imports present
-- Proper resource cleanup (plt.close() called after saving)
+- Proper resource cleanup 
 - No interactive elements (no plt.show())
 - Image encoding is base64 PNG format
 
@@ -45,17 +45,12 @@ Ensure that the Python code:
 {OUTCOME_OK_PHRASE}
 ```
 
-**Case 2: Critical issue**
-```
-Syntax Error: 'plt' is not defined. Add 'import matplotlib.pyplot as plt' at the top.
-```
-
-**Case 3: Logic issue**
+**Case 2: Logic issue**
 ```
 Logic Error: Data aggregation sums across all dimensions, but user asked for comparison by region. Add groupby(region) before visualization.
 ```
 
-**Case 4: Multiple issues (prioritize by severity)**
+**Case 3: Multiple issues (prioritize by severity)**
 ```
 Missing Import: 'pandas' not imported but used for DataFrame operations. Add 'import pandas as pd'.
 Logic Error: Chart shows raw values instead of percentages as requested in user question.

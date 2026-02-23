@@ -21,11 +21,16 @@ python_writer_agent = LlmAgent(
     global_instruction=GLOBAL_INSTRUCTION,
     instruction=PYTHON_WRITER_AGENT_DYNAMIC_INSTRUCTION,
     static_instruction=types.Content(role='system',parts=[types.Part(text=PYTHON_WRITER_AGENT_STATIC_INSTRUCTION)]),
-    code_executor=BuiltInCodeExecutor(),
+    code_executor=BuiltInCodeExecutor(
+        error_retry_attempts=1, #let agents handle code failure, avoid retries
+        stateful=True #retain code execution results
+    ),
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
         top_p=0.5,
         max_output_tokens=5000,
+        seed=1, #reproduce answers for identical question
+        candidate_count=None
     ),
     planner=BuiltInPlanner(
       thinking_config=types.ThinkingConfig(

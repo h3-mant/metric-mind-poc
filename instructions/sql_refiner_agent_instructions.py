@@ -12,14 +12,10 @@ Follow this systematic approach for every refinement request:
 **Categorize feedback by type:**
 - **Critical fixes**: Syntax errors, schema mismatches, logical flaws that prevent execution
 - **Correctness improvements**: Logic adjustments to better answer the user's question
-- **Performance optimizations**: Efficiency enhancements without changing results
-- **Edge case handling**: NULL handling, division protection, boundary conditions
 
 **Prioritize changes:**
 1. Fix critical issues first (query won't run without these)
 2. Apply correctness improvements (query runs but gives wrong results)
-3. Add edge case protections (query works but fails in special cases)
-4. Implement performance optimizations (query works but could be faster)
 
 ### Step 2: Plan the Refinements
 **Determine specific modifications:**
@@ -39,7 +35,6 @@ Follow this systematic approach for every refinement request:
 - Verify each change doesn't break other parts of the query
 - Use BigQuery-specific best practices
 - Maintain readable formatting and structure
-- Keep comments if they aid understanding
 
 **Common refinement patterns:**
 
@@ -49,22 +44,10 @@ Follow this systematic approach for every refinement request:
 -- After: SELECT sale_amount FROM table  -- Corrected column name
 ```
 
-**Adding NULL protection:**
-```sql
--- Before: SELECT total / COUNT(orders)
--- After: SELECT SAFE_DIVIDE(total, COUNT(orders))  -- Prevents division by zero
-```
-
 **Improving joins:**
 ```sql
 -- Before: INNER JOIN table_b  -- May exclude needed data
 -- After: LEFT JOIN table_b  -- Preserves all records from primary table
-```
-
-**Optimizing aggregations:**
-```sql
--- Before: Multiple subqueries with same logic
--- After: Single CTE used multiple times
 ```
 
 ### Step 4: Execute Refined SQL
@@ -103,13 +86,9 @@ IMPORTANT: DO NOT PROVIDE THE RAW TABLE IN THE RESPONSE, ONLY ABOVE!!
 
 **Example output format:**
 ```
-Applied three refinements based on critique:
+Applied refinements based on critique, for example:
 
-1. **Schema Fix**: Changed `sales_amount` to `sale_amount` to match actual column name in the table. This resolves the "Unrecognized name" error.
-
-2. **Edge Case Protection**: Wrapped division in SAFE_DIVIDE() to handle scenarios where order count is zero. Prevents potential runtime errors.
-
-3. **Performance**: Added WHERE filter before JOIN to reduce rows processed. Improves query efficiency without changing results.
+**Schema Fix**: Changed `sales_amount` to `sale_amount` to match actual column name in the table. This resolves the "Unrecognized name" error.
 
 The refined query now executes successfully and addresses all critique points while maintaining the original analytical intent.
 ```
@@ -122,8 +101,6 @@ The refined query now executes successfully and addresses all critique points wh
 - Keep the same output structure unless critique specifically requests changes
 
 ### Apply BigQuery Standards
-- Use proper BigQuery functions (not MySQL/PostgreSQL equivalents)
-- Employ SAFE_ functions for error-prone operations
 - Leverage BigQuery-specific features (UNNEST, ARRAY functions)
 - Use fully qualified table names
 
@@ -154,6 +131,7 @@ The refined query now executes successfully and addresses all critique points wh
 - Case sensitivity in string comparisons
 - Time zone issues in TIMESTAMP operations
 - Implicit type coercion failures
+
 """
 
 # Dynamic instruction - uses state variables

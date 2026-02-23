@@ -20,8 +20,233 @@ logger = get_logger(__name__)
 # Page configuration
 st.set_page_config(
     page_title="Metric Mind",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
+
+# Custom CSS for Sky branding and modern styling
+st.markdown("""
+<style>
+    /* Sky Broadband color scheme */
+    :root {
+        --sky-blue: #003D7A;
+        --sky-cyan: #0099CC;
+        --sky-light: #E8F4FF;
+        --sky-white: #F5F5F5;
+        --sky-dark: #001F3F;
+    }
+    
+    /* Main page background with modern gradient */
+    .stApp {
+        background: linear-gradient(135deg, #FFFFFF 0%, #E8F4FF 50%, #F0F7FF 100%);
+    }
+    
+    /* Sidebar styling with depth */
+    .stSidebar {
+        background: linear-gradient(180deg, #F8FAFC 0%, #F5F5F5 100%) !important;
+        border-right: 1px solid #E0E7FF !important;
+    }
+    
+    .stSidebar [data-testid="stSidebarNav"] {
+        padding-top: 2rem;
+    }
+    
+    /* Header styling with enhanced typography */
+    h1 {
+        color: #003D7A !important;
+        font-weight: 800 !important;
+        letter-spacing: -1px !important;
+        text-shadow: 0 2px 4px rgba(0, 61, 122, 0.1) !important;
+    }
+    
+    h2 {
+        color: #003D7A !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.5px !important;
+        margin-top: 1.5rem !important;
+    }
+    
+    h3 {
+        color: #0099CC !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.3px !important;
+    }
+    
+    h4 {
+        color: #003D7A !important;
+        font-weight: 600 !important;
+        font-size: 1.1rem !important;
+    }
+    
+    /* Bio text styling with modern card design */
+    .bio-text {
+        color: #003D7A;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 28px;
+        padding: 18px 24px;
+        background: linear-gradient(135deg, #FFFFFF 0%, #E8F4FF 100%);
+        border-left: 6px solid #0099CC;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 153, 204, 0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .bio-text:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 153, 204, 0.2);
+    }
+    
+    /* Enhanced expander styling */
+    .streamlit-expanderHeader {
+        background: linear-gradient(135deg, #E8F4FF 0%, #F0F8FF 100%) !important;
+        color: #003D7A !important;
+        border-radius: 10px !important;
+        border: 1px solid #C5E3FF !important;
+        font-weight: 600 !important;
+        padding: 12px 16px !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background: linear-gradient(135deg, #D0EBFF 0%, #E8F4FF 100%) !important;
+        box-shadow: 0 4px 12px rgba(0, 153, 204, 0.15) !important;
+        transform: translateY(-1px) !important;
+    }
+    
+    /* Expander content styling */
+    .streamlit-expanderContent {
+        border-left: 3px solid #0099CC !important;
+        border-right: 1px solid #E8F4FF !important;
+        border-bottom: 1px solid #E8F4FF !important;
+        border-radius: 0 0 10px 10px !important;
+        padding: 20px !important;
+        background-color: #FAFCFF !important;
+    }
+    
+    /* Modern button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #0099CC 0%, #0077AA 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 10px !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        padding: 12px 28px !important;
+        box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3) !important;
+        transition: all 0.3s ease !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #0077AA 0%, #005580 100%) !important;
+        box-shadow: 0 6px 20px rgba(0, 153, 204, 0.4) !important;
+        transform: translateY(-2px) !important;
+    }
+    
+    .stButton > button:active {
+        transform: translateY(0px) !important;
+        box-shadow: 0 2px 8px rgba(0, 153, 204, 0.3) !important;
+    }
+    
+    /* Chat message styling */
+    .stChatMessage {
+        background-color: #FFFFFF !important;
+        border-radius: 12px !important;
+        padding: 16px !important;
+        margin: 12px 0 !important;
+        box-shadow: 0 2px 8px rgba(0, 61, 122, 0.08) !important;
+        border: 1px solid #E8F4FF !important;
+    }
+    
+    /* Chat input styling */
+    .stChatInputContainer {
+        border-top: 2px solid #E8F4FF !important;
+        padding-top: 20px !important;
+    }
+    
+    /* Dataframe styling */
+    .stDataFrame {
+        border-radius: 10px !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 12px rgba(0, 61, 122, 0.1) !important;
+    }
+    
+    /* Metric styling */
+    [data-testid="stMetricValue"] {
+        color: #0099CC !important;
+        font-weight: 700 !important;
+        font-size: 2rem !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #003D7A !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+    }
+    
+    /* Info/Warning/Error boxes */
+    .stAlert {
+        border-radius: 10px !important;
+        border-left-width: 5px !important;
+    }
+    
+    /* Divider styling */
+    hr {
+        border: none !important;
+        height: 2px !important;
+        background: linear-gradient(90deg, transparent, #0099CC, transparent) !important;
+        margin: 24px 0 !important;
+    }
+    
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #F0F7FF;
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #0099CC, #0077AA);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #0077AA, #005580);
+    }
+    
+    /* Text styling */
+    body {
+        color: #003D7A !important;
+    }
+    
+    /* Enhanced code blocks */
+    code {
+        background-color: #F0F7FF !important;
+        color: #003D7A !important;
+        padding: 2px 6px !important;
+        border-radius: 4px !important;
+        font-family: 'Consolas', 'Monaco', monospace !important;
+    }
+    
+    /* Image containers */
+    .stImage {
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 16px rgba(0, 61, 122, 0.12) !important;
+    }
+    
+    /* Spinner styling */
+    .stSpinner > div {
+        border-top-color: #0099CC !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Initialize session state
 if 'messages' not in st.session_state:
@@ -34,6 +259,8 @@ if 'session_service' not in st.session_state:
     st.session_state.session_service = InMemorySessionService()
 if 'artifact_service' not in st.session_state:
     st.session_state.artifact_service = InMemoryArtifactService()
+if 'initial_query_processed' not in st.session_state:
+    st.session_state.initial_query_processed = False
 
 async def process_query(user_query: str, session_id: str):
     """Process user query through the agent pipeline."""
@@ -49,15 +276,18 @@ async def process_query(user_query: str, session_id: str):
         #Define Artifact service
         artifact_service = st.session_state.artifact_service
 
-        # Define data schema to be passed as initial_state
-        initial_state = json_to_dict(DATA_SCHEMA_PATH)
-        initial_state_formatted = {
-            'projects': initial_state.get('project_id'),
-            'datasets': initial_state.get('dataset_id'),
-            'tables': initial_state.get('tables')
-        }
+        # Define defs schema to be passed as initial_state
+        defs_schema = json_to_dict(DEFS_SCHEMA_PATH)
 
-        #TO DO: try to pass data schema to be cached instead of cluttering session state
+        data_schema = json_to_dict(DATA_SCHEMA_PATH)
+
+        initial_state_formatted = {
+            'projects': "uk-dta-gsmanalytics-poc",
+            'datasets': "metricmind",
+            'tables': "GSM_KPI_DATA_TEST_V5, GSM_KPI_DEFS_TEST_V5",
+            'schema_structure': defs_schema,
+            'schema_context': data_schema
+        }
 
         # Create or get existing session
         if st.session_state.agent_session is None:
@@ -135,7 +365,68 @@ async def process_query(user_query: str, session_id: str):
         logger.error(f"Error in process_query: {e}", exc_info=True)
         raise e
 
-def display_agent_response(session):
+def display_initial_kpi_data(sql_response):
+    """Display initial KPI metadata in a clean, organized dropdown format."""
+    if not sql_response or len(sql_response) == 0:
+        st.warning("No KPI data available to display.")
+        return
+    
+    # Load schema context to get KPI names
+    schema_context = json_to_dict(SCHEMA_CONTEXT_PATH)
+    kpis_metadata = schema_context.get('kpis', {})
+    
+    st.markdown("### 📊 Available KPIs and Their Attributes")
+    st.markdown("*Click on each KPI to explore available dimensions and measures*")
+    st.markdown("")
+    
+    for row in sql_response:
+        kpi_id = str(row.get('KPI_ID', 'Unknown'))
+        dimensions_with_examples = row.get('dimensions_with_examples', [])
+        measures = row.get('measures', [])
+        
+        # Get KPI name from schema context
+        kpi_info = kpis_metadata.get(kpi_id, {})
+        kpi_name = kpi_info.get('kpi_name', kpi_id)
+        kpi_description = kpi_info.get('kpi_description', '')
+        
+        with st.expander(f"**{kpi_name}** (ID: {kpi_id})"):
+            # Display description if available
+            if kpi_description:
+                st.markdown(f"*{kpi_description}*")
+                st.markdown("---")
+            
+            # Create two columns for dimensions and measures
+            col1, col2 = st.columns([3, 2])
+            
+            with col1:
+                st.markdown("#### 🔍 Dimensions (Filters)")
+                if dimensions_with_examples:
+                    for dim in dimensions_with_examples:
+                        dim_name = dim.get('dim_name', 'Unknown')
+                        example_values = dim.get('example_values', [])
+                        
+                        # Format dimension name nicely
+                        st.markdown(f"**{dim_name.title()}**")
+                        if example_values:
+                            # Display examples in a clean, aligned format
+                            examples_str = ", ".join([str(val) for val in example_values[:10]])
+                            st.markdown(f"*Examples: {examples_str}*")
+                        else:
+                            st.markdown("*No example values available*")
+                        st.markdown("")  # Add spacing
+                else:
+                    st.info("No dimensions available")
+            
+            with col2:
+                st.markdown("#### 📈 Measures")
+                if measures:
+                    for measure in measures:
+                        st.markdown(f"• **{measure}**")
+                else:
+                    st.info("No measures available")
+
+
+def display_agent_response(session, is_initial_query=False):
     """Display agent response based on state variables."""
     if session is None:
         st.error("No session available to display")
@@ -151,26 +442,30 @@ def display_agent_response(session):
     
     # Handle SQL sequence output
     if state.get('sql_required'):
-        st.subheader("SQL Analysis")
-        
         sql_outcome = state.get('latest_sql_sequence_outcome')
         
         if sql_outcome == 'SUCCESS':
-            # Display both SQL response and output
             sql_response = state.get('latest_sql_response', '')
-            sql_output_reasoning = state.get('latest_sql_output_reasoning', '')
             
-            if sql_output_reasoning:
-                with st.expander("**SQL Analysis**", expanded=False):
-                    st.markdown(sql_output_reasoning, unsafe_allow_html=True)
+            # If this is the initial query, use special formatting
+            if is_initial_query and sql_response:
+                display_initial_kpi_data(sql_response)
+            else:
+                # Regular SQL display for non-initial queries
+                st.subheader("SQL Analysis")
+                sql_output_reasoning = state.get('latest_sql_output_reasoning', '')
+                
+                if sql_output_reasoning:
+                    with st.expander("**SQL Analysis**", expanded=True):
+                        st.markdown(sql_output_reasoning, unsafe_allow_html=True)
 
-            if sql_response:
-                st.markdown('**SQL Response:**')
-                df = pd.DataFrame(sql_response)
-                st.dataframe(df, use_container_width=True)
-            
+                if sql_response:
+                    st.markdown('**SQL Response:**')
+                    df = pd.DataFrame(sql_response)
+                    st.dataframe(df, width='stretch')
         else:
-            # Display only reasoning
+            # Display error for failed SQL
+            st.subheader("SQL Analysis")
             sql_output_reasoning = state.get('latest_sql_output_reasoning', 'SQL sequence encountered an error.')
             st.markdown("**SQL Status:**")
             st.warning(sql_output_reasoning)
@@ -194,7 +489,7 @@ def display_agent_response(session):
                 png_files = list(img_dir.glob("img_*.png"))
                 if png_files:
                     latest_img = max(png_files, key=lambda f: f.stat().st_mtime)
-                    st.image(str(latest_img), caption=f"Generated Visualization ({latest_img.name})", use_container_width=False)
+                    st.image(str(latest_img), caption=f"Generated Visualization ({latest_img.name})", width='content')
                 else:
                     st.warning("Visualization was generated but no image files found in the directory.")
             else:
@@ -317,13 +612,119 @@ def display_debug_info(session):
     #         value=state.get('app:cached_contents_count', 0)
     #     )
 
+def display_kpi_reference():
+    """Display KPI reference dropdown with KPI names and definitions."""
+    schema_context = json_to_dict(SCHEMA_CONTEXT_PATH)
+    kpis = schema_context.get('kpis', {})
+    
+    # Create a dataframe with KPI information
+    kpi_data = []
+    for kpi_id, kpi_info in kpis.items():
+        kpi_data.append({
+            'KPI ID': kpi_info.get('kpi_id', ''),
+            'KPI Name': kpi_info.get('kpi_name', ''),
+            'Description': kpi_info.get('kpi_description', '')
+        })
+    
+    if kpi_data:
+        with st.expander("KPI Reference", expanded=False):
+            df_kpis = pd.DataFrame(kpi_data)
+            st.dataframe(
+                df_kpis,
+                width='stretch',
+                hide_index=True,
+                column_config={
+                    "KPI ID": st.column_config.TextColumn(width="medium"),
+                    "KPI Name": st.column_config.TextColumn(width="medium"),
+                    "Description": st.column_config.TextColumn(width="large")
+                }
+            )
+
+def get_initial_kpi_query() -> str:
+    """Generate the initial query to fetch KPI metadata."""
+    return """Please execute the following SQL query:
+
+WITH DistinctKpiDimInt AS (
+SELECT DISTINCT
+    t.KPI_ID,
+    d.NAME AS dim_name,
+    d.VALUE AS dim_value,
+    i.NAME AS int_name
+  FROM
+    `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DATA_TEST_V5` AS t,
+    UNNEST(t.DIM) AS d,
+    UNNEST(t.INT) AS i
+),
+KpiDimensionsWithExamples AS (
+  SELECT
+    KPI_ID,
+    dim_name,
+    ARRAY_AGG(DISTINCT dim_value ORDER BY dim_value LIMIT 10) AS example_values
+  FROM DistinctKpiDimInt
+  WHERE dim_name IS NOT NULL AND dim_value IS NOT NULL
+  GROUP BY KPI_ID, dim_name
+),
+AggregatedDimensions AS (
+  SELECT
+    KPI_ID,
+    ARRAY_AGG(STRUCT(dim_name, example_values) ORDER BY dim_name) AS dimensions_with_examples
+  FROM KpiDimensionsWithExamples
+  GROUP BY KPI_ID
+),
+AggregatedMeasures AS (
+  SELECT
+    KPI_ID,
+  
+    ARRAY_AGG(DISTINCT int_name IGNORE NULLS ORDER BY int_name) AS measures
+  FROM DistinctKpiDimInt
+  WHERE int_name IS NOT NULL
+  GROUP BY KPI_ID
+)
+SELECT
+  T1.KPI_ID,
+  s.KPI_NAME,
+  s.KPI_DESCRIPTION,
+  T2.dimensions_with_examples,
+  T3.measures
+FROM (SELECT DISTINCT KPI_ID FROM DistinctKpiDimInt) AS T1
+left join `uk-dta-gsmanalytics-poc.metricmind.GSM_KPI_DEFS_TEST_V5` S  ON s.KPI_ID=t1.KPI_ID
+LEFT JOIN AggregatedDimensions AS T2 ON T1.KPI_ID = T2.KPI_ID
+LEFT JOIN AggregatedMeasures AS T3 ON T1.KPI_ID = T3.KPI_ID
+ORDER BY T1.KPI_ID, KPI_NAME
+
+"""
+
 def main():
     """Main Streamlit application."""
     
-    # Header
-    st.title("Metric Mind")
-    # st.markdown("Ask questions about your BigQuery data and get SQL analysis with visualizations.")
+    # Header with logo and title
+    col1, col2, col3 = st.columns([0.15, 0.7, 0.15])
     
+    with col1:
+        # Try to load Sky logo, fallback to emoji if not found
+        logo_path = Path("SKY_NEW_LOGO.png")
+        if logo_path.exists():
+            st.image(str(logo_path), width=250)
+        else:
+            st.markdown("<div style='font-size: 60px; text-align: center;'>☁️</div>", unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("<h1 style='text-align: center; margin-top: 10px;'>Metric Mind</h1>", unsafe_allow_html=True)
+    
+    with col3:
+        st.empty()
+    
+    # Bio line
+    st.markdown(
+        "<div class='bio-text'>Conversational analytics assistant that allows users to access high‑level KPIs through natural language questions, providing fast, self‑serve insight without exposing raw or personally identifiable data.</div>",
+        unsafe_allow_html=True
+    )
+    
+    # Display KPI reference
+    display_kpi_reference()
+    
+    st.markdown("---")
+
     # Sidebar
     with st.sidebar:
         st.header("Session Info")
@@ -334,7 +735,8 @@ def main():
             st.session_state.session_id = str(uuid.uuid4())
             st.session_state.agent_session = None
             st.session_state.session_service = InMemorySessionService()
-            st.rerun()
+            st.session_state.initial_query_processed = False
+            st.rerun()        
         
         st.markdown("---")
         
@@ -344,15 +746,70 @@ def main():
         else:
             st.info("Start a conversation to see debug information")
     
-    # Display chat messages
+    # Auto-run initial KPI query on first session load
+    if not st.session_state.initial_query_processed and len(st.session_state.messages) == 0:
+        initial_query = get_initial_kpi_query()
+        initial_display_message = "I'm currently loading data definitions in, I'll give you a view of what's available and the dimensions you can split them by."
+        
+        # Add initial query to messages (store actual query but display custom message)
+        st.session_state.messages.append({
+            "role": "user", 
+            "content": initial_query,
+            "display_content": initial_display_message
+        })
+        
+        # Display user message
+        with st.chat_message("user"):
+            st.markdown(initial_display_message)
+        
+        # Display assistant response with spinner
+        with st.chat_message("assistant"):
+            with st.spinner("Analyzing your query..."):
+                try:
+                    # Process the query
+                    session = asyncio.run(process_query(initial_query, st.session_state.session_id))
+                    
+                    if session is None:
+                        raise ValueError("Session is None after processing")
+                    
+                    # Display response for initial query
+                    display_agent_response(session, is_initial_query=True)
+                    
+                    # Save to message history
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": "Response generated",
+                        "session": session,
+                        "is_initial_query": True
+                    })
+                    
+                    # Mark initial query as processed
+                    st.session_state.initial_query_processed = True
+                    
+                except Exception as e:
+                    error_msg = f"An error occurred: {str(e)}"
+                    st.error(error_msg)
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "content": error_msg
+                    })
+                    logger.error(f"Error processing initial query: {e}", exc_info=True)
+        
+        # Force page to update after initial query
+        st.rerun()
+    
+    # Display chat messages (excluding the initial auto-run on first load)
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             if message["role"] == "user":
-                st.markdown(message["content"])
+                # Use display_content if available, otherwise use content
+                display_text = message.get("display_content", message["content"])
+                st.markdown(display_text)
             else:
                 # For assistant, display structured response
                 if "session" in message:
-                    display_agent_response(message["session"])
+                    is_initial = message.get("is_initial_query", False)
+                    display_agent_response(message["session"], is_initial_query=is_initial)
                 else:
                     st.markdown(message["content"])
     

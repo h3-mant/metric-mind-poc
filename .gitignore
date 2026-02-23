@@ -1,7 +1,7 @@
 #custom
 logs/
 images/
-data_schema.json
+session_state_growth_dump.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,0 +1,2308 @@
+{
+  "kpis": {
+    "20002001": {
+      "kpi_id": 20002001,
+      "kpi_name": "TV Sales",
+      "kpi_description": "Gives us the number of TV product sales.",
+      "dimensions": {
+        "TV Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [],
+          "distinct_count": 0
+        },
+        "TV Package": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [],
+          "distinct_count": 0
+        },
+        "Multiroom": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [],
+          "distinct_count": 0
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Addiitonal Devices",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        }
+      ],
+      "indicators_float": []
+    },
+    "70140002": {
+      "kpi_id": 70140002,
+      "kpi_name": "Metrics - WHiX Lite Summary",
+      "kpi_description": "Provides daily counts of devices and WHiX Lite scores with a few further WHiX Lite assessments as dimensions.  The WHiX Lite categories are Good, Bad or Very Bad.  The category is derived from RDKV telemetry marker values and business rules that evaluate these.  The purpose of the WHiX Lite metric is to give a measure of device performance and connectivity.",
+      "dimensions": {
+        "WHiX Lite All Day Category": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Bad",
+            "Good",
+            "Very Bad"
+          ],
+          "distinct_count": 3
+        },
+        "WHiX Lite Primetime Category": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "Bad",
+            "Good",
+            "Very Bad"
+          ],
+          "distinct_count": 3
+        },
+        "TV Device type": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "Sky Glass",
+            "Sky Glass Air",
+            "Sky Glass Gen 2",
+            "Sky Stream"
+          ],
+          "distinct_count": 4
+        },
+        "WiFi Frequency Bands": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "2.4GHz",
+            "5GHz",
+            "Mixed"
+          ],
+          "distinct_count": 3
+        },
+        "All Day RSSI Group": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "-55+",
+            "-65_-55",
+            "-70_-65",
+            "-75_-70",
+            "-80_-75",
+            "<=-80"
+          ],
+          "distinct_count": 6
+        },
+        "All Day Phyrate Group": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "130_150",
+            "150_200",
+            "200_600",
+            "600+",
+            "75_130",
+            "<=75"
+          ],
+          "distinct_count": 6
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Device Count",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        }
+      ],
+      "indicators_float": []
+    },
+    "20001001": {
+      "kpi_id": 20001001,
+      "kpi_name": "TV Subscribers",
+      "kpi_description": "Gives us numbers of active TV subscribers.  Weekly data taken from the Xcellence Hub. DIM1 tells us about the TV Service and can be Sky+, Sky Q or SOIP.  If it is SOIP DIM5 breaks that down into Stream or Glass customers.  DIM2 gives us a view of the set top box type devices the customer has.  DIM3 tells us about the broadband router the customer has (where supplied by Sky) and DIM4 tells about the broadband tech (technology) in place when Sky supplied.",
+      "dimensions": {
+        "TV Service": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "SOIP",
+            "Sky Q",
+            "Sky+"
+          ],
+          "distinct_count": 3
+        },
+        "TV Device(s)": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "Multi Glass",
+            "Multi Glass & Single Stream",
+            "Multi Glass & Stream",
+            "Multi Stream",
+            "Single Glass",
+            "Single Glass & Multi Stream",
+            "Single Glass & Stream",
+            "Single Stream",
+            "Sky Q 1TB",
+            "Sky Q 1TB UHD",
+            "Sky Q 2TB",
+            "Sky Q 2TB UHD"
+          ],
+          "distinct_count": 12
+        },
+        "Broadband Router": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "Other Hubs",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2",
+            "Sky Hub 3",
+            "Sky Hub 3.5",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 6"
+          ],
+          "distinct_count": 9
+        },
+        "Broadband Tech": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Stream or Glass": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "Glass",
+            "Stream"
+          ],
+          "distinct_count": 2
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        }
+      ],
+      "indicators_float": []
+    },
+    "10010": {
+      "kpi_id": 10010,
+      "kpi_name": "1. Broadband Orders",
+      "kpi_description": "This KPI is a view of pre-active journeys from an Orders viewpoint.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "-",
+            "- Full Fibre 100",
+            "- NOW Full Fibre 100",
+            "- NOW Full Fibre 75",
+            "- Sky Full Fibre 100",
+            "- Sky Full Fibre 150",
+            "- Sky Full Fibre 300",
+            "- Sky Full Fibre 500",
+            "- Sky Full Fibre 75",
+            "Essential",
+            "Full Fibre 100",
+            "Full Fibre 100 (Legacy) - Full Fibre 100 (Legacy)",
+            "Full Fibre 100 (Legacy) - Sky Full Fibre 100",
+            "Full Fibre 100 (Legacy) - Sky Full Fibre 150",
+            "Full Fibre 100 (Legacy) - Sky Full Fibre 300",
+            "Gigafast",
+            "NOW Full Fibre 100 - NOW Full Fibre 100",
+            "NOW Full Fibre 300 (FTTP) - NOW Full Fibre 300",
+            "NOW Full Fibre 75 (FTTP) - NOW Full Fibre 75",
+            "Sky Full Fibre 100 (FTTP) - Sky Full Fibre 100"
+          ],
+          "distinct_count": 20
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Order Type": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [],
+          "distinct_count": 0
+        },
+        "Route to Market": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "Digital",
+            "Direct",
+            "Homes & Indies",
+            "Retail"
+          ],
+          "distinct_count": 4
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Orders Placed",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Provisioning Started",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "Activations",
+          "aggregation": "SUM",
+          "physical_column": "INT04"
+        },
+        {
+          "name": "Dropouts Completed",
+          "aggregation": "SUM",
+          "physical_column": "INT07"
+        },
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": []
+    },
+    "40010": {
+      "kpi_id": 40010,
+      "kpi_name": "Assurance Sessions",
+      "kpi_description": "This KPI set gives us data around assurance sessions detailing Black, Red, Amber and Green outcomes, overrides and HCAs by Channel.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Gigafast",
+            "Superfast",
+            "Superfast 35",
+            "Ultrafast",
+            "Ultrafast Plus"
+          ],
+          "distinct_count": 7
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "0",
+            "100",
+            "1000",
+            "11",
+            "110",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL",
+            "VEL"
+          ],
+          "distinct_count": 3
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 18
+        },
+        "Channel": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "BOT",
+            "DIGITAL",
+            "DIRECT",
+            "ELF",
+            "ENGINEER VIEW",
+            "INTERNAL",
+            "IVR",
+            "PROACTIVE",
+            "RETAIL"
+          ],
+          "distinct_count": 9
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Customers with Sessions",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Session Count",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "Green LHC Sessions",
+          "aggregation": "SUM",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "Amber LHC Sessions",
+          "aggregation": "SUM",
+          "physical_column": "INT04"
+        },
+        {
+          "name": "Red LHC Sessions",
+          "aggregation": "SUM",
+          "physical_column": "INT05"
+        },
+        {
+          "name": "Black LHC Sessions",
+          "aggregation": "SUM",
+          "physical_column": "INT06"
+        },
+        {
+          "name": "Outcome Overrides",
+          "aggregation": "SUM",
+          "physical_column": "INT07"
+        },
+        {
+          "name": "HCA Outcomes",
+          "aggregation": "SUM",
+          "physical_column": "INT08"
+        },
+        {
+          "name": "Red IHH Sessions",
+          "aggregation": "SUM",
+          "physical_column": "INT09"
+        },
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": []
+    },
+    "10030": {
+      "kpi_id": 10030,
+      "kpi_name": "3. Broadband Provs (Order Date)",
+      "kpi_description": "This KPI set gives details of the provisioning process.  Dates are measured from the Order date",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Gigafast",
+            "Superfast",
+            "Superfast 35",
+            "Ultrafast",
+            "Ultrafast Plus"
+          ],
+          "distinct_count": 7
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST",
+            "VOIP"
+          ],
+          "distinct_count": 6
+        },
+        "Existing Customer": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "N",
+            "Y"
+          ],
+          "distinct_count": 2
+        },
+        "Shazam": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "De Shazam",
+            "Shazam"
+          ],
+          "distinct_count": 2
+        },
+        "Home Move": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "N",
+            "Y"
+          ],
+          "distinct_count": 2
+        },
+        "Route to Market": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "Digital",
+            "Direct",
+            "Homes & Indies",
+            "Retail"
+          ],
+          "distinct_count": 4
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Customer Orders",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Activations on First EDD",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "Activations in 21 Days",
+          "aggregation": "SUM",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "Customer Missed Appointments",
+          "aggregation": "SUM",
+          "physical_column": "INT04"
+        },
+        {
+          "name": "Open Reach Missed Appointments",
+          "aggregation": "SUM",
+          "physical_column": "INT05"
+        },
+        {
+          "name": "Existing Customer",
+          "aggregation": "SUM",
+          "physical_column": "INT06"
+        },
+        {
+          "name": "Home Moves",
+          "aggregation": "SUM",
+          "physical_column": "INT07"
+        },
+        {
+          "name": "VELF Count",
+          "aggregation": "SUM",
+          "physical_column": "INT08"
+        },
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Average Days to KCI3",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        },
+        {
+          "name": "Average Bus Days to KCI3",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT02"
+        },
+        {
+          "name": "Average Days to EDD",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT03"
+        },
+        {
+          "name": "Average Bus Days to EDD",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT04"
+        },
+        {
+          "name": "EDD Slippage (Days)",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT05"
+        }
+      ]
+    },
+    "10020": {
+      "kpi_id": 10020,
+      "kpi_name": "2. Broadband Provs (Act Date)",
+      "kpi_description": "This KPI set gives details of the provisioning process.  Dates are measured from the Activation date",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Gigafast",
+            "Superfast",
+            "Superfast 35",
+            "Ultrafast",
+            "Ultrafast Plus"
+          ],
+          "distinct_count": 7
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST",
+            "VOIP"
+          ],
+          "distinct_count": 6
+        },
+        "Existing Customer": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "N",
+            "Y"
+          ],
+          "distinct_count": 2
+        },
+        "Shazam": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "De Shazam",
+            "Shazam"
+          ],
+          "distinct_count": 2
+        },
+        "Home Move": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "N",
+            "Y"
+          ],
+          "distinct_count": 2
+        },
+        "Route to Market": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "Digital",
+            "Direct",
+            "Homes & Indies",
+            "Retail"
+          ],
+          "distinct_count": 4
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Live on First EDD",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Activated in 21 Days",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "Customer Missed Appointments",
+          "aggregation": "SUM",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "Open Reach Missed Appointments",
+          "aggregation": "SUM",
+          "physical_column": "INT04"
+        },
+        {
+          "name": "Existing Customers",
+          "aggregation": "SUM",
+          "physical_column": "INT05"
+        },
+        {
+          "name": "Home Moves",
+          "aggregation": "SUM",
+          "physical_column": "INT06"
+        },
+        {
+          "name": "Customers with VELFs",
+          "aggregation": "SUM",
+          "physical_column": "INT07"
+        },
+        {
+          "name": "Customers with ELFs",
+          "aggregation": "SUM",
+          "physical_column": "INT08"
+        },
+        {
+          "name": "VELF Count",
+          "aggregation": "SUM",
+          "physical_column": "INT09"
+        },
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Average Days to KCI3",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        },
+        {
+          "name": "Average Bus Days to KCI3",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT02"
+        },
+        {
+          "name": "Average Days to EDD",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT03"
+        },
+        {
+          "name": "Average Bus Days to EDD",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT04"
+        },
+        {
+          "name": "EDD Slippage (Days)",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT05"
+        }
+      ]
+    },
+    "30020": {
+      "kpi_id": 30020,
+      "kpi_name": "Broadband Experience - Router Stats",
+      "kpi_description": "This KPI gives us details of broadband router performance for the day.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Full Fibre 150",
+            "Full Fibre 300",
+            "Full Fibre 500",
+            "Full Fibre 75",
+            "Gigafast",
+            "Gigafast 2.5",
+            "Gigafast 5",
+            "NOW Full Fibre 100",
+            "NOW Full Fibre 300",
+            "NOW Full Fibre 75",
+            "NOW Superfast",
+            "Superfast",
+            "Ultrafast"
+          ],
+          "distinct_count": 15
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "0",
+            "100",
+            "1000",
+            "11",
+            "110",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL"
+          ],
+          "distinct_count": 2
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 18
+        },
+        "Firmware Version": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "1.15i.2202.r",
+            "2.01.1850.r",
+            "2.02.1987.r",
+            "2.03.2068.R",
+            "2.05.2174.R",
+            "2.07.2355.R",
+            "2.07.2356.R",
+            "2.08.2405.R",
+            "2.09.2449.R",
+            "2.12.2652.R",
+            "2.20.2746.R",
+            "2.22.2883.R",
+            "2.22.2925.R",
+            "2.22.2980.R",
+            "2.22.2981.R",
+            "2.22.3006.R",
+            "2.22.3028.R",
+            "2.90.2508.R",
+            "3.02.1343.TR",
+            "3.03.1382.R"
+          ],
+          "distinct_count": 20
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Total WiFi Clients",
+          "aggregation": "AVG",
+          "physical_column": "INT05"
+        },
+        {
+          "name": "Clients at 2.4 GHz",
+          "aggregation": "AVG",
+          "physical_column": "INT06"
+        },
+        {
+          "name": "Clients at 5 GHz",
+          "aggregation": "AVG",
+          "physical_column": "INT07"
+        },
+        {
+          "name": "Clients Dual-Band",
+          "aggregation": "AVG",
+          "physical_column": "INT08"
+        },
+        {
+          "name": "CPU 99% Breaches",
+          "aggregation": "AVG",
+          "physical_column": "INT09"
+        },
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Average Memory Usage",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        }
+      ]
+    },
+    "40030": {
+      "kpi_id": 40030,
+      "kpi_name": "HCAs - Sky",
+      "kpi_description": "This KPI set gives us details of Sky High Cost Actions resulting from assurance sessions.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Gigafast",
+            "Superfast",
+            "Superfast 35",
+            "Ultrafast",
+            "Ultrafast Plus"
+          ],
+          "distinct_count": 7
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "0",
+            "100",
+            "1000",
+            "11",
+            "110",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL"
+          ],
+          "distinct_count": 2
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 18
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "BBTTE Visits",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "BBTTE WiFi Guarantee Visits",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "BBTTE Non-WiFi Guarantee Visits",
+          "aggregation": "SUM",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "Routers Sent",
+          "aggregation": "SUM",
+          "physical_column": "INT08"
+        },
+        {
+          "name": "Booster Sent",
+          "aggregation": "SUM",
+          "physical_column": "INT09"
+        },
+        {
+          "name": "Total Customers",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "BBTTE Visits Cost",
+          "aggregation": "SUM",
+          "physical_column": "FLOAT01"
+        },
+        {
+          "name": "Router Replacements Cost",
+          "aggregation": "SUM",
+          "physical_column": "FLOAT02"
+        },
+        {
+          "name": "New Booster Cost",
+          "aggregation": "SUM",
+          "physical_column": "FLOAT03"
+        }
+      ]
+    },
+    "40040": {
+      "kpi_id": 40040,
+      "kpi_name": "Cost to Serve",
+      "kpi_description": "This KPI set gives us details of costs of High Cost Actions resulting from assurance sessions and hence the cost to keep customers up and running.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Gigafast",
+            "Superfast",
+            "Superfast 35",
+            "Ultrafast",
+            "Ultrafast Plus"
+          ],
+          "distinct_count": 7
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "100",
+            "1000",
+            "11",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500",
+            "5000",
+            "55"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL",
+            "VEL"
+          ],
+          "distinct_count": 3
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 17
+        },
+        "HCA Type": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "BB Tech Call",
+            "BBTTE NON-WIFI GUARANTEE",
+            "BBTTE WIFI GUARANTEE",
+            "Booster",
+            "ETS1 - APPOINTED",
+            "ETS1 - UNAPPOINTED",
+            "FTTC1 - APPOINTED",
+            "FTTC1 - APPOINTED - BOTH MISSED",
+            "FTTC1 - APPOINTED - CUSTOMER MISSED",
+            "FTTC1 - APPOINTED - OPENREACH MISSED",
+            "FTTC1 - UNAPPOINTED",
+            "FTTC1 - UNAPPOINTED - CUSTOMER MISSED",
+            "FTTC1 - UNAPPOINTED - OPENREACH MISSED",
+            "FTTC3 - APPOINTED",
+            "FTTC3 - APPOINTED - CUSTOMER MISSED",
+            "FTTC3 - APPOINTED - OPENREACH MISSED",
+            "FTTC3 - UNAPPOINTED",
+            "FTTC3 - UNAPPOINTED - OPENREACH MISSED",
+            "FTTP1 - APPOINTED",
+            "FTTP1 - APPOINTED - BOTH MISSED"
+          ],
+          "distinct_count": 20
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Impacted Customers",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "No of HCAs",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Cost",
+          "aggregation": "SUM",
+          "physical_column": "FLOAT01"
+        }
+      ]
+    },
+    "30060": {
+      "kpi_id": 30060,
+      "kpi_name": "Broadband Experience - QOE",
+      "kpi_description": "This KPI set gives data for the QOE measures and calculates the overall QOE scores.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Full Fibre 150",
+            "Full Fibre 300",
+            "Full Fibre 500",
+            "Full Fibre 75",
+            "Gigafast",
+            "Gigafast 2.5",
+            "Gigafast 5",
+            "NOW Full Fibre 100",
+            "NOW Full Fibre 300",
+            "NOW Full Fibre 75",
+            "NOW Superfast",
+            "Superfast",
+            "Ultrafast"
+          ],
+          "distinct_count": 15
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "100",
+            "1000",
+            "11",
+            "110",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500",
+            "5000"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL"
+          ],
+          "distinct_count": 2
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 17
+        },
+        "Firmware": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "1.04.13",
+            "1.15c.1989.r",
+            "1.15j.2639.R",
+            "1.15j.2639.r",
+            "1.19.1788.r",
+            "1.9f.1733.r",
+            "2.02.34",
+            "2.04.1919.r",
+            "2.04.2076.r",
+            "2.06.2188.R",
+            "2.09.2449.R",
+            "2.09.2509.R",
+            "2.10.2561.TR",
+            "2.11.2628.R",
+            "2.12.2653.R",
+            "2.12.2707.R",
+            "2.1r.3727.r",
+            "2.1r.3761.R",
+            "2.22.2895.R",
+            "2.22.2899.R"
+          ],
+          "distinct_count": 20
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Affected Customers",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "QOE Speed Drops",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "QOE Speed Moves",
+          "aggregation": "SUM",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "QOE Retrains",
+          "aggregation": "SUM",
+          "physical_column": "INT04"
+        },
+        {
+          "name": "QOE Unavailable",
+          "aggregation": "SUM",
+          "physical_column": "INT05"
+        },
+        {
+          "name": "QOE Red LHCs",
+          "aggregation": "SUM",
+          "physical_column": "INT06"
+        },
+        {
+          "name": "Total Customers",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Customers with Good QOE",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        }
+      ]
+    },
+    "30010": {
+      "kpi_id": 30010,
+      "kpi_name": "Broadband Experience",
+      "kpi_description": "This KPI gives us a number of key customer experience indicators, including retrains and speed issues .",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Full Fibre 150",
+            "Full Fibre 300",
+            "Full Fibre 500",
+            "Full Fibre 75",
+            "Gigafast",
+            "Gigafast 2.5",
+            "Gigafast 5",
+            "NOW Full Fibre 100",
+            "NOW Full Fibre 300",
+            "NOW Full Fibre 75",
+            "NOW Superfast",
+            "Superfast",
+            "Ultrafast"
+          ],
+          "distinct_count": 15
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "0",
+            "100",
+            "1000",
+            "11",
+            "110",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL"
+          ],
+          "distinct_count": 2
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 18
+        },
+        "Firmware Version": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "1.00.2182.R",
+            "1.5sky",
+            "2.01.1817.r",
+            "2.03.1914.r",
+            "2.07.2355.R",
+            "2.07.2356.R",
+            "2.08.2406.R",
+            "2.09.2538.R",
+            "2.10.2556.R",
+            "2.1q.3595.R",
+            "2.20.2746.R",
+            "2.22.2839.R",
+            "2.22.2883.R",
+            "2.22.2980.R",
+            "2.22.2981.R",
+            "2.22.3006.R",
+            "2.22.3027.R",
+            "2.22.3028.R",
+            "2.8c.1095.R",
+            "2.91.2110.r"
+          ],
+          "distinct_count": 20
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Retrains per Day",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Two Plus Retrains",
+          "aggregation": "SUM",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "Speed Movers",
+          "aggregation": "SUM",
+          "physical_column": "INT04"
+        },
+        {
+          "name": "Speed Drops",
+          "aggregation": "SUM",
+          "physical_column": "INT05"
+        },
+        {
+          "name": "Below GMDS",
+          "aggregation": "SUM",
+          "physical_column": "INT06"
+        },
+        {
+          "name": "Below MALS",
+          "aggregation": "SUM",
+          "physical_column": "INT07"
+        },
+        {
+          "name": "Total Customers",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Download Usage in MB (Radius)",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        },
+        {
+          "name": "Upload Usage in MB (Radius)",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT02"
+        },
+        {
+          "name": "Download Speed (Kbps)",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT03"
+        },
+        {
+          "name": "Upload Speed (Kbps)",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT04"
+        }
+      ]
+    },
+    "30030": {
+      "kpi_id": 30030,
+      "kpi_name": "Broadband Experience - WiFi at 2.4 GHz",
+      "kpi_description": "This KPI gives us details of in-home WiFi experience at 2.4 GHz.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Full Fibre 150",
+            "Full Fibre 300",
+            "Full Fibre 500",
+            "Full Fibre 75",
+            "Gigafast",
+            "Gigafast 2.5",
+            "Gigafast 5",
+            "NOW Full Fibre 100",
+            "NOW Full Fibre 300",
+            "NOW Full Fibre 75",
+            "NOW Superfast",
+            "Superfast",
+            "Ultrafast"
+          ],
+          "distinct_count": 15
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "0",
+            "100",
+            "1000",
+            "11",
+            "110",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL"
+          ],
+          "distinct_count": 2
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 18
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Total Packets",
+          "aggregation": "AVG",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Unicast Packets",
+          "aggregation": "AVG",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "Multicast Packets",
+          "aggregation": "AVG",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "Packet Loss",
+          "aggregation": "AVG",
+          "physical_column": "INT04"
+        },
+        {
+          "name": "Total Customers",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Mean K-Noise",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        },
+        {
+          "name": "Mean Transmit Opportunity",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT02"
+        },
+        {
+          "name": "Percent Packet Loss",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT03"
+        }
+      ]
+    },
+    "30040": {
+      "kpi_id": 30040,
+      "kpi_name": "Broadband Experience - WiFi at 5 GHz",
+      "kpi_description": "This KPI gives us details of in-home WiFi experience at 5 GHz.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Full Fibre 150",
+            "Full Fibre 300",
+            "Full Fibre 500",
+            "Full Fibre 75",
+            "Gigafast",
+            "Gigafast 2.5",
+            "Gigafast 5",
+            "NOW Full Fibre 100",
+            "NOW Full Fibre 300",
+            "NOW Full Fibre 75",
+            "NOW Superfast",
+            "Superfast",
+            "Ultrafast"
+          ],
+          "distinct_count": 15
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "0",
+            "100",
+            "1000",
+            "11",
+            "110",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL"
+          ],
+          "distinct_count": 2
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 18
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Total Packets",
+          "aggregation": "AVG",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Unicast Packets",
+          "aggregation": "AVG",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "Multicast Packets",
+          "aggregation": "AVG",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "Packet Loss",
+          "aggregation": "AVG",
+          "physical_column": "INT04"
+        },
+        {
+          "name": "Total Customers",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Mean KNoise 5 GHz",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        },
+        {
+          "name": "Mean Tx Opportunity 5 GHz",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT02"
+        },
+        {
+          "name": "Percent Packet Loss",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT03"
+        }
+      ]
+    },
+    "40020": {
+      "kpi_id": 40020,
+      "kpi_name": "HCAs - Open Reach",
+      "kpi_description": "This KPI set gives us details of Open Reach High Cost Actions resulting from assurance sessions.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Gigafast",
+            "Superfast",
+            "Superfast 35",
+            "Ultrafast",
+            "Ultrafast Plus"
+          ],
+          "distinct_count": 7
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "0",
+            "100",
+            "1000",
+            "11",
+            "110",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL"
+          ],
+          "distinct_count": 2
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 18
+        },
+        "Engineer Type": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "FTTC1",
+            "FTTC3",
+            "FTTP1",
+            "FTTP3",
+            "GEA1",
+            "GEA3",
+            "LL1",
+            "LL13",
+            "LL14"
+          ],
+          "distinct_count": 9
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Open Reach Visits",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Open Reach Appointed Visits",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "Open Reach Unappointed Visits",
+          "aggregation": "SUM",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "Customer missed appointments",
+          "aggregation": "SUM",
+          "physical_column": "INT04"
+        },
+        {
+          "name": "Open Reach missed appointments",
+          "aggregation": "SUM",
+          "physical_column": "INT05"
+        },
+        {
+          "name": "Total Customers",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Open Reach days to fix",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        },
+        {
+          "name": "Open Reach visits cost",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT02"
+        }
+      ]
+    },
+    "60010": {
+      "kpi_id": 60010,
+      "kpi_name": "Broadband Customer Churn",
+      "kpi_description": "This KPI tells us the number of customers requesting to churn, in progress and completing the churn process each day.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Gigafast",
+            "Superfast",
+            "Ultrafast"
+          ],
+          "distinct_count": 4
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "100",
+            "1000",
+            "11",
+            "115",
+            "145",
+            "150",
+            "160",
+            "18",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500",
+            "55",
+            "550",
+            "59",
+            "61"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "IC / EL",
+            "IC / IL",
+            "IC / VEL",
+            "OC / IL"
+          ],
+          "distinct_count": 4
+        },
+        "Churn Status": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "Churn Complete",
+            "Churn Requested",
+            "Churn in Progress",
+            "Churn is History"
+          ],
+          "distinct_count": 4
+        },
+        "Churn Reason": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "Controllable",
+            "Financial",
+            "Now",
+            "Other",
+            "Uncontrollable",
+            "Unknown"
+          ],
+          "distinct_count": 6
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Customer Churn Count",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Tenure Days",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        },
+        {
+          "name": "Days since Open Reach event",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT02"
+        },
+        {
+          "name": "Days since BBTTE event",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT03"
+        },
+        {
+          "name": "Days since SC/AV session",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT04"
+        }
+      ]
+    },
+    "20010": {
+      "kpi_id": 20010,
+      "kpi_name": "Broadband Customer Counts",
+      "kpi_description": "This KPI gives us the number of broadband customers we have, each day, broken out by a number of useful dimensions. This baselines many of our other KPIs.",
+      "dimensions": {
+        "Product": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Essential",
+            "Full Fibre 100",
+            "Full Fibre 150",
+            "Full Fibre 300",
+            "Full Fibre 500",
+            "Full Fibre 75",
+            "Gigafast",
+            "Gigafast 2.5",
+            "Gigafast 5",
+            "NOW Full Fibre 100",
+            "NOW Full Fibre 300",
+            "NOW Full Fibre 75",
+            "NOW Superfast",
+            "Superfast",
+            "Ultrafast"
+          ],
+          "distinct_count": 15
+        },
+        "Technology": {
+          "physical_column": "DIM2",
+          "distinct_values_sample": [
+            "ADSL",
+            "FTTC",
+            "FTTP",
+            "SOGEA",
+            "SOGFAST"
+          ],
+          "distinct_count": 5
+        },
+        "Speed": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "0",
+            "100",
+            "1000",
+            "11",
+            "110",
+            "115",
+            "1200",
+            "145",
+            "150",
+            "160",
+            "18",
+            "2500",
+            "285",
+            "300",
+            "330",
+            "35",
+            "36",
+            "40",
+            "50",
+            "500"
+          ],
+          "distinct_count": 20
+        },
+        "Tenure": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "EL",
+            "IL"
+          ],
+          "distinct_count": 2
+        },
+        "Router": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "BOXO Sky Hub 3.0",
+            "Broadband Box",
+            "NOW Hub Two",
+            "NOW TV Hub",
+            "NOW TV Hub Two",
+            "Other Router",
+            "Sky Gigafast+ Hub",
+            "Sky Hub",
+            "Sky Hub 2.0",
+            "Sky Hub 3.0",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 4.2 G",
+            "Sky Hub Fibre",
+            "Sky Q Hub",
+            "Sky Wireless",
+            "Standard hub 4.2",
+            "Wifi Max Hub"
+          ],
+          "distinct_count": 18
+        },
+        "Exchange": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "Abersoch",
+            "Ahoghill",
+            "Alton",
+            "Arundel",
+            "Aycliffe",
+            "Bainton",
+            "Banknock",
+            "Bellaghy",
+            "Bentham",
+            "Bexhill",
+            "Birgham",
+            "Boncath",
+            "Box",
+            "Brae",
+            "Bramdean",
+            "Brayford",
+            "Bromham",
+            "Bythorn",
+            "Cannich",
+            "Cardigan"
+          ],
+          "distinct_count": 20
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        },
+        {
+          "name": "Customers with Boosters",
+          "aggregation": "SUM",
+          "physical_column": "INT02"
+        },
+        {
+          "name": "Number of Boosters",
+          "aggregation": "SUM",
+          "physical_column": "INT03"
+        },
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT10"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Total days as a broadband Sky customer (sum)",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT01"
+        },
+        {
+          "name": "Total days on current broadband agreement (sum)",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT02"
+        },
+        {
+          "name": "Exchange Latitude",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT05"
+        },
+        {
+          "name": "Exchange Longitude",
+          "aggregation": "AVG",
+          "physical_column": "FLOAT06"
+        }
+      ]
+    },
+    "70140001": {
+      "kpi_id": 70140001,
+      "kpi_name": "CSAT Scores",
+      "kpi_description": "Gives us satisfaction scores from the Customer Satisfaction monthly survey.  Several dimensions are available for analysis.  Weighted scores are held in the Float 1 variable.",
+      "dimensions": {
+        "Overall Satisfaction Category": {
+          "physical_column": "DIM1",
+          "distinct_values_sample": [
+            "Dissatisfied",
+            "Neutral",
+            "Satisfied"
+          ],
+          "distinct_count": 3
+        },
+        "Reliability Satisfaction Category": {
+          "physical_column": "DIM3",
+          "distinct_values_sample": [
+            "Dissatisfied",
+            "Neutral",
+            "Satisfied"
+          ],
+          "distinct_count": 3
+        },
+        "Device Type": {
+          "physical_column": "DIM4",
+          "distinct_values_sample": [
+            "Sky Glass Air Large",
+            "Sky Glass Air Medium",
+            "Sky Glass Air Small",
+            "Sky Glass Gen 2 Large",
+            "Sky Glass Gen 2 Medium",
+            "Sky Glass Gen 2 Small",
+            "Sky Glass Large",
+            "Sky Glass Large A Grade",
+            "Sky Glass Large Replacement",
+            "Sky Glass Medium",
+            "Sky Glass Medium A Grade",
+            "Sky Glass Medium Replacement",
+            "Sky Glass Small",
+            "Sky Glass Small A Grade",
+            "Sky Glass Small Replacement",
+            "Sky Stream puck"
+          ],
+          "distinct_count": 16
+        },
+        "Broadband Router.": {
+          "physical_column": "DIM5",
+          "distinct_values_sample": [
+            "Other Hubs",
+            "Sky Hub",
+            "Sky Hub 2",
+            "Sky Hub 3",
+            "Sky Hub 3.5",
+            "Sky Hub 4",
+            "Sky Hub 4.2",
+            "Sky Hub 6"
+          ],
+          "distinct_count": 8
+        },
+        "Glass or Stream Customer": {
+          "physical_column": "DIM6",
+          "distinct_values_sample": [
+            "Glass",
+            "Stream"
+          ],
+          "distinct_count": 2
+        }
+      },
+      "indicators_int": [
+        {
+          "name": "Customer Count",
+          "aggregation": "SUM",
+          "physical_column": "INT01"
+        }
+      ],
+      "indicators_float": [
+        {
+          "name": "Weighted Score",
+          "aggregation": "SUM",
+          "physical_column": "FLOAT01"
+        }
+      ]
+    }
+  }
+}

@@ -56,6 +56,7 @@ sql_refiner_agent = LlmAgent(
     generate_content_config=types.GenerateContentConfig(
         temperature=0,
         top_p=0.5,
+        candidate_count=None
         # max_output_tokens=5000,  
     ),
     planner=BuiltInPlanner(
