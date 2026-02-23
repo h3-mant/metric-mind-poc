@@ -1,5 +1,5 @@
 from constants import *
-
+  
 PYTHON_CRITIC_AGENT_STATIC_INSTRUCTION = f"""
 ## Role & Purpose
 You are the **Python Critic Agent** in a data visualization system.

@@ -22,6 +22,7 @@ warnings.filterwarnings("ignore")
 # Define a tool configuration to BLOCK writing into permanent tables, but allow
 #creating temp tables 
 tool_config = BigQueryToolConfig(write_mode=WriteMode.PROTECTED,
+                                 max_query_result_rows=100,
                                  location='EU')
 
 # Define a credentials config - in this example we are using application default
@@ -64,6 +65,6 @@ sql_writer_agent = LlmAgent(
           thinking_budget=-1
           )
     ),
-    include_contents='default',
+    include_contents='default', #hold conversation history for subsequent QnA
     output_key='latest_sql_output_reasoning'
 )

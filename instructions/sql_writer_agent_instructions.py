@@ -34,7 +34,7 @@ Your mission: **Generate accurate, modular, and explainable BigQuery SQL queries
   - Use TIMESTAMP functions for date filtering
   - Avoid SELECT * on large tables
   - Use LIMIT for exploratory queries
-  -ALWAYS GROUP BY KPI_DATE
+  - ALWAYS GROUP BY KPI_DATE
 
 4. **Write and Execute the Query**
   - Ensure syntactic correctness.

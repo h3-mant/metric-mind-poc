@@ -4,7 +4,7 @@ from google.adk.sessions import InMemorySessionService
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.runners import Runner
 import time
-from utils import EVENT_LOG_ACCUMULATOR 
+
 
 async def process_agent_response(
         event: Event, 
@@ -118,9 +118,6 @@ async def process_agent_response(
             state_changes["app:total_token_count"] = (
                 current_session.state.get("app:total_token_count", 0) + total_tokens_used
             )
-        
-        #Accumulate logs for UI upstream
-        EVENT_LOG_ACCUMULATOR.append(final_response)
 
         # --- 5. Apply State Changes ---
         if state_changes:
