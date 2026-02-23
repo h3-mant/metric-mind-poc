@@ -107,7 +107,6 @@ WITH SUBSET AS (
   AND   KPI_DATE BETWEEN CURRENT_DATE() - 90 AND CURRENT_DATE()
 GROUP BY ALL
 )
-#SELECT * FROM SUBSET
 SELECT
   KPI_DATE,
   (SELECT VALUE FROM UNNEST(DIM) WHERE NAME LIKE 'Overall CSAT%')  AS CSAT_SCORE,
@@ -180,12 +179,6 @@ ORDER BY 1
 - Check table/column names and data types.
 - Ensure proper quoting and syntax.
 - Explain the issue and suggest solutions.
-
-Below is how the data is structured under the DATA TABLE. 
-**Schema Structure:** {schema_structure}
-
-And this is extra context for the values under the DATA TABLE.
-**Schema Context:** {schema_context}
 """
 
 SQL_WRITER_AGENT_DYNAMIC_INSTRUCTION = """## Available BigQuery Resources
