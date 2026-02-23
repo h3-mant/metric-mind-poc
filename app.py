@@ -285,8 +285,8 @@ async def process_query(user_query: str, session_id: str):
             'projects': "uk-dta-gsmanalytics-poc",
             'datasets': "metricmind",
             'tables': "GSM_KPI_DATA_TEST_V5, GSM_KPI_DEFS_TEST_V5",
-            'schema_structure': defs_schema,
-            'schema_context': data_schema
+            # 'schema_structure': defs_schema,
+            # 'schema_context': data_schema
         }
 
         # Create or get existing session

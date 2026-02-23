@@ -125,9 +125,7 @@ async def _build_initial_state() -> dict[str, Any]:
     return {
         "projects": "uk-dta-gsmanalytics-poc",
         "datasets": "metricmind",
-        "tables": "GSM_KPI_DATA_TEST_V5, GSM_KPI_DEFS_TEST_V5",
-        "schema_structure": json_to_dict(DEFS_SCHEMA_PATH),
-        "schema_context": json_to_dict(DATA_SCHEMA_PATH),
+        "tables": "GSM_KPI_DATA_TEST_V5, GSM_KPI_DEFS_TEST_V5"
     }
 
 
