@@ -5,6 +5,7 @@ from google.adk.artifacts import InMemoryArtifactService
 from google.adk.runners import Runner
 import time
 from utils import EVENT_LOG_ACCUMULATOR 
+from google.adk.sessions import Session 
 
 async def process_agent_response(
         event: Event, 
@@ -13,18 +14,13 @@ async def process_agent_response(
         session_id: str, 
         session_service: InMemorySessionService, 
         artifact_service: InMemoryArtifactService,
-        final_response: dict
+        final_response: dict,
+        current_session: Session
     ) -> dict:
     """Process each agent event and accumulate details into state and final_response."""
     
     state_changes = {}
     try:
-        #update session
-        current_session = await session_service.get_session(
-            app_name=app_name,
-            user_id=user_id,
-            session_id=session_id
-        )
         
         # ---- 1. Final Text Response ----
         if event.content and event.content.parts:
@@ -151,6 +147,7 @@ async def call_agent_async(
         artifact_service: InMemoryArtifactService,
         session_id: str, 
         user_query: str, 
+        current_session: Session
     ) -> dict:
     """Custom Agent Caller to aggregate the final_response payload across all events."""
 
@@ -164,7 +161,7 @@ async def call_agent_async(
         async for event in runner.run_async(
             user_id=user_id, session_id=session_id, new_message=content
         ):
-            await process_agent_response(event, app_name, user_id, session_id, session_service, artifact_service, final_response)
+            await process_agent_response(event, app_name, user_id, session_id, session_service, artifact_service, final_response,current_session)
     except Exception as e:
         print(f"Error during agent call: {e}")
     

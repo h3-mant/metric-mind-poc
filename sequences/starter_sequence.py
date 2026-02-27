@@ -5,7 +5,7 @@ from google.adk.artifacts import InMemoryArtifactService
 from utils.agent_utils import call_agent_async
 from agents.starter_agent import starter_agent
 from utils.logger import get_logger
-
+from google.adk.sessions import Session 
 logger = get_logger(__name__)
 
 async def starter_agent_sequence(
@@ -14,16 +14,12 @@ async def starter_agent_sequence(
     session_service: InMemorySessionService,
     artifact_service: InMemoryArtifactService,
     session_id: str,
-    user_query: str) -> None:
+    user_query: str,
+    starter_agent_runner:Runner,
+    current_session: Session
+    ) -> None:
   """Sequence to run Starter Agent"""
 
-  #Create Runner for Starter Agent
-  starter_agent_runner = Runner(
-        agent=starter_agent,
-        app_name=app_name,
-        session_service=session_service,
-        artifact_service=artifact_service
-    )
 
   #Call Starter Agent
   starter_agent_response = await call_agent_async(
@@ -33,7 +29,8 @@ async def starter_agent_sequence(
     session_service=session_service, 
     artifact_service=artifact_service,
     session_id=session_id, 
-    user_query=user_query
+    user_query=user_query,
+    current_session=current_session
     )
   
   logger.info(starter_agent_response)

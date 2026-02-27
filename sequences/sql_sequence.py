@@ -3,11 +3,8 @@ from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.adk.artifacts import InMemoryArtifactService
 from utils.agent_utils import call_agent_async
-from agents.sql_writer_agent import sql_writer_agent
-from agents.sql_critic_agent import sql_critic_agent
-from agents.sql_refiner_agent import sql_refiner_agent
 from utils.logger import get_logger
-
+from google.adk.sessions import Session 
 logger = get_logger(__name__)
 
 async def sql_agent_sequence(
@@ -16,16 +13,15 @@ async def sql_agent_sequence(
     session_service: InMemorySessionService,
     artifact_service: InMemoryArtifactService,
     session_id: str,
-    user_query: str) -> None:
+    user_query: str,
+    sql_writer_agent_runner: Runner,
+    sql_critic_agent_runner: Runner,
+    sql_refiner_agent_runner: Runner,
+    session: Session
+    ) -> None:
   """Sequence to run SQL Writer, Critic and Refiner Agents"""
 
-  #Create Runner for SQL Writer Agent
-  sql_writer_agent_runner = Runner(
-        agent=sql_writer_agent,
-        app_name=app_name,
-        session_service=session_service,
-        artifact_service=artifact_service
-    )
+
 
   #Call SQL Writer Agent
   sql_writer_response = await call_agent_async(
@@ -35,34 +31,18 @@ async def sql_agent_sequence(
     session_service=session_service, 
     artifact_service=artifact_service,
     session_id=session_id, 
-    user_query=user_query
+    user_query=user_query,
+    current_session=session
     )
   
   logger.info(sql_writer_response)
 
-  #Create Runners for SQL Critic and Refiner Agents
-  sql_critic_agent_runner = Runner(
-          agent=sql_critic_agent,
-          app_name=APP_NAME,
-          session_service=session_service,
-          artifact_service=artifact_service
-      )
-  sql_refiner_agent_runner = Runner(
-          agent=sql_refiner_agent,
-          app_name=APP_NAME,
-          session_service=session_service,
-          artifact_service=artifact_service
-      )
+
 
   #Retry loop for SQL Critic and Refiner Agents
   retries = 0
   while retries < MAX_RETRIES:
     
-    #update session
-    session = await session_service.get_session(
-       app_name=APP_NAME,user_id=USER_ID,session_id=session_id
-    )
-
     #Result of code_execution tool is either SUCCESS/ERROR/PENDING
     #If code_execution result is SUCCESS and latest_sql_criticism is OUTCOME OK, break the loop
     if session.state.get('latest_sql_criticism') == OUTCOME_OK_PHRASE and \
@@ -77,7 +57,8 @@ async def sql_agent_sequence(
       artifact_service=artifact_service,
       session_id=session_id, 
       user_id=user_id, 
-      user_query=user_query
+      user_query=user_query,
+      current_session=session
       )
     
     logger.info(sql_critic_response)
@@ -90,7 +71,8 @@ async def sql_agent_sequence(
       session_service=session_service,
       artifact_service=artifact_service,
       session_id=session_id, 
-      user_query=user_query, 
+      user_query=user_query,
+      current_session=session
       )
 
     logger.info(sql_refiner_response)

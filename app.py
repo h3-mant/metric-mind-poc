@@ -14,6 +14,7 @@ from sequences.starter_sequence import starter_agent_sequence
 import pandas as pd
 from utils.helper import save_img
 from google import genai
+from google.adk.sessions import Session 
 
 logger = get_logger(__name__)
 
@@ -23,6 +24,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
 
 # Custom CSS for Sky branding and modern styling
 st.markdown("""
@@ -261,6 +263,48 @@ if 'artifact_service' not in st.session_state:
     st.session_state.artifact_service = InMemoryArtifactService()
 if 'initial_query_processed' not in st.session_state:
     st.session_state.initial_query_processed = False
+  #Create Runner for Starter Agent
+app_name = APP_NAME
+user_id = USER_ID
+from google.adk.runners import Runner
+from agents.starter_agent import starter_agent
+
+#Use session service
+session_service = st.session_state.session_service
+#Define Artifact service
+artifact_service = st.session_state.artifact_service
+
+starter_agent_runner = Runner(
+    agent=starter_agent,
+    app_name=app_name,
+    session_service=session_service,
+    artifact_service=artifact_service
+    )
+from agents.sql_writer_agent import sql_writer_agent
+from agents.sql_critic_agent import sql_critic_agent
+from agents.sql_refiner_agent import sql_refiner_agent
+  #Create Runner for SQL Writer Agent
+sql_writer_agent_runner = Runner(
+    agent=sql_writer_agent,
+    app_name=app_name,
+    session_service=session_service,
+    artifact_service=artifact_service
+)
+
+#Create Runners for SQL Critic and Refiner Agents
+sql_critic_agent_runner = Runner(
+        agent=sql_critic_agent,
+        app_name=APP_NAME,
+        session_service=session_service,
+        artifact_service=artifact_service
+    )
+sql_refiner_agent_runner = Runner(
+        agent=sql_refiner_agent,
+        app_name=APP_NAME,
+        session_service=session_service,
+        artifact_service=artifact_service
+    )
+
 
 async def process_query(user_query: str, session_id: str):
     """Process user query through the agent pipeline."""
@@ -270,11 +314,7 @@ async def process_query(user_query: str, session_id: str):
         app_name = APP_NAME
         user_id = USER_ID
 
-        #Use session service
-        session_service = st.session_state.session_service
-        
-        #Define Artifact service
-        artifact_service = st.session_state.artifact_service
+
 
         # Define defs schema to be passed as initial_state
         defs_schema = json_to_dict(DEFS_SCHEMA_PATH)
@@ -298,6 +338,12 @@ async def process_query(user_query: str, session_id: str):
                 state=initial_state_formatted
             )
             logger.info(f"Created new session: {session.id}")
+            #update session
+            current_session = await session_service.get_session(
+                app_name=app_name,
+                user_id=user_id,
+                session_id=session_id
+            )
         else:
             session = await session_service.get_session(
                 app_name=app_name,
@@ -306,7 +352,7 @@ async def process_query(user_query: str, session_id: str):
             )
         
         # Call Starter Agent Sequence
-        await starter_agent_sequence(app_name, user_id, session_service, artifact_service, session_id, user_query)
+        await starter_agent_sequence(app_name, user_id, session_service, artifact_service, session_id, user_query,starter_agent_runner,current_session)
         
         # Refresh session to get updated state
         session = await session_service.get_session(
@@ -318,7 +364,7 @@ async def process_query(user_query: str, session_id: str):
         # Decide if SQL sequence is required
         if session.state.get('sql_required'):
             # Call SQL Sequence
-            await sql_agent_sequence(app_name, user_id, session_service, artifact_service, session_id, user_query)
+            await sql_agent_sequence(app_name, user_id, session_service, artifact_service, session_id, user_query,sql_writer_agent_runner,sql_critic_agent_runner,sql_critic_agent_runner,current_session)
             
             # Update session
             session = await session_service.get_session(

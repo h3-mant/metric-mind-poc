@@ -16,7 +16,8 @@ async def python_agent_sequence(
     session_service: InMemorySessionService,
     artifact_service: InMemoryArtifactService,
     session_id: str,
-    user_query: str) -> None:
+    user_query: str,
+    ) -> None:
     
     #update session
     session = await session_service.get_session(
